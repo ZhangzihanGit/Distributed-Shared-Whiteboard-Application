@@ -6,7 +6,7 @@ package clientPre;
  */
 public class ClientGUIFacade {
     /** private singleton instance */
-    private ClientGUIFacade instance = null;
+    private static ClientGUIFacade instance = null;
 
     /**
      * Private constructor
@@ -17,7 +17,7 @@ public class ClientGUIFacade {
      * get the singleton instance
      * @return singleton instance of ClientGUIControl
      */
-    public ClientGUIFacade getInstance() {
+    public static ClientGUIFacade getInstance() {
         if (instance == null)
             instance = new ClientGUIFacade();
 

@@ -6,7 +6,7 @@ package wbServerPre;
  */
 public class WbServerGUIFacade {
     /** private singleton instance */
-    private WbServerGUIFacade instance = null;
+    private static WbServerGUIFacade instance = null;
 
     /**
      * Private constructor
@@ -17,7 +17,7 @@ public class WbServerGUIFacade {
      * get the singleton instance
      * @return singleton instance of WbServerGUIFacade
      */
-    public WbServerGUIFacade getInstance() {
+    public static WbServerGUIFacade getInstance() {
         if (instance == null)
             instance = new WbServerGUIFacade();
 

@@ -12,7 +12,7 @@
 
 ​	A Team
 
-#### 3.1 Group Member
+#### 3.2 Group Member
 
 - Zihan Zhang
 

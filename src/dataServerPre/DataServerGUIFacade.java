@@ -6,7 +6,7 @@ package dataServerPre;
  */
 public class DataServerGUIFacade {
     /** private singleton instance */
-    private DataServerGUIFacade instance = null;
+    private static DataServerGUIFacade instance = null;
 
     /**
      * Private constructor
@@ -17,7 +17,7 @@ public class DataServerGUIFacade {
      * get the singleton instance
      * @return singleton instance of DataServerGUIFacade
      */
-    public DataServerGUIFacade getInstance() {
+    public static DataServerGUIFacade getInstance() {
         if (instance == null)
             instance = new DataServerGUIFacade();
 

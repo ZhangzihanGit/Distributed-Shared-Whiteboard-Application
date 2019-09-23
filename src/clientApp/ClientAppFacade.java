@@ -6,7 +6,7 @@ package clientApp;
  */
 public class ClientAppFacade {
     /** private singleton instance */
-    private ClientAppFacade instance = null;
+    private static ClientAppFacade instance = null;
 
     /**
      * Private constructor
@@ -17,7 +17,7 @@ public class ClientAppFacade {
      * get the singleton instance
      * @return singleton instance of ClientAppFacade
      */
-    public ClientAppFacade getInstance() {
+    public static ClientAppFacade getInstance() {
         if (instance == null)
             instance = new ClientAppFacade();
 
