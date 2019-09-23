@@ -1,10 +1,14 @@
 package clientApp;
 
+import org.apache.log4j.Logger;
+
 /**
  * Application layer facade of client
  * provide single control point of client application logic
  */
 public class ClientAppFacade {
+    private final static Logger logger = Logger.getLogger(ClientAppFacade.class);
+
     /** private singleton instance */
     private static ClientAppFacade instance = null;
 

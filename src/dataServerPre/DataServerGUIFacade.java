@@ -1,10 +1,14 @@
 package dataServerPre;
 
+import org.apache.log4j.Logger;
+
 /**
  * Presentation layer facade of data server
  * provide single control point of data server GUI
  */
 public class DataServerGUIFacade {
+    private final static Logger logger = Logger.getLogger(DataServerGUIFacade.class);
+
     /** private singleton instance */
     private static DataServerGUIFacade instance = null;
 

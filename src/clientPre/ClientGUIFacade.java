@@ -1,10 +1,14 @@
 package clientPre;
 
+import org.apache.log4j.Logger;
+
 /**
  * Presentation layer facade of client
  * provide single control point of client GUI
  */
 public class ClientGUIFacade {
+    private final static Logger logger = Logger.getLogger(ClientGUIFacade.class);
+
     /** private singleton instance */
     private static ClientGUIFacade instance = null;
 

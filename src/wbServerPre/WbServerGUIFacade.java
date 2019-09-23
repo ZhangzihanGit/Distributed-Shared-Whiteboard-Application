@@ -1,10 +1,14 @@
 package wbServerPre;
 
+import org.apache.log4j.Logger;
+
 /**
  * Presentation layer facade of whiteboard server
  * provide single control point of whiteboard server GUI
  */
 public class WbServerGUIFacade {
+    private final static Logger logger = Logger.getLogger(WbServerGUIFacade.class);
+
     /** private singleton instance */
     private static WbServerGUIFacade instance = null;
 
