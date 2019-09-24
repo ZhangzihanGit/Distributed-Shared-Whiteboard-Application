@@ -21,78 +21,78 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     @Override
     public String createWb(String username, String wbName) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "CREATE WB FUNCTION NOT FINISH " + username + " " + wbName;
     }
 
     @Override
-    public String getAvaliableWb() throws RemoteException {
+    public String getAvailableWb() throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "GET AVAILABLE WB FUNCTION NOT FINISH ";
     }
 
     @Override
     public String joinWb(String wbID, String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "JOIN WB FUNCTION NOT FINISH ";
     }
 
     @Override
     public String closeWb(String wbID, String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "CLOSE WB FUNCTION NOT FINISH ";
     }
 
     @Override
     public String saveWbOnline(String wbID, String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "ONLINE SAVE FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String saveWbLocally(String wbID, String username, String format) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "LOCAL SAVE FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String getAllStoredFiles(String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "GET ALL STORED FILES FUNCTION NOT FINISH " + username;
     }
 
     @Override
     public String openWbOnline(String wbID, String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "OPEN ONLINE SAVED WB FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String openWbLocally(String username, String wbContent) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "OPEN LOCAL SAVED WB FUNCTION NOT FINISH " + username;
     }
 
     @Override
     public String render(String wbID, String username) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "RENDER FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String draw(String wbID, String username, String content) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "DRAW FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String erase(String wbID, String username, String content) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "ERASE FUNCTION NOT FINISH " + username + " " + wbID;
     }
 
     @Override
     public String sendMsg(String wbID, String username, String msg) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "SEND MESSAGE FUNCTION NOT FINISH " + username + " " + wbID + " " + msg;
     }
 }
