@@ -36,7 +36,7 @@ public class DataServerApplication {
 
         try {
             Registry registry = LocateRegistry.getRegistry(serverIP, serverPort);
-            registry.bind("Data", remoteDb);
+            registry.bind("Database", remoteDb);
 
             logger.info("Data server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
         } catch (Exception e) {

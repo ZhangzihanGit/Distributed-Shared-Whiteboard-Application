@@ -36,6 +36,16 @@ public class WbServerFacade {
     }
 
     /**
+     * connect to database server
+     * @param ip
+     * @param port
+     * @return True if connect successfully
+     */
+    public boolean connectDbServer(String ip, int port) {
+        return wbServer.connectDbServer(ip, port);
+    }
+
+    /**
      * exit server program
      */
     public void exit() {
