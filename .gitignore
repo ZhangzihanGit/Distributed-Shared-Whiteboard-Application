@@ -36,8 +36,9 @@ gradle-app.setting
 ##############################
 ## IntelliJ
 ##############################
-out/
+/out/
 /.idea/
+*out/
 .idea_modules/
 *.iml
 *.ipr
@@ -78,3 +79,4 @@ nb-configuration.xml
 ##############################
 ## log file
 /resources/log/*
+*log/
