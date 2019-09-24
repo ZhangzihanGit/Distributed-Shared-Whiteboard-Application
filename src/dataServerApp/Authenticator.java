@@ -32,10 +32,10 @@ public class Authenticator {
      * @return
      */
     public JSONObject registerUser(String username, String password){
-        if username == null{
+        if (username == null){
             return jsonParse(FAIL_HEADER, USER_NULL);
         }
-        if password == null {
+        if (password == null) {
             return jsonParse(FAIL_HEADER, PASSWORD_NULLL);
         }
         if (password.contains(username)){
