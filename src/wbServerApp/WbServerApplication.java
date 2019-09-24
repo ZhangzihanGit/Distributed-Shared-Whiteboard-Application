@@ -2,6 +2,7 @@ package wbServerApp;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 
 import org.apache.log4j.Logger;
 
@@ -15,10 +16,17 @@ public class WbServerApplication {
     private String serverIP = null;
     private int serverPort = 0;
 
-    public WbServerApplication() {}
+    private IRemoteWb remoteWb = null;
 
     /**
-     * start run server,
+     * constructor
+     */
+    public WbServerApplication() {
+        remoteWb = new RemoteWb();
+    }
+
+    /**
+     * start run server
      */
     public void runWbServer() {
         if (serverIP == null || serverPort == 0) {
@@ -27,15 +35,25 @@ public class WbServerApplication {
         }
 
         try {
-            IRemoteWb remoteWb = new RemoteWb();
-
             Registry registry = LocateRegistry.getRegistry(serverIP, serverPort);
             registry.bind("Whiteboard", remoteWb);
 
-            logger.info("Server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
+            logger.info("Whiteboard server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
         } catch (Exception e) {
             logger.fatal(e.toString());
-            logger.fatal("Remote registry set up failed");
+            logger.fatal("Whiteboard remote registry set up failed");
+        }
+    }
+
+    /**
+     * exit server program
+     */
+    public void exit() {
+        try {
+            UnicastRemoteObject.unexportObject(remoteWb, false);
+        } catch (Exception e) {
+            logger.fatal(e.toString());
+            logger.fatal("Whiteboard server remove remote object from rmi runtime failed");
         }
     }
 

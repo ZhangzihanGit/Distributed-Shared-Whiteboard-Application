@@ -12,10 +12,14 @@ public class ClientAppFacade {
     /** private singleton instance */
     private static ClientAppFacade instance = null;
 
+    private ClientApplication clientApp = null;
+
     /**
      * Private constructor
      */
-    private ClientAppFacade() {}
+    private ClientAppFacade() {
+        clientApp = new ClientApplication();
+    }
 
     /**
      * get the singleton instance
@@ -28,5 +32,11 @@ public class ClientAppFacade {
         return instance;
     }
 
-
+    /**
+     * exit client program
+     */
+    public void exit() {
+        logger.info("User exit client program");
+        System.exit(1);
+    }
 }
