@@ -35,11 +35,30 @@ public class ClientAppFacade {
     /**
      * connect to whiteboard server
      * @param ip
-     * @param port
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip, int port) {
-        return clientApp.connectWbServer(ip, port);
+    public boolean connectWbServer(String ip) {
+        return clientApp.connectWbServer(ip);
+    }
+
+    /**
+     * Register new user on server
+     * @param username
+     * @param password
+     * @return Register information
+     */
+    public String register(String username, String password) {
+        return clientApp.register(username, password);
+    }
+
+    /**
+     * Existing user log in
+     * @param username
+     * @param password
+     * @return Login information
+     */
+    public String login(String username, String password) {
+        return clientApp.login(username, password);
     }
 
     /**

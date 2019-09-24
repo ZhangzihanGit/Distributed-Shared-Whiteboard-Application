@@ -1,6 +1,7 @@
 package wbServerPre;
 
 import org.apache.log4j.Logger;
+import wbServerApp.WbServerFacade;
 
 /**
  * Presentation layer facade of whiteboard server
@@ -33,6 +34,9 @@ public class WbServerGUIFacade {
      */
     public void runWbServerGUI() {
         /* NEED FIX */
+        /* Test */
+        WbServerFacade.getInstance().setAddress("localhost");
+        WbServerFacade.getInstance().runWbServer();
     }
 
     /**

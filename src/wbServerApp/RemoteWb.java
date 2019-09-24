@@ -1,18 +1,21 @@
 package wbServerApp;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class RemoteWb implements IRemoteWb {
+public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
+    protected RemoteWb() throws RemoteException {}
+
     @Override
     public String register(String username, String password) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "REGISTER FUNCTION NOT FINISH " + username + " " + password;
     }
 
     @Override
     public String login(String username, String password) throws RemoteException {
         /* NEED FIX */
-        return null;
+        return "LOGIN FUNCTION NOT FINISH " + username + " " + password;
     }
 
     @Override

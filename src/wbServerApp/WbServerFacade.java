@@ -38,11 +38,10 @@ public class WbServerFacade {
     /**
      * connect to database server
      * @param ip
-     * @param port
      * @return True if connect successfully
      */
-    public boolean connectDbServer(String ip, int port) {
-        return wbServer.connectDbServer(ip, port);
+    public boolean connectDbServer(String ip) {
+        return wbServer.connectDbServer(ip);
     }
 
     /**
@@ -55,12 +54,11 @@ public class WbServerFacade {
     }
 
     /**
-     * Set up server address (ip, port)
+     * Set up server address (ip)
      * @param ip
-     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
-        return wbServer.setAddress(ip, port);
+    public boolean setAddress(String ip) {
+        return wbServer.setAddress(ip);
     }
 }
