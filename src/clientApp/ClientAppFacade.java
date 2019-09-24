@@ -33,6 +33,16 @@ public class ClientAppFacade {
     }
 
     /**
+     * connect to whiteboard server
+     * @param ip
+     * @param port
+     * @return True if connect successfully
+     */
+    public boolean connectWbServer(String ip, int port) {
+        return clientApp.connectWbServer(ip, port);
+    }
+
+    /**
      * exit client program
      */
     public void exit() {

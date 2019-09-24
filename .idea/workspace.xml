@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="1. add logger&#10;2. add server RMI register">
+    <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="1. add exit functions&#10;2. add missing application layer facade">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/clientApp/ClientAppFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/clientApp/ClientAppFacade.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/clientApp/ClientApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/clientApp/ClientApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dataServerApp/DataServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/dataServerApp/DataServerApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/wbServerApp/WbServerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/wbServerApp/WbServerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/wbServerApp/WbServerFacade.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/wbServerApp/WbServerFacade.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -208,7 +210,7 @@
       <workItem from="1568960622113" duration="846000" />
       <workItem from="1569208758563" duration="5461000" />
       <workItem from="1569222299592" duration="11000" />
-      <workItem from="1569280204446" duration="3803000" />
+      <workItem from="1569280204446" duration="5077000" />
     </task>
     <task id="LOCAL-00001" summary="Add implementation skeleton, mainly facade of each layer and RMI communication interface.">
       <created>1569222134613</created>
@@ -224,7 +226,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569282671731</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="1. add exit functions&#10;2. add missing application layer facade">
+      <created>1569284132021</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1569284132021</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,6 +257,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <MESSAGE value="Add implementation skeleton, mainly facade of each layer and RMI communication interface." />
     <MESSAGE value="1. add logger&#10;2. add server RMI register" />
-    <option name="LAST_COMMIT_MESSAGE" value="1. add logger&#10;2. add server RMI register" />
+    <MESSAGE value="1. add exit functions&#10;2. add missing application layer facade" />
+    <option name="LAST_COMMIT_MESSAGE" value="1. add exit functions&#10;2. add missing application layer facade" />
   </component>
 </project>
