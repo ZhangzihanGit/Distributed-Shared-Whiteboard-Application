@@ -74,4 +74,7 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
-/.idea/
+
+##############################
+## log file
+/resources/log/*
