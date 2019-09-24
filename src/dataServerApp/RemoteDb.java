@@ -1,8 +1,13 @@
 package dataServerApp;
 
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class RemoteDb implements IRemoteDb {
+public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
+    protected RemoteDb() throws RemoteException {
+
+    }
+
     @Override
     public String addUser(String username, String password) throws RemoteException {
         /* NEED FIX */

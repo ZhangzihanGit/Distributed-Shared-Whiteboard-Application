@@ -1,6 +1,8 @@
 package dataServerApp;
 
 import org.apache.log4j.Logger;
+
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,11 +20,19 @@ public class DataServerApplication {
 
     private IRemoteDb remoteDb = null;
 
+    private Authenticator authenticator = null;
+
     /**
      * constructor
      */
-    public DataServerApplication() {
-        remoteDb = new RemoteDb();
+    public DataServerApplication()   {
+        try{
+            remoteDb = new RemoteDb();
+
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+        authenticator = new Authenticator();
     }
 
     /**
@@ -87,5 +97,9 @@ public class DataServerApplication {
                     + SMALLEST_PORT + " and " +  LARGEST_PORT + ", instead of " + serverPort);
             return false;
         }
+    }
+
+    private void authenticate(){
+
     }
 }

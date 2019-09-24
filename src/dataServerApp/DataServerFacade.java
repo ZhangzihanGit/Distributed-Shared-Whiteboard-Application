@@ -2,6 +2,8 @@ package dataServerApp;
 
 import org.apache.log4j.Logger;
 
+import java.rmi.RemoteException;
+
 public class DataServerFacade {
     private final static Logger logger = Logger.getLogger(DataServerFacade.class);
 
@@ -13,7 +15,7 @@ public class DataServerFacade {
     /**
      * Private constructor
      */
-    private DataServerFacade() {
+    private DataServerFacade() throws RemoteException{
         dataServer = new DataServerApplication();
     }
 
@@ -21,7 +23,7 @@ public class DataServerFacade {
      * get the singleton instance
      * @return singleton instance of DataServerFacade
      */
-    public static DataServerFacade getInstance() {
+    public static DataServerFacade getInstance() throws RemoteException{
         if (instance == null)
             instance = new DataServerFacade();
 

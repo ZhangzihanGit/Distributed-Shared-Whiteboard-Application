@@ -19,7 +19,7 @@ public class Authenticator {
     private static String PASSWORD_NULLL= "Password not provided";
 
 
-    public Authenticator(String username, String password){
+    public Authenticator(){
         passbook = new HashMap<String, String>();
 //        this.username = username;
 //        this.password = password;
