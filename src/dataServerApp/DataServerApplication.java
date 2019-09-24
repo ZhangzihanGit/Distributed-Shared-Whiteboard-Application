@@ -1,6 +1,7 @@
 package dataServerApp;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -98,8 +99,10 @@ public class DataServerApplication {
             return false;
         }
     }
-
-    private void authenticate(){
-
+    public JSONObject userRegister(String username, String password){
+        return authenticator.registerUser(username, password);
+    }
+    public JSONObject userAuthenticate(String username, String password){
+        return authenticator.authenticate(username, password);
     }
 }
