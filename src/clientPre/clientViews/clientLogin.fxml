@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <AnchorPane layoutX="360.0" layoutY="11.0" prefHeight="379.0" prefWidth="326.0" styleClass="login-panel">
+            <children>
+                <Button fx:id="btnLogin" layoutX="27.0" layoutY="251.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="273.0" styleClass="login-btn" text="Login" />
+                <Label layoutX="48.0" layoutY="45.0" styleClass="login-header" text="Login to the Whiteboard" textFill="#1b1a1a">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </Label>
+            <Label layoutX="27.0" layoutY="324.0" styleClass="account-label" text="Don't have an account?" />
+            <Button layoutX="189.0" layoutY="319.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="111.0" styleClass="signup-btn" text="Sign Up Here" />
+            <BorderPane layoutX="27.0" layoutY="117.0" prefHeight="31.0" prefWidth="273.0">
+               <right>
+                      <TextField prefHeight="31.0" prefWidth="238.0" promptText="Username" BorderPane.alignment="CENTER" />
+               </right>
+               <left>
+                  <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../../assets/imgs/username.png" />
+                     </image>
+                  </ImageView>
+               </left>
+            </BorderPane>
+            <BorderPane layoutX="27.0" layoutY="181.0" prefHeight="31.0" prefWidth="273.0">
+               <right>
+                  <PasswordField prefHeight="31.0" prefWidth="238.0" promptText="Password" BorderPane.alignment="CENTER" />
+               </right>
+               <left>
+                  <ImageView fitHeight="31.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../../assets/imgs/password.png" />
+                     </image>
+                  </ImageView>
+               </left>
+            </BorderPane>
+            </children>
+        </AnchorPane>
+      <ImageView fitHeight="184.0" fitWidth="210.0" layoutX="84.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../assets/imgs/login.png" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>

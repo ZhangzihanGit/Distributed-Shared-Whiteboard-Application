@@ -1,5 +1,6 @@
 package clientPre;
 
+import clientPre.clientViewControllers.ClientGUIController;
 import org.apache.log4j.Logger;
 
 /**
@@ -8,6 +9,7 @@ import org.apache.log4j.Logger;
  */
 public class ClientGUIFacade {
     private final static Logger logger = Logger.getLogger(ClientGUIFacade.class);
+    private ClientGUIController clientGUIController = ClientGUIController.getInstance();
 
     /** private singleton instance */
     private static ClientGUIFacade instance = null;
@@ -32,7 +34,7 @@ public class ClientGUIFacade {
      * start run client GUI, display frame
      */
     public void runClientGUI() {
-        /* NEED FIX */
+        clientGUIController.runClientGUI();
     }
 
     /**
