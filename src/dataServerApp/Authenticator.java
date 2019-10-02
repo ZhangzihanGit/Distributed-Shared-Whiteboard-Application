@@ -1,9 +1,9 @@
 package dataServerApp;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.json.simple.JSONObject;
+
 public class Authenticator {
     private HashMap<String, String> passbook = null;
 //    private String username = null;
@@ -20,16 +20,27 @@ public class Authenticator {
     public static String FAIL_HEADER = "Fail";
     public static String SUCCESS_HEADER = "Success";
 
+    // private Singleton instance.
+    private static Authenticator authenticator = null;
 
-
-    public Authenticator(HashMap<String, String> passbook){
+    private Authenticator(){
         // It seems that giving the control of the passbook to authenticator is not a good choice?
-        // I am not too sure.
-        this.passbook = passbook;
-//        passbook = new HashMap<String, String>();
+        // Not too sure if it is appropriate to hold the passbook in the authenthicator. For now make it Singleton.
+
+//        this.passbook = passbook;
+        this.passbook = new HashMap<String, String>();
+        authenticator = new Authenticator();
+
 //        this.username = username;
 //        this.password = password;
     }
+    public static Authenticator getInstance(){
+        if (authenticator == null){
+            authenticator = new Authenticator();
+        }
+        return authenticator;
+    }
+
 
     /**
      * Register new user. Check if the username or password null first.
@@ -82,6 +93,8 @@ public class Authenticator {
         object.put("Message", message);
         return object;
     }
-
-
+    // This getter is for testing purpose for now. Probably not used later.
+    public HashMap<String, String> getPassbook() {
+        return passbook;
+    }
 }

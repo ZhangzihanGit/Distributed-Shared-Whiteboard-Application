@@ -11,7 +11,8 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
 
     protected RemoteDb() throws RemoteException {
         super();
-//        authenticator = new Authenticator();
+        // Make a singleton call.
+        authenticator = Authenticator.getInstance();
     }
 
     @Override
