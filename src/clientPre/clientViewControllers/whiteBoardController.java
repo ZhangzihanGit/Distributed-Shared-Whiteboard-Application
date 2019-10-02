@@ -1,9 +1,6 @@
 package clientPre.clientViewControllers;
 
-import clientPre.pop_ups.AlertBox;
-import clientPre.pop_ups.InputText;
-import clientPre.pop_ups.SaveAs;
-import clientPre.pop_ups.SetHeightAndWidth;
+import clientPre.pop_ups.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
@@ -96,10 +93,21 @@ public class whiteBoardController {
                 gc.stroke();
             }
             else if(mode.equals("circle")){
-                gc.strokeOval(e.getX()-50, e.getY()-50, 100, 100);
+                SetRadius setRadius = new SetRadius();
+                Double radius = setRadius.display();
+                gc.strokeOval(e.getX() - radius/2, e.getY() - radius/2, radius, radius);
             }
             else if(mode.equals("rectangle")){
-                gc.strokeRect(e.getX()-50, e.getY()-50, 100, 100);
+                SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
+                List<Double> list = setHeightAndWidth.display();
+                Double width = 0.0;
+                Double height = 0.0;
+                if(list.size() == 2){
+                    width = list.get(0);
+                    height = list.get(1);
+                }
+
+                gc.strokeRect(e.getX() - width/2, e.getY() - height/2, width, height);
             }
             else if(mode.equals("oval")){
                 SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
