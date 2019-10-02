@@ -80,3 +80,5 @@ nb-configuration.xml
 ## log file
 /resources/log/*
 *log/
+.idea/
+*/.idea/
