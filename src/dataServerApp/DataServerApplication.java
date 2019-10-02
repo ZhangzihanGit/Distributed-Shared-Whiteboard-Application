@@ -19,7 +19,6 @@ public class DataServerApplication {
     private static final int LARGEST_PORT = 65535;
 
     private String serverIP = null;
-    private int serverPort = 0;
 
     private IRemoteDb remoteDb = null;
 
@@ -37,6 +36,7 @@ public class DataServerApplication {
 
         }catch (RemoteException e){
             e.printStackTrace();
+            logger.fatal("Initialization database remote object failed");
         }
     }
 
@@ -44,16 +44,16 @@ public class DataServerApplication {
      * start run server
      */
     public void runDataServer() {
-        if (serverIP == null || serverPort == 0) {
+        if (serverIP == null) {
             logger.fatal("Server address hasn't been specified");
             return;
         }
 
         try {
-            Registry registry = LocateRegistry.getRegistry(serverIP, serverPort);
+            Registry registry = LocateRegistry.getRegistry(serverIP);
             registry.bind("Database", remoteDb);
 
-            logger.info("Data server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
+            logger.info("Data server start running (by RMI) at IP: " + serverIP);
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remote registry set up failed");
@@ -75,33 +75,11 @@ public class DataServerApplication {
     /**
      * Set up server address (ip, port)
      * @param ip
-     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
+    public boolean setAddress(String ip) {
         this.serverIP = ip;
-
-        if (isValidPort(port)) {
-            this.serverPort = port;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    /**
-     * Check whether given port number is valid
-     * @param port
-     * @return True if the port number is valid
-     */
-    private boolean isValidPort(int port) {
-        if (port <= LARGEST_PORT && port >= SMALLEST_PORT)
-            return true;
-        else {
-            logger.error("Port number should be some number between "
-                    + SMALLEST_PORT + " and " +  LARGEST_PORT + ", instead of " + serverPort);
-            return false;
-        }
+        return true;
     }
 //    public JSONObject userRegister(String username, String password){
 //        return authenticator.registerUser(username, password);

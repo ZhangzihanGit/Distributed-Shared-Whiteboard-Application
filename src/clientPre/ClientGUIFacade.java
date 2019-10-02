@@ -1,5 +1,6 @@
 package clientPre;
 
+import clientApp.ClientAppFacade;
 import org.apache.log4j.Logger;
 
 /**
@@ -33,6 +34,10 @@ public class ClientGUIFacade {
      */
     public void runClientGUI() {
         /* NEED FIX */
+        /* Test */
+        ClientAppFacade.getInstance().connectWbServer("localhost");
+        System.out.println(ClientAppFacade.getInstance().register("d", "e"));
+        System.out.println(ClientAppFacade.getInstance().login("d", "e"));
     }
 
     /**

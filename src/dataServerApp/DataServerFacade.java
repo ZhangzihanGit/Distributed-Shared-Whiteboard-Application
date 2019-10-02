@@ -49,11 +49,10 @@ public class DataServerFacade {
     /**
      * Set up server address (ip, port)
      * @param ip
-     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
-        return dataServer.setAddress(ip, port);
+    public boolean setAddress(String ip) {
+        return dataServer.setAddress(ip);
     }
 
 
