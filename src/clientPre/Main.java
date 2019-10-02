@@ -19,12 +19,13 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Hello World");
+        this.primaryStage.setResizable(false);
         showWelcomeView();
     }
 
     private void showWelcomeView() throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource("clientViews/sample.fxml"));
-        primaryStage.setScene(new Scene(root, 800,500));
+        Parent root = FXMLLoader.load(getClass().getResource("clientViews/WhiteBoard.fxml"));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
 
