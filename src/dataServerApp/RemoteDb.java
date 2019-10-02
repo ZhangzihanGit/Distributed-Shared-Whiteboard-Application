@@ -7,12 +7,15 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     private Authenticator authenticator = null;
+    private DataServerFacade facade = null;
 
 
     protected RemoteDb() throws RemoteException {
         super();
-        // Make a singleton call.
-        authenticator = Authenticator.getInstance();
+        // Make Singleton call.
+        facade = DataServerFacade.getInstance();
+        // Retrieve Authenticator module from the server.
+        authenticator = facade.getAuthenticator();
     }
 
     @Override

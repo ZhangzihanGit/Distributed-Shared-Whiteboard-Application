@@ -55,4 +55,9 @@ public class DataServerFacade {
     public boolean setAddress(String ip, int port) {
         return dataServer.setAddress(ip, port);
     }
+
+
+    public Authenticator getAuthenticator(){
+        return dataServer.getAuthenticator();
+    }
 }

@@ -1,10 +1,12 @@
 package dataServerApp;
 
 import java.util.HashMap;
-
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 public class Authenticator {
+    private final static Logger logger = Logger.getLogger(Authenticator.class);
+
     private HashMap<String, String> passbook = null;
 //    private String username = null;
 //    private String password = null;
@@ -50,12 +52,15 @@ public class Authenticator {
      */
     public JSONObject registerUser(String username, String password){
         if (username == null){
+            logger.info("The user has not provided the username. ");
             return jsonParse(FAIL_HEADER, USER_NULL);
         }
         if (password == null) {
+            logger.info("The user has not provided the password.");
             return jsonParse(FAIL_HEADER, PASSWORD_NULLL);
         }
         if (password.contains(username)){
+            logger.info("The username entered has already been used by others. Fail to register the username!!");
             return jsonParse(FAIL_HEADER, USER_REGISTER_DUPLICATION);
         }
         else {
@@ -74,10 +79,12 @@ public class Authenticator {
     public JSONObject authenticate(String username, String password){
         // If passbook not contain the user name
         if (!password.contains(username)){
+            logger.info("There is no such user exist in our database. ");
             return  jsonParse(FAIL_HEADER, USER_NOT_FOUND);
         }
         // If the password under the user name is not the same as that in passbook
         else if(!passbook.get(username).equals(password)){
+            logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
             return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED);
         }
         // Successfully authenticated

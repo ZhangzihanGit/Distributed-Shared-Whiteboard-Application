@@ -23,16 +23,17 @@ public class DataServerApplication {
 
     private IRemoteDb remoteDb = null;
 
-    // Only register or update the user if request from the remote.
-    // The control of the authenticator should be under the database server.
-//    private Authenticator authenticator = null;
-
+    // Change the control of authentication from Remote Db to Data Server.
+    private Authenticator authenticator = null;
+    private DataWareHouse wareHouse = null;
     /**
      * constructor
      */
     public DataServerApplication()   {
         try{
             remoteDb = new RemoteDb();
+            // Singleton Instance for Authentication module.
+            this.authenticator = Authenticator.getInstance();
 
         }catch (RemoteException e){
             e.printStackTrace();
@@ -108,4 +109,7 @@ public class DataServerApplication {
 //    public JSONObject userAuthenticate(String username, String password){
 //        return authenticator.authenticate(username, password);
 //    }
+    public Authenticator getAuthenticator(){
+        return this.authenticator;
+    }
 }
