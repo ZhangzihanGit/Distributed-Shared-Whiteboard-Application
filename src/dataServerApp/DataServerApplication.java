@@ -21,7 +21,9 @@ public class DataServerApplication {
 
     private IRemoteDb remoteDb = null;
 
-    private Authenticator authenticator = null;
+    // Only register or update the user if request from the remote.
+    // The control of the authenticator should be under the database server.
+//    private Authenticator authenticator = null;
 
     /**
      * constructor
@@ -33,7 +35,6 @@ public class DataServerApplication {
         }catch (RemoteException e){
             e.printStackTrace();
         }
-        authenticator = new Authenticator();
     }
 
     /**
@@ -99,10 +100,10 @@ public class DataServerApplication {
             return false;
         }
     }
-    public JSONObject userRegister(String username, String password){
-        return authenticator.registerUser(username, password);
-    }
-    public JSONObject userAuthenticate(String username, String password){
-        return authenticator.authenticate(username, password);
-    }
+//    public JSONObject userRegister(String username, String password){
+//        return authenticator.registerUser(username, password);
+//    }
+//    public JSONObject userAuthenticate(String username, String password){
+//        return authenticator.authenticate(username, password);
+//    }
 }

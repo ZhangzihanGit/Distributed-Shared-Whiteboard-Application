@@ -1,7 +1,9 @@
 package dataServerApp;
 
 import java.util.HashMap;
-import org.json.simple.*;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
 public class Authenticator {
     private HashMap<String, String> passbook = null;
 //    private String username = null;
@@ -12,15 +14,19 @@ public class Authenticator {
     private static String USER_REGISTER_DUPLICATION = "User duplication";
     private static String USER_REGISTER_SUCCESS = "User register success";
     private static String USER_AUTHENTICATION_SUCCESS = "User authentication success";
-    private static String FAIL_HEADER = "Fail";
-    private static String SUCCESS_HEADER = "Success";
-
     private static String USER_NULL= "User name not provided";
     private static String PASSWORD_NULLL= "Password not provided";
 
+    public static String FAIL_HEADER = "Fail";
+    public static String SUCCESS_HEADER = "Success";
 
-    public Authenticator(){
-        passbook = new HashMap<String, String>();
+
+
+    public Authenticator(HashMap<String, String> passbook){
+        // It seems that giving the control of the passbook to authenticator is not a good choice?
+        // I am not too sure.
+        this.passbook = passbook;
+//        passbook = new HashMap<String, String>();
 //        this.username = username;
 //        this.password = password;
     }
@@ -69,9 +75,11 @@ public class Authenticator {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private JSONObject jsonParse(String header, String message){
         JSONObject object = new JSONObject();
-        object.put(header, message);
+        object.put("Header", header);
+        object.put("Message", message);
         return object;
     }
 

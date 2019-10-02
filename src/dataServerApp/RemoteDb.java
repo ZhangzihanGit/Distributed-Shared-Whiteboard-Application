@@ -1,16 +1,25 @@
 package dataServerApp;
 
+import org.json.simple.JSONObject;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
-    protected RemoteDb() throws RemoteException {
+    private Authenticator authenticator = null;
 
+    protected RemoteDb() throws RemoteException {
+        authenticator = new Authenticator();
     }
 
     @Override
-    public String addUser(String username, String password) throws RemoteException {
+    public JSONObject addUser(String username, String password) throws RemoteException {
         /* NEED FIX */
+        JSONObject returnMessage = (JSONObject) authenticator.registerUser(username, password).get("Header");
+        if (authenticator.registerUser(username, password).get("Header").equals("Success")){
+
+        }
+
         return null;
     }
 
