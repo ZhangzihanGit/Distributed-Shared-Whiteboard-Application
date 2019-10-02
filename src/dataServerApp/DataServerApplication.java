@@ -1,5 +1,7 @@
 package dataServerApp;
-
+/*
+* TODO: registry 的创建似乎有点问题。 我们不需要LocateRegistry.createRegistry吗？为什么只需要getRegistry?
+* */
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 

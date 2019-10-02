@@ -8,8 +8,10 @@ import java.rmi.server.UnicastRemoteObject;
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     private Authenticator authenticator = null;
 
+
     protected RemoteDb() throws RemoteException {
-        authenticator = new Authenticator();
+        super();
+//        authenticator = new Authenticator();
     }
 
     @Override
@@ -22,7 +24,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
 
         return null;
     }
-
+    // Authenticate the user by using the information stored in Authenticator.
     @Override
     public String checkUser(String username, String password) throws RemoteException {
         /* NEED FIX */
