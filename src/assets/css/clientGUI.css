@@ -82,3 +82,26 @@
     -fx-font-family: NunitoSans;
     -fx-text-fill: #537d91;
 }
+
+/* Identity UI */
+.check-box {
+    -fx-font-family: NunitoSans;
+    -fx-text-fill: #537d91;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+}
+
+.identity-header {
+    -fx-font-family: NunitoSans;
+    -fx-text-fill: #537d91;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+    -fx-font-size: 20px;
+}
+
+.identity-second-header {
+    -fx-font-family: NunitoSans;
+    -fx-font-weight: 700;
+    -fx-font-size: 15px;
+    -fx-text-fill: #F59A83;
+}
