@@ -6,7 +6,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RemoteDb implements IRemoteDb {
+public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     private Authenticator authenticator = null;
     private static DataServerFacade facade = null;
 
@@ -14,10 +14,9 @@ public class RemoteDb implements IRemoteDb {
     public RemoteDb() throws RemoteException{
         super();
         // Make Singleton call.
-        facade = DataServerFacade.getInstance();
+//        facade = DataServerFacade.getInstance();
         // Retrieve Authenticator module from the server.
 //        authenticator = facade.getAuthenticator();
-
     }
 
     @Override

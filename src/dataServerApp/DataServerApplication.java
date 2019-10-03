@@ -25,6 +25,7 @@ public class DataServerApplication {
     // Change the control of authentication from Remote Db to Data Server.
     private Authenticator authenticator = null;
     private DataWareHouse wareHouse = null;
+    private Registry registry = null;
     /**
      * constructor
      */
@@ -51,8 +52,10 @@ public class DataServerApplication {
         }
 
         try {
-            Registry registry = LocateRegistry.getRegistry(serverIP);
-            registry.bind("Database", remoteDb);
+            // TODO: 很好奇这里咋回事， 如果是LocateRegistry.getRegistry(), 手动rmiregistry就会出问题。
+            registry = LocateRegistry.createRegistry(1099);
+            System.out.println(serverIP);
+            registry.bind("DB", remoteDb);
 
             logger.info("Data server start running (by RMI) at IP: " + serverIP);
         } catch (Exception e) {

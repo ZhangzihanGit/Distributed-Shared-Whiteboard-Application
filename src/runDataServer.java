@@ -12,7 +12,11 @@ public class runDataServer {
 //        DataServerGUIFacade.getInstance().runDataServerGUI();
         DataServerFacade facade = DataServerFacade.getInstance();
         DataServerFacade.getInstance();
-        facade.startServerApplication();
+        facade.startServerApplication(); // Start DB server. Meanwhile remote object is created.
+
+        DataServerApplication application = facade.getDataServer();
+        application.setAddress("localhost");
+        application.runDataServer();
 
 
 
