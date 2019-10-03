@@ -22,7 +22,7 @@
                     </effect>
                 </Label>
             <Label layoutX="27.0" layoutY="324.0" styleClass="account-label" text="Don't have an account?" />
-            <Button layoutX="189.0" layoutY="319.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="111.0" styleClass="signup-btn" text="Sign Up Here" />
+            <Button layoutX="189.0" layoutY="319.0" mnemonicParsing="false" onAction="#showSignupView" prefHeight="31.0" prefWidth="111.0" styleClass="signup-btn" text="Sign Up Here" />
             <BorderPane layoutX="27.0" layoutY="117.0" prefHeight="31.0" prefWidth="273.0">
                <right>
                       <TextField fx:id="loginUsernameField" prefHeight="31.0" prefWidth="238.0" promptText="Username" BorderPane.alignment="CENTER" />

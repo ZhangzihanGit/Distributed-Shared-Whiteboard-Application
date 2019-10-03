@@ -28,7 +28,7 @@
                         <CheckBox fx:id="visitorCheckBox" mnemonicParsing="false" onAction="#handleVisitor" prefHeight="31.0" prefWidth="229.0" styleClass="checkin-box" text="Visitor" BorderPane.alignment="CENTER" />
                      </right>
                      <left>
-                        <ImageView fitHeight="31.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                        <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                            <image>
                               <Image url="@../../assets/imgs/visitor.png" />
                            </image>
@@ -42,7 +42,7 @@
                         <CheckBox fx:id="managerCheckBox" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleManager" prefHeight="31.0" prefWidth="228.0" styleClass="chechin-box" text="Manager" BorderPane.alignment="CENTER" />
                      </right>
                      <left>
-                              <ImageView fitHeight="31.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                              <ImageView fitHeight="23.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
                                   <image>
                                       <Image url="@../../assets/imgs/manager.png" />
                                   </image>

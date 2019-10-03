@@ -22,6 +22,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "../clientViews/clientLogin.fxml";
         }
+    }, SIGNUP {
+        @Override
+        String getTitle() {
+            return "Sign Up";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "../clientViews/clientSignup.fxml";
+        }
     }, IDENTITY {
         @Override
         String getTitle() {
@@ -31,6 +41,16 @@ public enum FxmlView {
         @Override
         String getFxmlFile() {
             return "../clientViews/clientIdentity.fxml";
+        }
+    }, CONFIG {
+        @Override
+        String getTitle() {
+            return "Configuration";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "../clientViews/clientConfig.fxml";
         }
     };
 

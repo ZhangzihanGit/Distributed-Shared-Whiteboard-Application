@@ -83,6 +83,13 @@
     -fx-text-fill: #537d91;
 }
 
+/* Signup UI */
+.match-label {
+    -fx-font-family: NunitoSans;
+    -fx-text-fill: red;
+    visibility: false;
+}
+
 /* Identity UI */
 .check-box {
     -fx-font-family: NunitoSans;
@@ -103,5 +110,12 @@
     -fx-font-family: NunitoSans;
     -fx-font-weight: 700;
     -fx-font-size: 15px;
+    -fx-text-fill: #F59A83;
+}
+
+.config-header {
+    -fx-font-family: NunitoSans;
+    -fx-font-weight: 800;
+    -fx-font-size: 30px;
     -fx-text-fill: #F59A83;
 }
