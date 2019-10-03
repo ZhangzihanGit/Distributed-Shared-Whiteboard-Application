@@ -31,7 +31,7 @@ public class Authenticator {
 
 //        this.passbook = passbook;
         this.passbook = new HashMap<String, String>();
-        authenticator = new Authenticator();
+//        authenticator = new Authenticator();
 
 //        this.username = username;
 //        this.password = password;

@@ -15,18 +15,21 @@ public class DataServerFacade {
     /**
      * Private constructor
      */
-    private DataServerFacade() throws RemoteException{
-        dataServer = new DataServerApplication();
+    private DataServerFacade() {
+//        dataServer = new DataServerApplication();
+        if (instance!=null){
+            throw new RuntimeException("Use getInstance method to get the class");
+        }
     }
 
     /**
      * get the singleton instance
      * @return singleton instance of DataServerFacade
      */
-    public static DataServerFacade getInstance() throws RemoteException{
-        if (instance == null)
+    public static synchronized DataServerFacade getInstance() {
+        if (instance == null) {
             instance = new DataServerFacade();
-
+        }
         return instance;
     }
 
@@ -58,5 +61,18 @@ public class DataServerFacade {
 
     public Authenticator getAuthenticator(){
         return dataServer.getAuthenticator();
+    }
+
+    public DataServerApplication getDataServer() {
+        return dataServer;
+    }
+    public void startServerApplication(){
+        // Singleton server application.
+        if (dataServer == null){
+            dataServer = new DataServerApplication();
+        }
+        else{
+            logger.fatal("Error. Server application is already on. ");
+        }
     }
 }

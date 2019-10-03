@@ -30,9 +30,10 @@ public class DataServerApplication {
      */
     public DataServerApplication()   {
         try{
-            remoteDb = new RemoteDb();
+            this.remoteDb = new RemoteDb();
             // Singleton Instance for Authentication module.
             this.authenticator = Authenticator.getInstance();
+//            DataServerFacade.getInstance();
 
         }catch (RemoteException e){
             e.printStackTrace();
