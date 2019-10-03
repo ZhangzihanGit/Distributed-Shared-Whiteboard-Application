@@ -69,7 +69,7 @@ public class SaveAs {
         Label fileTypeLabel = new Label("Please select a file type:    ");
         ComboBox<String> fileType = new ComboBox<>();
         List<String> typeItem = new ArrayList<String>();
-        typeItem.add("jpg");
+        typeItem.add("gif");
         typeItem.add("png");
         fileType.getItems().addAll(typeItem);
 
