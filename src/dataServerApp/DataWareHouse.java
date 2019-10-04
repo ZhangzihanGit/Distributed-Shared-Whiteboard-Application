@@ -8,4 +8,6 @@ package dataServerApp;
  */
 public class DataWareHouse {
 
+    public DataWareHouse() {
+    }
 }

@@ -3,15 +3,18 @@ package dataServerApp;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserInformation implements Serializable{
-    // 很不幸， logger不是serializable.  
 //    private Logger logger = Logger.getLogger(UserInformation.class);
 
 
     private String username = null;
     private String password = null;
     private boolean isManager = false;  // Default set to false.
+
+    private HashMap <String, ArrayList<Integer>> drawing;
 
     public UserInformation(String username, String password, boolean isManager) {
         if(username == null || password == null){
@@ -22,6 +25,11 @@ public class UserInformation implements Serializable{
         this.password = password;
         this.isManager = isManager;
     }
+    public void updateDrawing(HashMap<String, ArrayList<Integer>> drawing){
+        this.drawing = drawing;
+    }
+
+
     @Override
     public String toString(){
 

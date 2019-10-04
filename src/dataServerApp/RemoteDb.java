@@ -20,7 +20,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     }
 
 
-    // TODO: 需要确认： remote得到的信息包括了什么？是一个JSON么？
+    // TODO: 需要确认： 1. remote得到的用户信息包括了什么？是一个JSON么？如果是的话会有什么field 2. 用户画的内容是什么形式？
     // First two
     @Override
     public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException {
@@ -29,7 +29,6 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
 
         if (returnMessage.get("Header").equals("Success")){
             authenticator.iteratePassbook();
-            return returnMessage;
         }
 
         return returnMessage;
@@ -37,12 +36,10 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     // Authenticate the user by using the information stored in Authenticator.
     @Override
     public String checkUser(String username, String password) throws RemoteException {
-        /* NEED FIX */
-
-
-        return null;
+        JSONObject returnMessage = authenticator.authenticate(username, password);
+        System.out.println(returnMessage);
+        return returnMessage.toJSONString();
     }
-
     @Override
     public String saveWb(String username, String wbContent) throws RemoteException {
         /* NEED FIX */

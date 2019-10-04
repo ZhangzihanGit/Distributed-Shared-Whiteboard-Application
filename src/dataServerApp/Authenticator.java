@@ -74,7 +74,7 @@ public class Authenticator {
      */
     public JSONObject authenticate(String username, String password){
         // If passbook not contain the user name
-        if (!password.contains(username)){
+        if (!passbook.containsKey(username)){
             logger.info("There is no such user exist in our database. ");
             return  jsonParse(FAIL_HEADER, USER_NOT_FOUND);
         }
@@ -106,8 +106,7 @@ public class Authenticator {
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             logger.info(pair.getKey().toString()+pair.getValue().toString());
-            System.out.println(pair.getKey()+" ="+pair.getValue());
-            it.remove();
+            System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue());
         }
     }
 }
