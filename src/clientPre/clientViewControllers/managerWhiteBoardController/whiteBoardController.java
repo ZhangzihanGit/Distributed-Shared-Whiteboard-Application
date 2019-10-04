@@ -1,6 +1,9 @@
-package clientPre.clientViewControllers;
+package clientPre.clientViewControllers.managerWhiteBoardController;
 
 import clientPre.pop_ups.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.SnapshotParameters;
@@ -10,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 
 import javax.imageio.ImageIO;
@@ -18,7 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class whiteBoardController {
+public class whiteBoardController<list> {
     @FXML
     private Canvas canvas;
     @FXML
@@ -41,12 +45,45 @@ public class whiteBoardController {
     private Button pencil;
     @FXML
     private Button text;
+    @FXML
+    private TextArea messageRecord;
+    @FXML
+    private TextField sendMessage;
+    @FXML
+    private Button send;
+    @FXML
+    private ListView listView;
 
     private String mode = "draw";
 
     private String saveFilePath = "";
 
-    public void initialize(){
+    private void initSendMessage(){
+
+        messageRecord.setEditable(false);
+        ArrayList<String> messages = new ArrayList<>();
+        send.setOnAction(e->{
+            messages.add(sendMessage.getText());
+            String content[] = messages.toString().
+                    replace("[", "").replace("]", "").split(",");
+            String text = "";
+            int i = 0;
+            for(String s: content){
+                i ++;
+                if(i == content.length){
+                    text += s;
+                }
+                else{
+                    text += (s + "\n");
+                }
+
+            }
+            messageRecord.setText(text);
+            sendMessage.clear();
+        });
+    }
+
+    private void initDrawMethods(){
         text.setOnMousePressed(e->{
             mode = "text";
         });
@@ -150,8 +187,34 @@ public class whiteBoardController {
             else if(mode.equals("erase")){
                 gc.clearRect(x, y, slider.getValue(), slider.getValue());
             }
-
         });
+    }
+    ObservableList<String> list = FXCollections.observableArrayList(
+            "Manager", "coworker1", "coworker2", "coworker3");
+
+
+
+    private void initListView(ObservableList<String> list){
+        listView.setItems(list);
+        listView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(ListView<String> param) {
+                return new StringAndButtonList();
+            }
+        });
+    }
+
+    public void initialize(){
+        initSendMessage();
+        StringAndButtonList.list = list;
+        initListView(StringAndButtonList.list);
+        StringAndButtonList.list.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                initListView(StringAndButtonList.list);
+            }
+        });
+        initDrawMethods();
     }
 
     public void saveAs(){
@@ -237,8 +300,8 @@ public class whiteBoardController {
 
     }
 
-
     public void close(){
-
+        System.exit(0);
     }
 }
+
