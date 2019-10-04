@@ -16,11 +16,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="887.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.managerWhiteBoardController.whiteBoardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="887.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <MenuBar prefHeight="20.0" prefWidth="598.0">
+            <MenuBar prefHeight="20.0" prefWidth="598.0" fx:id="menuBar">
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>

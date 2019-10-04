@@ -1,4 +1,4 @@
-package clientPre.clientViewControllers.managerWhiteBoardController;
+package clientPre.clientViewControllers.whiteBoardController;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,8 +18,11 @@ public class StringAndButtonList extends ListCell<String> {
     Button button = new Button("x");
     String lastItem;
 
-    public StringAndButtonList() {
+    public StringAndButtonList(String clientType) {
         super();
+        if(!clientType.equals("manager")){
+            button.setVisible(false);
+        }
         hbox.getChildren().addAll(label, pane, button);
         HBox.setHgrow(pane, Priority.ALWAYS);
         button.setOnAction(new EventHandler<ActionEvent>() {

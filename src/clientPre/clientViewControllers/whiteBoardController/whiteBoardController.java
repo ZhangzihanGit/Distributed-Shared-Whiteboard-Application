@@ -1,4 +1,4 @@
-package clientPre.clientViewControllers.managerWhiteBoardController;
+package clientPre.clientViewControllers.whiteBoardController;
 
 import clientPre.pop_ups.*;
 import javafx.collections.FXCollections;
@@ -53,6 +53,10 @@ public class whiteBoardController<list> {
     private Button send;
     @FXML
     private ListView listView;
+    @FXML
+    private MenuBar menuBar;
+
+    private String clientType = "manager";
 
     private String mode = "draw";
 
@@ -199,12 +203,15 @@ public class whiteBoardController<list> {
         listView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {
-                return new StringAndButtonList();
+                return new StringAndButtonList(clientType);
             }
         });
     }
 
     public void initialize(){
+        if(!clientType.equals("manager")){
+            menuBar.setVisible(false);
+        }
         initSendMessage();
         StringAndButtonList.list = list;
         initListView(StringAndButtonList.list);
