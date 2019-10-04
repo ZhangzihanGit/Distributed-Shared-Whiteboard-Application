@@ -1,7 +1,5 @@
 package dataServerApp;
-/*
-* TODO: registry 的创建似乎有点问题。 我们不需要LocateRegistry.createRegistry吗？为什么只需要getRegistry?
-* */
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
@@ -12,6 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class DataServerApplication {
     private final static Logger logger = Logger.getLogger(DataServerApplication.class);
+    private static final int defaultPort = 1099;
 
     /** Smallest available server port */
     private static final int SMALLEST_PORT = 1025;
@@ -29,17 +28,11 @@ public class DataServerApplication {
     /**
      * constructor
      */
-    public DataServerApplication()   {
-        try{
-            this.remoteDb = new RemoteDb();
-            // Singleton Instance for Authentication module.
-            this.authenticator = Authenticator.getInstance();
-//            DataServerFacade.getInstance();
+    public DataServerApplication(DataServerFacade facade)   {
+        System.out.println("HELL YES: ++++" + facade.getDataServer());
+        System.out.println("HELL No: ++++"+DataServerFacade.getInstance().getDataServer());
+        this.authenticator = Authenticator.getInstance();
 
-        }catch (RemoteException e){
-            e.printStackTrace();
-            logger.fatal("Initialization database remote object failed");
-        }
     }
 
     /**
@@ -52,8 +45,10 @@ public class DataServerApplication {
         }
 
         try {
-            // TODO: 很好奇这里咋回事， 如果是LocateRegistry.getRegistry(), 手动rmiregistry就会出问题。
-            registry = LocateRegistry.createRegistry(1099);
+            // TODO: 很好奇这里咋回事， 如果是LocateRegistry.getRegistry(), 手动rmiregistry就会出问题, JSON.class not found.
+            // For testing purpose, IP address is not used(since it is for now only local machine)
+            // Later the ip will be used for several machines testing purpose.
+            registry = LocateRegistry.createRegistry(defaultPort);
             System.out.println(serverIP);
             registry.bind("DB", remoteDb);
 
@@ -93,5 +88,16 @@ public class DataServerApplication {
 //    }
     public Authenticator getAuthenticator(){
         return this.authenticator;
+    }
+
+    public void setRemoteDb(DataServerFacade facade){
+
+        try{
+            this.remoteDb = new RemoteDb(facade, facade.getDataServer());
+
+        }catch (Exception e){
+            logger.fatal("Initialization database remote object failed");
+            e.printStackTrace();
+        }
     }
 }

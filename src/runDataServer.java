@@ -6,17 +6,23 @@ import javax.xml.crypto.Data;
 import java.rmi.RemoteException;
 
 public class runDataServer {
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) {
         System.setProperty("my.log", "resources/log/dataServer.log");
 
 //        DataServerGUIFacade.getInstance().runDataServerGUI();
         DataServerFacade facade = DataServerFacade.getInstance();
-        DataServerFacade.getInstance();
-        facade.startServerApplication(); // Start DB server. Meanwhile remote object is created.
+        System.out.println("Start of Facade"+facade);
+
+        facade.createServerApplication(); // Start DB server. Meanwhile remote object is created.
 
         DataServerApplication application = facade.getDataServer();
-        application.setAddress("localhost");
-        application.runDataServer();
+
+        System.out.println("Data server saw from the main: "+application + facade);
+
+//        application.setAddress("localhost");
+//
+//        System.out.println("Authenticator: "+application.getAuthenticator());
+//        application.runDataServer();
 
 
 

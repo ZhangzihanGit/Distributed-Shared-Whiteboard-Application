@@ -8,23 +8,35 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     private Authenticator authenticator = null;
-    private static DataServerFacade facade = null;
+    private DataServerApplication application = null;
+    private DataServerFacade facade = null;
 
 
-    public RemoteDb() throws RemoteException{
+    public RemoteDb(DataServerFacade facade, DataServerApplication application) throws RemoteException{
         super();
+        this.facade= facade;
+        System.out.println("This is from Remote object:"+facade);
+
+        System.out.println("This is from Remote object:"+facade.getDataServer());
+        System.out.println("This is from Remote object:"+application);
+        System.out.println("终止了！！！");
+
+
         // Make Singleton call.
-//        facade = DataServerFacade.getInstance();
-        // Retrieve Authenticator module from the server.
+//        // Retrieve Authenticator module from the server.
+        application = facade.getDataServer();
+        System.out.println("This is the null pointer exception: "+ application);
+//
+//
 //        authenticator = facade.getAuthenticator();
     }
 
     @Override
-    public JSONObject addUser(String username, String password) throws RemoteException {
+    public synchronized JSONObject addUser(String username, String password) throws RemoteException {
         /* NEED FIX */
         JSONObject returnMessage = (JSONObject) authenticator.registerUser(username, password).get("Header");
         if (authenticator.registerUser(username, password).get("Header").equals("Success")){
-
+            return returnMessage;
         }
 
         return null;
@@ -33,6 +45,8 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     @Override
     public String checkUser(String username, String password) throws RemoteException {
         /* NEED FIX */
+
+
         return null;
     }
 

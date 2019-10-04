@@ -24,17 +24,9 @@ public class Authenticator {
 
     // private Singleton instance.
     private static Authenticator authenticator = null;
-
+    // Authenticator should be a singleton, since passbook should be kept unique.
     private Authenticator(){
-        // It seems that giving the control of the passbook to authenticator is not a good choice?
-        // Not too sure if it is appropriate to hold the passbook in the authenthicator. For now make it Singleton.
-
-//        this.passbook = passbook;
         this.passbook = new HashMap<String, String>();
-//        authenticator = new Authenticator();
-
-//        this.username = username;
-//        this.password = password;
     }
     public static Authenticator getInstance(){
         if (authenticator == null){
