@@ -21,18 +21,18 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
 
 
     // TODO: 需要确认： remote得到的信息包括了什么？是一个JSON么？
+    // First two
     @Override
-    public JSONObject addUser(String username, String password) throws RemoteException {
+    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException {
         JSONObject returnMessage = (JSONObject) authenticator.
                 registerUser(username, password);
 
-        System.out.println(returnMessage);
         if (returnMessage.get("Header").equals("Success")){
-            System.out.println(returnMessage.get("Message"));
+            authenticator.iteratePassbook();
             return returnMessage;
         }
 
-        return null;
+        return returnMessage;
     }
     // Authenticate the user by using the information stored in Authenticator.
     @Override
@@ -53,5 +53,10 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     public String loadAllWb(String username) throws RemoteException {
         /* NEED FIX */
         return null;
+    }
+    // This is for testing purpose. Not known the communication protocol between the web server.
+    @Override
+    public UserInformation transferInformation(String username, String password) throws RemoteException{
+        return new UserInformation(username,password, false);
     }
 }

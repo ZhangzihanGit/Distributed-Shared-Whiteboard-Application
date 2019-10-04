@@ -1,8 +1,12 @@
 package dataServerApp;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
+import sun.rmi.runtime.Log;
 
 public class Authenticator {
     private final static Logger logger = Logger.getLogger(Authenticator.class);
@@ -95,5 +99,15 @@ public class Authenticator {
     // This getter is for testing purpose for now. Probably not used later.
     public HashMap<String, String> getPassbook() {
         return passbook;
+    }
+    // This method is for testing purpose.
+    public void iteratePassbook(){
+        Iterator it = passbook.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry pair = (Map.Entry)it.next();
+            logger.info(pair.getKey().toString()+pair.getValue().toString());
+            System.out.println(pair.getKey()+" ="+pair.getValue());
+            it.remove();
+        }
     }
 }
