@@ -25,11 +25,13 @@ public class DataServerApplication {
     private Authenticator authenticator = null;
     private DataWareHouse wareHouse = null;
     private Registry registry = null;
+    private DataWareHouse dataWareHouse = null;
     /**
      * constructor
      */
     public DataServerApplication(DataServerFacade facade)   {
         this.authenticator = Authenticator.getInstance();
+        this.dataWareHouse = new DataWareHouse(null);
         System.out.println(authenticator);
     }
 
@@ -84,11 +86,11 @@ public class DataServerApplication {
 //    public JSONObject userAuthenticate(String username, String password){
 //        return authenticator.authenticate(username, password);
 //    }
-    public Authenticator getAuthenticator(){
+    Authenticator getAuthenticator(){
         return this.authenticator;
     }
 
-    public void setRemoteDb(DataServerFacade facade){
+    void setRemoteDb(DataServerFacade facade){
 
         try{
             this.remoteDb = new RemoteDb(facade, facade.getDataServer());
@@ -97,5 +99,9 @@ public class DataServerApplication {
             logger.fatal("Initialization database remote object failed");
             e.printStackTrace();
         }
+    }
+    void saveCanvas(JSONObject canvas, String managerName){
+        dataWareHouse.setManagerName(managerName);
+        dataWareHouse.save(canvas);
     }
 }

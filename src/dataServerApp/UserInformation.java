@@ -6,6 +6,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * The class is ideally used for information trasferring between data server
+ * and web server. Whether or not use it will be under discussion. (Either use plain string that has json format or
+ * use serialisable obejct to transfer information.
+ */
 public class UserInformation implements Serializable{
 //    private Logger logger = Logger.getLogger(UserInformation.class);
 

@@ -43,6 +43,9 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     @Override
     public String saveWb(String username, String wbContent) throws RemoteException {
         /* NEED FIX */
+        JSONObject message = new JSONObject();
+        message.put("hello", 123);
+        facade.getDataServer().saveCanvas(message, "world");
         return null;
     }
 

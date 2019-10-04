@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import sun.rmi.runtime.Log;
 
-public class Authenticator {
+class Authenticator {
     private final static Logger logger = Logger.getLogger(Authenticator.class);
 
     private HashMap<String, String> passbook = null;
