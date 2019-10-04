@@ -1,6 +1,7 @@
 package dataServerApp;
 
 import org.json.simple.JSONObject;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -8,34 +9,26 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     private Authenticator authenticator = null;
-    private DataServerApplication application = null;
     private DataServerFacade facade = null;
 
 
     public RemoteDb(DataServerFacade facade, DataServerApplication application) throws RemoteException{
         super();
+
         this.facade= facade;
-        System.out.println("This is from Remote object:"+facade);
-
-        System.out.println("This is from Remote object:"+facade.getDataServer());
-        System.out.println("This is from Remote object:"+application);
-        System.out.println("终止了！！！");
-
-
-        // Make Singleton call.
-//        // Retrieve Authenticator module from the server.
-        application = facade.getDataServer();
-        System.out.println("This is the null pointer exception: "+ application);
-//
-//
-//        authenticator = facade.getAuthenticator();
+        this.authenticator = facade.getAuthenticator();
     }
 
+
+    // TODO: 需要确认： remote得到的信息包括了什么？是一个JSON么？
     @Override
-    public synchronized JSONObject addUser(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        JSONObject returnMessage = (JSONObject) authenticator.registerUser(username, password).get("Header");
-        if (authenticator.registerUser(username, password).get("Header").equals("Success")){
+    public JSONObject addUser(String username, String password) throws RemoteException {
+        JSONObject returnMessage = (JSONObject) authenticator.
+                registerUser(username, password);
+
+        System.out.println(returnMessage);
+        if (returnMessage.get("Header").equals("Success")){
+            System.out.println(returnMessage.get("Message"));
             return returnMessage;
         }
 

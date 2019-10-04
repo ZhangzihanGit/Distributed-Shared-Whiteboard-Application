@@ -11,18 +11,11 @@ public class runDataServer {
 
 //        DataServerGUIFacade.getInstance().runDataServerGUI();
         DataServerFacade facade = DataServerFacade.getInstance();
-        System.out.println("Start of Facade"+facade);
-
-        facade.createServerApplication(); // Start DB server. Meanwhile remote object is created.
+        facade.setupRemoteApplication(); // Start DB server. Meanwhile remote object is created.
 
         DataServerApplication application = facade.getDataServer();
-
-        System.out.println("Data server saw from the main: "+application + facade);
-
-//        application.setAddress("localhost");
-//
-//        System.out.println("Authenticator: "+application.getAuthenticator());
-//        application.runDataServer();
+        application.setAddress("localhost");
+        application.runDataServer();
 
 
 

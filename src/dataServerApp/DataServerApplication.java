@@ -29,10 +29,8 @@ public class DataServerApplication {
      * constructor
      */
     public DataServerApplication(DataServerFacade facade)   {
-        System.out.println("HELL YES: ++++" + facade.getDataServer());
-        System.out.println("HELL No: ++++"+DataServerFacade.getInstance().getDataServer());
         this.authenticator = Authenticator.getInstance();
-
+        System.out.println(authenticator);
     }
 
     /**

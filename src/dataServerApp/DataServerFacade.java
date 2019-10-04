@@ -16,10 +16,7 @@ public class DataServerFacade {
      * Private constructor
      */
     private DataServerFacade() {
-//        dataServer = new DataServerApplication(this);
-//        if (instance!=null){
-//            throw new RuntimeException("Use getInstance method to get the class");
-//        }
+        dataServer = new DataServerApplication(this);
     }
 
     /**
@@ -60,26 +57,20 @@ public class DataServerFacade {
 
 
     public Authenticator getAuthenticator(){
-        System.out.println("Data server from Facade: 1"+dataServer);
         return dataServer.getAuthenticator();
     }
 
     public DataServerApplication getDataServer() {
-        System.out.println("FACADE GET DATA SERVER : : : : "+this.dataServer);
         return this.dataServer;
     }
-    public void createServerApplication(){
+    public void setupRemoteApplication(){
         // Singleton server application.
-        if (this.dataServer == null){
-            System.out.println("Data server from Facade: 3   "+dataServer);
-            this.dataServer = new DataServerApplication(getInstance());
-            System.out.println("Data server from Facade: ~~~~~"+dataServer);
+        if (this.dataServer != null){
+            logger.fatal("Remote application starts. ");
             dataServer.setRemoteDb(this);
-            System.out.println("Data server from Facade: !!!"+dataServer);
-
         }
         else{
-            logger.fatal("Error. Server application is already on. ");
+            logger.fatal("Error. Server application does not start properly. ");
         }
     }
 }

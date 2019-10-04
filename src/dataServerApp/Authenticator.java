@@ -51,7 +51,7 @@ public class Authenticator {
             logger.info("The user has not provided the password.");
             return jsonParse(FAIL_HEADER, PASSWORD_NULLL);
         }
-        if (password.contains(username)){
+        if (passbook.containsKey(username)){
             logger.info("The username entered has already been used by others. Fail to register the username!!");
             return jsonParse(FAIL_HEADER, USER_REGISTER_DUPLICATION);
         }
