@@ -12,6 +12,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
 
@@ -55,6 +58,8 @@ public class whiteBoardController<list> {
     private ListView listView;
     @FXML
     private MenuBar menuBar;
+    @FXML
+    private Pane pane;
 
     private String clientType = "manager";
 
@@ -88,6 +93,7 @@ public class whiteBoardController<list> {
     }
 
     private void initDrawMethods(){
+        pane.setStyle("-fx-background-color: white");
         text.setOnMousePressed(e->{
             mode = "text";
         });

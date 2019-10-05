@@ -20,7 +20,7 @@
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <MenuBar prefHeight="20.0" prefWidth="598.0" fx:id="menuBar">
+            <MenuBar fx:id="menuBar" prefHeight="20.0" prefWidth="598.0">
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
@@ -64,7 +64,7 @@
       <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
          <children>
             <TextArea fx:id="messageRecord" prefHeight="118.0" prefWidth="1199.0" />
-            <Pane prefHeight="36.0" prefWidth="1199.0">
+            <Pane prefHeight="36.0" prefWidth="1199.0" >
                <children>
                   <Button fx:id="send" layoutX="1137.0" layoutY="4.0" mnemonicParsing="false" text="Send" />
                   <TextField fx:id="sendMessage" layoutX="5.0" layoutY="2.0" prefHeight="23.0" prefWidth="1116.0" />
@@ -74,6 +74,10 @@
       </VBox>
    </bottom>
    <center>
-      <Canvas fx:id="canvas" height="701.0" width="904.0" BorderPane.alignment="CENTER" />
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="pane">
+         <children>
+            <Canvas fx:id="canvas" height="708.0" layoutX="-1.0" width="916.0" />
+         </children>
+      </Pane>
    </center>
 </BorderPane>
