@@ -50,7 +50,7 @@ class DataWareHouse {
      * @param managerName The name of the manager. Will be the directory.
      * @param message Can be some other format/to be discussed more
      */
-    void save(String managerName, JSONObject message){
+    boolean save(String managerName, JSONObject message){
         try{
 
             File directory = new File(absolutePath.toString()+"/storage"+"/"+managerName);
@@ -71,10 +71,12 @@ class DataWareHouse {
 
             this.numOfCanvas++;
             this.mapManagerWithCanvas.put(managerName, numOfCanvas);
+            return true;
 
-        }catch (Exception e){
+        }catch (IOException e){
             logger.info("File saved failed. ");
             e.printStackTrace();
+            return false;
         }
     }
     // TODO: 未完成： 需要返回一个Canva, 不是String.

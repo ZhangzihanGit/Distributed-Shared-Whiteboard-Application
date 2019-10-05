@@ -91,13 +91,9 @@ class Authenticator {
     @SuppressWarnings("unchecked")
     private JSONObject jsonParse(String header, String message){
         JSONObject object = new JSONObject();
-        object.put("Header", header);
-        object.put("Message", message);
+        object.put("header", header);
+        object.put("message", message);
         return object;
-    }
-    // This getter is for testing purpose for now. Probably not used later.
-    public HashMap<String, String> getPassbook() {
-        return passbook;
     }
     // This method is for testing purpose.
     public void iteratePassbook(){

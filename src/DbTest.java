@@ -37,7 +37,7 @@ public class DbTest {
         message.put("abc","abcde");
 
         // Test if Register works(use Authenticator class and RemoteDB class)
-        JSONObject jsonObject = test.addUser(username, password, message);
+        JSONObject jsonObject = test.addUser(username, password);
         if(jsonObject instanceof JSONObject){
             System.out.println(jsonObject);
             System.out.println(jsonObject.toString());
@@ -53,15 +53,15 @@ public class DbTest {
         String mockUsername = "hello";
         String mockPassword = "world";
         System.out.println(test.checkUser(mockUsername,mockPassword));
-        assert (test.checkUser(mockUsername,mockPassword).equals("{\"Header\":\"Fail\",\"Message\":\"User not " +
+        assert (test.checkUser(mockUsername,mockPassword).equals("{\"header\":\"Fail\",\"message\":\"User not " +
                 "found in passbook\"}"));
 
         String wrongPassword = "nihao";
         System.out.println(test.checkUser(username,wrongPassword));
-        assert (test.checkUser(username,wrongPassword).equals("{\"Header\":\"Fail\",\"Message\":\"Authentication failed\"}"));
+        assert (test.checkUser(username,wrongPassword).equals("{\"header\":\"Fail\",\"message\":\"Authentication failed\"}"));
 
         System.out.println(test.checkUser(username,password));
-        assert (test.checkUser(username, password).equals("{\"Header\":\"Success\",\"Message\":\"User authentication success\"}"));
+        assert (test.checkUser(username, password).equals("{\"header\":\"Success\",\"message\":\"User authentication success\"}"));
 
     }
     private static void testSaveCanvas(IRemoteDb test) throws RemoteException{

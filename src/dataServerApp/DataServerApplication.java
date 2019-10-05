@@ -29,7 +29,7 @@ public class DataServerApplication {
     /**
      * constructor
      */
-    public DataServerApplication(DataServerFacade facade)   {
+    public DataServerApplication() {
         this.authenticator = Authenticator.getInstance();
         this.dataWareHouse = new DataWareHouse();
     }
@@ -44,7 +44,6 @@ public class DataServerApplication {
         }
 
         try {
-            // TODO: 很好奇这里咋回事， 如果是LocateRegistry.getRegistry(), 手动rmiregistry就会出问题, JSON.class not found.
             // For testing purpose, IP address is not used(since it is for now only local machine)
             // Later the ip will be used for several machines testing purpose.
             registry = LocateRegistry.createRegistry(defaultPort);
@@ -79,31 +78,44 @@ public class DataServerApplication {
         this.serverIP = ip;
         return true;
     }
-//    public JSONObject userRegister(String username, String password){
-//        return authenticator.registerUser(username, password);
-//    }
-//    public JSONObject userAuthenticate(String username, String password){
-//        return authenticator.authenticate(username, password);
-//    }
-    Authenticator getAuthenticator(){
-        return this.authenticator;
-    }
+
+
 
     void setRemoteDb(DataServerFacade facade){
 
         try{
-            this.remoteDb = new RemoteDb(facade, facade.getDataServer());
+            this.remoteDb = new RemoteDb(facade);
 
         }catch (Exception e){
             logger.fatal("Initialization database remote object failed");
             e.printStackTrace();
         }
     }
-    void saveCanvas(JSONObject canvas, String managerName){
-        dataWareHouse.save(managerName, canvas);
+
+    JSONObject addUser(String username, String password){
+        return authenticator.registerUser(username, password);
+    }
+
+    String checkUser(String username, String password){
+        return authenticator.authenticate(username, password).toJSONString();
+    }
+
+    String saveCanvas(JSONObject canvas, String managerName){
+        JSONObject returnMessage = new JSONObject();
+        if(!dataWareHouse.save(managerName,canvas)){
+            returnMessage.put("header", "Fail");
+            returnMessage.put("message", "Fail to store the canva");
+            return returnMessage.toJSONString();
+        }
+        returnMessage.put("header", "Success");
+        returnMessage.put("message", "Successfully save the data");
+        return returnMessage.toJSONString();
     }
     String retrieveCanvas(String targetManager){
-        dataWareHouse.retrieveData(targetManager);
-        return null;
+        return dataWareHouse.retrieveData(targetManager);
+    }
+
+    void iteratePassBook(){
+        authenticator.iteratePassbook();
     }
 }

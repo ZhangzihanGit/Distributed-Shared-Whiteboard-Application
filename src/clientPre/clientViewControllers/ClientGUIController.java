@@ -1,5 +1,6 @@
 package clientPre.clientViewControllers;
 
+import clientApp.ClientAppFacade;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +40,8 @@ public class ClientGUIController extends Application {
     @FXML private TextField IPField;
     @FXML private TextField portField;
 
+    private ClientAppFacade facade = null;
+
     /**
      * private constructor
      */
@@ -60,7 +63,10 @@ public class ClientGUIController extends Application {
     /**
      * run client GUI
      */
-    public void runClientGUI() { launch(); }
+    public void runClientGUI() {
+        launch();
+        facade = ClientAppFacade.getInstance();
+    }
 
     /**
      * initially show the welcome panel
@@ -185,6 +191,7 @@ public class ClientGUIController extends Application {
 
         if(!this.checkIsEmpty(IPField, portField)) {
             //TODO: handle if IP and port is valid exception
+
 
 //            this.showCanvasView();
             System.out.println("move to canvas");

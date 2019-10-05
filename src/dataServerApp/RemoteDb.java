@@ -6,32 +6,26 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
-    private Authenticator authenticator = null;
     private DataServerFacade facade = null;
 
-
-    public RemoteDb(DataServerFacade facade, DataServerApplication application) throws RemoteException{
+    public RemoteDb(DataServerFacade facade) throws RemoteException{
         super();
-
-        this.facade= facade;
-        this.authenticator = facade.getAuthenticator();
+//        this.facade= facade;
+        this.facade = DataServerFacade.getInstance();
     }
 
     /**
      * Register a user into the database.
      * @param username  Username entered
      * @param password  Password entered
-     * @param message  假设全部信息都会以一个json格式传过来。
      * @return
      * @throws RemoteException
      */
     @Override
-    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException {
-        JSONObject returnMessage = (JSONObject) authenticator.
-                registerUser(username, password);
-
-        if (returnMessage.get("Header").equals("Success")){
-            authenticator.iteratePassbook();
+    public JSONObject addUser(String username, String password) throws RemoteException {
+        JSONObject returnMessage = facade.addUser(username, password);
+        if (returnMessage.get("header").equals("Success")){
+            facade.iteratePassBook();
         }
 
         return returnMessage;
@@ -49,9 +43,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     // Authenticate the user by using the information stored in Authenticator.
     @Override
     public String checkUser(String username, String password) throws RemoteException {
-        JSONObject returnMessage = authenticator.authenticate(username, password);
-        System.out.println(returnMessage);
-        return returnMessage.toJSONString();
+        return facade.checkUser(username, password);
     }
 
     /**
@@ -64,11 +56,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     // TODO: 输出值根据Web Server决定。
     @Override
     public String saveWb(String managerName, String wbContent) throws RemoteException {
-        /* NEED FIX */
-        JSONObject message = new JSONObject();
-        message.put("hello", 123);
-        facade.getDataServer().saveCanvas(message, "world");
-        return null;
+        return facade.saveWb(managerName, wbContent);
     }
 
     /**
@@ -80,9 +68,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     // TODO: 输出值根据Web Server决定。 需要看能否存入Canva的东西。
     @Override
     public String loadAllWb(String managerName) throws RemoteException {
-        /* NEED FIX */
-        facade.getDataServer().retrieveCanvas(managerName);
-        return null;
+        return facade.loadAllWb(managerName);
     }
     // This is for testing purpose. Not known the communication protocol between the web server.
     @Override

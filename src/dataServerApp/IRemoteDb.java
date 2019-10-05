@@ -17,7 +17,7 @@ public interface IRemoteDb extends Remote {
      * @return adding feedback
      * @throws RemoteException
      */
-    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException;
+    public JSONObject addUser(String username, String password) throws RemoteException;
 
     /**
      * check whether the user exist and use the correct password
