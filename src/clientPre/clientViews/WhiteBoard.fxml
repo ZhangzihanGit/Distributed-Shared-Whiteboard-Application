@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="887.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+         <children>
+            <MenuBar fx:id="menuBar" prefHeight="20.0" prefWidth="598.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#newCanvas" text="new" />
+                        <MenuItem mnemonicParsing="false" onAction="#open" text="open" />
+                        <MenuItem mnemonicParsing="false" onAction="#save" text="save" />
+                        <MenuItem mnemonicParsing="false" onAction="#saveAs" text="saveAs" />
+                        <MenuItem mnemonicParsing="false" onAction="#close" text="close" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+         </children>
+      </VBox>
+   </top>
+   <right>
+      <VBox prefHeight="707.0" prefWidth="193.0" BorderPane.alignment="CENTER">
+         <children>
+            <ListView fx:id="listView" fixedCellSize="0.0" prefHeight="707.0" prefWidth="182.0" />
+         </children>
+      </VBox>
+   </right>
+   <left>
+      <VBox prefHeight="707.0" prefWidth="102.0" BorderPane.alignment="CENTER">
+         <children>
+            <ColorPicker fx:id="colorPicker" />
+            <Slider fx:id="slider" />
+            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="102.0" text="Label" textAlignment="CENTER" />
+            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Pencil" />
+            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Eraser" />
+            <Button fx:id="rectangle" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Rectangle" />
+            <Button fx:id="line" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Line" />
+            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Circle" />
+            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Oval" />
+            <Button fx:id="text" layoutX="10.0" layoutY="179.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Insert text" />
+            <Accordion />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextArea fx:id="messageRecord" prefHeight="118.0" prefWidth="1199.0" />
+            <Pane prefHeight="36.0" prefWidth="1199.0" >
+               <children>
+                  <Button fx:id="send" layoutX="1137.0" layoutY="4.0" mnemonicParsing="false" text="Send" />
+                  <TextField fx:id="sendMessage" layoutX="5.0" layoutY="2.0" prefHeight="23.0" prefWidth="1116.0" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </bottom>
+   <center>
+      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="pane">
+         <children>
+            <Canvas fx:id="canvas" height="708.0" layoutX="-1.0" width="916.0" />
+         </children>
+      </Pane>
+   </center>
+</BorderPane>
