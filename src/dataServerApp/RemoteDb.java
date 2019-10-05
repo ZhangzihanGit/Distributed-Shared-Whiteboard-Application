@@ -17,9 +17,6 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
         this.authenticator = facade.getAuthenticator();
     }
 
-
-    // TODO: 需要确认： 1. remote得到的用户信息包括了什么？是一个JSON么？如果是的话会有什么field 2. 用户画的内容是什么形式？
-    // First two
     @Override
     public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException {
         JSONObject returnMessage = (JSONObject) authenticator.
@@ -39,7 +36,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
         return returnMessage.toJSONString();
     }
     @Override
-    public String saveWb(String username, String wbContent) throws RemoteException {
+    public String saveWb(String managerName, String wbContent) throws RemoteException {
         /* NEED FIX */
         JSONObject message = new JSONObject();
         message.put("hello", 123);
@@ -48,8 +45,9 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     }
 
     @Override
-    public String loadAllWb(String username) throws RemoteException {
+    public String loadAllWb(String managerName) throws RemoteException {
         /* NEED FIX */
+        facade.getDataServer().retrieveCanvas(managerName);
         return null;
     }
     // This is for testing purpose. Not known the communication protocol between the web server.

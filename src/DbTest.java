@@ -21,6 +21,7 @@ public class DbTest {
            test = (IRemoteDb) registry.lookup("DB");
            testAuthentication(test);
            testSaveCanvas(test);
+           testRetrieveCanvas(test);
 
        }catch (RemoteException e){
            e.printStackTrace();
@@ -67,5 +68,10 @@ public class DbTest {
         String username = "world";
         String password = "world";
         test.saveWb(username,password);
+    }
+    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
+        String manager = "world";
+        String password = "world";
+        test.loadAllWb(manager);
     }
 }
