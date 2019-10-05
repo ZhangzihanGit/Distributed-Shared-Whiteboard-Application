@@ -35,7 +35,9 @@ public class WbServerGUIFacade {
     public void runWbServerGUI() {
         /* NEED FIX */
         /* Test */
-        WbServerFacade.getInstance().setAddress(11111);
+
+        WbServerFacade.getInstance().setAddress(1111);
+
         WbServerFacade.getInstance().runWbServer();
     }
 
