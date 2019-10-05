@@ -80,3 +80,6 @@ nb-configuration.xml
 ## log file
 /resources/log/*
 *log/
+##############################
+## ignore storage(database)
+/storage

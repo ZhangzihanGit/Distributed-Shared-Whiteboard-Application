@@ -1,5 +1,7 @@
 package dataServerApp;
 
+import org.json.simple.JSONObject;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -11,10 +13,11 @@ public interface IRemoteDb extends Remote {
      * add new users
      * @param username
      * @param password
+     * @param message 假设全部信息都会以一个json格式传过来。
      * @return adding feedback
      * @throws RemoteException
      */
-    public String addUser(String username, String password) throws RemoteException;
+    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException;
 
     /**
      * check whether the user exist and use the correct password
@@ -41,4 +44,6 @@ public interface IRemoteDb extends Remote {
      * @throws RemoteException
      */
     public String loadAllWb(String username) throws RemoteException;
+
+    public UserInformation transferInformation(String username, String password) throws RemoteException;
 }
