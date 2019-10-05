@@ -17,6 +17,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.*;
 import java.nio.file.*;
 import java.io.*;
+import java.util.HashMap;
 
 /**
  * This class holds the responsibility for writing & retrieving data to local file system.
@@ -26,74 +27,59 @@ import java.io.*;
  */
 // Assume it is after authentication.
 class DataWareHouse {
-    private String managerName = null;
 
-    DataWareHouse(String managerName) {
-        this.managerName = managerName;
+    private int numOfCanvas = 0;
+
+    // Build a map such that each manager has a counter associated with it.
+    // HashMap doesn't allow duplicate key value, which is good(since manager names cannot be the same. )
+    // Duplication check is also done in the a
+    private HashMap<String, Integer> mapManagerWithCanvas = null;
+
+    DataWareHouse() {
+        // This manager is responsible for creating the directory
+        this.mapManagerWithCanvas = new HashMap<>();
     }
-    void save(JSONObject message){
+
+    /**
+     * Create a json file for each save request.
+     * Manager name should be provided.
+     * @param message
+     */
+    void save(String managerName, JSONObject message){
         try{
-//            File file = new File("storage/"+this.managerName+"-canvas.json");
-//            FileWriter writer = new FileWriter(file);
-//            System.out.println("File saved");
-//            writer.write(message.toJSONString());
-//            writer.flush();
-//            writer.close();
-
-//            File file = new File("storage/"+this.managerName+"-canvas.json");
-//            FileOutputStream outputStream = new FileOutputStream(file);
-//            outputStream.write(message.toJSONString().getBytes());
-//            outputStream.flush();
-//            outputStream.close();
-
-
-                // 这种可以写出，但是不知道为什么没有新建文件夹。
-//            Charset charset = Charset.forName("US-ASCII");
-//            Path path = FileSystems.getDefault().getPath("storage", this.managerName+"-canvas.json");
-//            BufferedWriter bufferedWriter = Files.newBufferedWriter(path, charset,CREATE);
-//            bufferedWriter.write(message.toJSONString());
-//            System.out.println("File saved");
-//            bufferedWriter.flush();
-//            bufferedWriter.close();
-
-//            String output = (String) message.toJSONString();
-//            byte data[]= output.getBytes();
-//            Path path = Paths.get("storage", this.managerName+"-canvas.json");
-//            File file = new File("storage/"+this.managerName+"-canvas.json");
-//            System.out.println(path);
-//            Path relativePath = Paths.get(".").toAbsolutePath().normalize();
-//            System.out.println(relativePath.toString());
-
-//            file.mkdirs();
-//            file.createNewFile();
-//            OutputStream out = new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND));
-//            out.write(data);
-//            out.flush();
-//            out.close();
 
             Path absolutePath = Paths.get(".").toAbsolutePath().normalize();
 
 //            File file = new File(absolutePath.toString()+"storage/"+this.managerName+"-canvas.json");
-            File directory = new File(absolutePath.toString()+"/storage");
+            File directory = new File(absolutePath.toString()+"/storage"+"/"+managerName);
             directory.mkdirs();
 
-            String dbPathString = absolutePath.toString()+"/storage/"+this.managerName+"-canvas.json";
-            Path dbPath = Paths.get(dbPathString);
-            System.out.println(dbPathString);
-            File data = new File(dbPathString);
-            data.createNewFile();
+//            String dbPathString = absolutePath.toString()+"/storage/"+this.managerName+"-canvas.json";
+            String dbPathString = absolutePath.toString()+"/storage/"+managerName+"/"+"canvas"+numOfCanvas+".json";
 
-            OutputStream out = new BufferedOutputStream(Files.newOutputStream(dbPath, CREATE, APPEND));
+            Path dbPath = Paths.get(dbPathString);
+//            System.out.println(dbPathString);
+//            File data = new File(dbPathString);
+//            data.createNewFile();
+
+            OutputStream out = new BufferedOutputStream(Files.newOutputStream(dbPath, CREATE_NEW));
+            out.write("\n".getBytes());
+            byte writeOutput[] =message.toJSONString().getBytes();
+            out.write(writeOutput);
             out.flush();
             out.close();
+
+            this.numOfCanvas++;
+            this.mapManagerWithCanvas.put(managerName, numOfCanvas);
 
 
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+    // Retrieve file that contain the name for the manager.
+    void retrieveData(String targetManager){
 
-    void setManagerName(String managerName) {
-        this.managerName = managerName;
     }
+
 }
