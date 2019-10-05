@@ -36,8 +36,22 @@ public class ClientGUIFacade {
         /* NEED FIX */
         /* Test */
         ClientAppFacade.getInstance().connectWbServer("localhost");
-        System.out.println(ClientAppFacade.getInstance().register("d", "e"));
-        System.out.println(ClientAppFacade.getInstance().login("d", "e"));
+        System.out.println(ClientAppFacade.getInstance().register("username", "password"));
+        System.out.println(ClientAppFacade.getInstance().login("username", "password"));
+        System.out.println(ClientAppFacade.getInstance().createWb("username", "wbName"));
+        System.out.println(ClientAppFacade.getInstance().getAvailableWb());
+        System.out.println(ClientAppFacade.getInstance().joinWb("wbID", "username"));
+        System.out.println(ClientAppFacade.getInstance().closeWb("wbID", "username"));
+        System.out.println(ClientAppFacade.getInstance().saveWbOnline("wbID", "username"));
+        System.out.println(ClientAppFacade.getInstance().saveWbLocally("wbID", "username", "format"));
+        System.out.println(ClientAppFacade.getInstance().getAllStoredFiles("username"));
+        System.out.println(ClientAppFacade.getInstance().openWbOnline("wbID", "username"));
+        System.out.println(ClientAppFacade.getInstance().openWbLocally("username", "wbContent"));
+        System.out.println(ClientAppFacade.getInstance().render("wbID", "username"));
+        System.out.println(ClientAppFacade.getInstance().draw("wbID", "username", "content"));
+        System.out.println(ClientAppFacade.getInstance().erase("wbID", "username", "content"));
+        System.out.println(ClientAppFacade.getInstance().sendMsg("wbID", "username", "msg"));
+        ClientAppFacade.getInstance().exit();
     }
 
     /**

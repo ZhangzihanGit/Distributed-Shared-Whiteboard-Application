@@ -14,7 +14,7 @@ public class WbServerApplication {
     /** Largest available server port */
     private static final int LARGEST_PORT = 65535;
 
-    private String serverIP = null;
+    private int serverPort = 1111;
 
     private IRemoteWb remoteWb = null;
     private IRemoteDb remoteDb = null;
@@ -34,16 +34,11 @@ public class WbServerApplication {
      * start run server
      */
     public void runWbServer() {
-        if (serverIP == null) {
-            logger.fatal("Server address hasn't been specified");
-            return;
-        }
-
         try {
-            Registry registry = LocateRegistry.getRegistry(serverIP);
-            registry.bind("Whiteboard", remoteWb);
+            Registry registry = LocateRegistry.createRegistry(serverPort);
+            registry.rebind("Whiteboard", remoteWb);
 
-            logger.info("Whiteboard server start running (by RMI) at IP: " + serverIP);
+            logger.info("Whiteboard server start running (by RMI) at port: " + serverPort);
         } catch (Exception e) {
             e.printStackTrace();
             logger.fatal(e.toString());
@@ -54,11 +49,12 @@ public class WbServerApplication {
     /**
      * Connect to data server
      * @param ip
+     * @param port
      */
-    public boolean connectDbServer(String ip) {
+    public boolean connectDbServer(String ip, int port) {
         try {
             //Connect to the rmiregistry that is running on localhost
-            Registry registry = LocateRegistry.getRegistry(ip);
+            Registry registry = LocateRegistry.getRegistry(ip, port);
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteDb = (IRemoteDb) registry.lookup("Database");
@@ -83,12 +79,12 @@ public class WbServerApplication {
     }
 
     /**
-     * Set up server address (ip, port)
-     * @param ip
+     * Set up server address (port)
+     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip) {
-        this.serverIP = ip;
+    public boolean setAddress(int port) {
+        this.serverPort = port;
         return true;
     }
 }
