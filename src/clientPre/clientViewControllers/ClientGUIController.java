@@ -100,7 +100,7 @@ public class ClientGUIController extends Application {
         String userName = "Zihan";  // pass the username to me
         String header = userName + ", Which role do you wanna play today?";
 
-//        this.identityHeader.setText(header);   // null pointer error, dont know why
+//        identityHeader.setText(header);   // null pointer error, dont know why
         baseView();
     }
 
