@@ -31,7 +31,7 @@ public class DataServerApplication {
      */
     public DataServerApplication(DataServerFacade facade)   {
         this.authenticator = Authenticator.getInstance();
-        this.dataWareHouse = new DataWareHouse(null);
+        this.dataWareHouse = new DataWareHouse();
         System.out.println(authenticator);
     }
 
@@ -101,7 +101,6 @@ public class DataServerApplication {
         }
     }
     void saveCanvas(JSONObject canvas, String managerName){
-        dataWareHouse.setManagerName(managerName);
-        dataWareHouse.save(canvas);
+        dataWareHouse.save(managerName, canvas);
     }
 }
