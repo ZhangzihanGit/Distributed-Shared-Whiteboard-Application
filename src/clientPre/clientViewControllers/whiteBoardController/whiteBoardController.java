@@ -61,7 +61,7 @@ public class whiteBoardController<list> {
     @FXML
     private Pane pane;
 
-    private String clientType = "manager";
+    private String clientType = "client";
 
     private String mode = "draw";
 

@@ -20,10 +20,10 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Hello World");
         this.primaryStage.setResizable(false);
-        showWelcomeView();
+        whiteBoardView();
     }
 
-    private void showWelcomeView() throws IOException{
+    private void whiteBoardView() throws IOException{
         Parent root = FXMLLoader.load(getClass().getResource("clientViews/WhiteBoard.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
