@@ -32,7 +32,6 @@ public class DataServerApplication {
     public DataServerApplication(DataServerFacade facade)   {
         this.authenticator = Authenticator.getInstance();
         this.dataWareHouse = new DataWareHouse();
-        System.out.println(authenticator);
     }
 
     /**
@@ -102,5 +101,9 @@ public class DataServerApplication {
     }
     void saveCanvas(JSONObject canvas, String managerName){
         dataWareHouse.save(managerName, canvas);
+    }
+    String retrieveCanvas(String targetManager){
+        dataWareHouse.retrieveData(targetManager);
+        return null;
     }
 }
