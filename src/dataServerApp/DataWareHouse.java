@@ -55,13 +55,15 @@ class DataWareHouse {
 //            System.out.println("File saved");
 //            bufferedWriter.flush();
 //            bufferedWriter.close();
-            String output = (String) message.toJSONString();
-            byte data[]= output.getBytes();
-            Path path = Paths.get("storage", this.managerName+"-canvas.json");
-            File file = new File("storage/"+this.managerName+"-canvas.json");
-            System.out.println(path);
-            Path relativePath = Paths.get(".").toAbsolutePath().normalize();
-            System.out.println(relativePath.toString());
+
+//            String output = (String) message.toJSONString();
+//            byte data[]= output.getBytes();
+//            Path path = Paths.get("storage", this.managerName+"-canvas.json");
+//            File file = new File("storage/"+this.managerName+"-canvas.json");
+//            System.out.println(path);
+//            Path relativePath = Paths.get(".").toAbsolutePath().normalize();
+//            System.out.println(relativePath.toString());
+
 //            file.mkdirs();
 //            file.createNewFile();
 //            OutputStream out = new BufferedOutputStream(Files.newOutputStream(path,CREATE,APPEND));
@@ -69,7 +71,21 @@ class DataWareHouse {
 //            out.flush();
 //            out.close();
 
+            Path absolutePath = Paths.get(".").toAbsolutePath().normalize();
 
+//            File file = new File(absolutePath.toString()+"storage/"+this.managerName+"-canvas.json");
+            File directory = new File(absolutePath.toString()+"/storage");
+            directory.mkdirs();
+
+            String dbPathString = absolutePath.toString()+"/storage/"+this.managerName+"-canvas.json";
+            Path dbPath = Paths.get(dbPathString);
+            System.out.println(dbPathString);
+            File data = new File(dbPathString);
+            data.createNewFile();
+
+            OutputStream out = new BufferedOutputStream(Files.newOutputStream(dbPath, CREATE, APPEND));
+            out.flush();
+            out.close();
 
 
         }catch (Exception e){
