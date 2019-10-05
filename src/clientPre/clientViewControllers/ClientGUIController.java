@@ -119,6 +119,13 @@ public class ClientGUIController extends Application {
         alert.showAndWait();
     }
 
+    @FXML
+    private void showWhiteBoardView() throws IOException{
+        this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));
+        this.primaryStage.setTitle(FxmlView.CANVAS.getTitle());
+        baseView();
+    }
+
     /**
      * control login
      */
@@ -171,7 +178,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlConfig() {
+    private void controlConfig() throws IOException {
 
         String ip = this.IPField.getText();
         String port = this.portField.getText();
@@ -181,6 +188,7 @@ public class ClientGUIController extends Application {
 
 //            this.showCanvasView();
             System.out.println("move to canvas");
+            this.showWhiteBoardView();
         }
 
     }

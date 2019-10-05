@@ -55,12 +55,11 @@ public class WbServerFacade {
     }
 
     /**
-     * Set up server address (ip, port)
-     * @param ip
+     * Set up server address (port)
      * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
-        return wbServer.setAddress(ip, port);
+    public boolean setAddress(int port) {
+        return wbServer.setAddress(port);
     }
 }

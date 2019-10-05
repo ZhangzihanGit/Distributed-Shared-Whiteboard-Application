@@ -52,6 +52,16 @@ public enum FxmlView {
         String getFxmlFile() {
             return "../clientViews/clientConfig.fxml";
         }
+    }, CANVAS {
+        @Override
+        String getTitle() {
+            return "Canvas";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "../clientViews/WhiteBoard.fxml";
+        }
     };
 
     abstract String getTitle();

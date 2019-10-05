@@ -1,12 +1,16 @@
 package dataServerApp;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class DataServerApplication {
     private final static Logger logger = Logger.getLogger(DataServerApplication.class);
+    private static final int defaultPort = 1099;
 
     /** Smallest available server port */
     private static final int SMALLEST_PORT = 1025;
@@ -14,31 +18,41 @@ public class DataServerApplication {
     private static final int LARGEST_PORT = 65535;
 
     private String serverIP = null;
-    private int serverPort = 0;
 
     private IRemoteDb remoteDb = null;
 
+    // Change the control of authentication from Remote Db to Data Server.
+    private Authenticator authenticator = null;
+    private DataWareHouse wareHouse = null;
+    private Registry registry = null;
+    private DataWareHouse dataWareHouse = null;
     /**
      * constructor
      */
-    public DataServerApplication() {
-        remoteDb = new RemoteDb();
+    public DataServerApplication(DataServerFacade facade)   {
+        this.authenticator = Authenticator.getInstance();
+        this.dataWareHouse = new DataWareHouse(null);
+        System.out.println(authenticator);
     }
 
     /**
      * start run server
      */
     public void runDataServer() {
-        if (serverIP == null || serverPort == 0) {
+        if (serverIP == null) {
             logger.fatal("Server address hasn't been specified");
             return;
         }
 
         try {
-            Registry registry = LocateRegistry.getRegistry(serverIP, serverPort);
-            registry.bind("Database", remoteDb);
+            // TODO: 很好奇这里咋回事， 如果是LocateRegistry.getRegistry(), 手动rmiregistry就会出问题, JSON.class not found.
+            // For testing purpose, IP address is not used(since it is for now only local machine)
+            // Later the ip will be used for several machines testing purpose.
+            registry = LocateRegistry.createRegistry(defaultPort);
+            System.out.println(serverIP);
+            registry.bind("DB", remoteDb);
 
-            logger.info("Data server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
+            logger.info("Data server start running (by RMI) at IP: " + serverIP);
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remote registry set up failed");
@@ -60,32 +74,34 @@ public class DataServerApplication {
     /**
      * Set up server address (ip, port)
      * @param ip
-     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
+    public boolean setAddress(String ip) {
         this.serverIP = ip;
-
-        if (isValidPort(port)) {
-            this.serverPort = port;
-            return true;
-        }
-        else
-            return false;
+        return true;
+    }
+//    public JSONObject userRegister(String username, String password){
+//        return authenticator.registerUser(username, password);
+//    }
+//    public JSONObject userAuthenticate(String username, String password){
+//        return authenticator.authenticate(username, password);
+//    }
+    Authenticator getAuthenticator(){
+        return this.authenticator;
     }
 
-    /**
-     * Check whether given port number is valid
-     * @param port
-     * @return True if the port number is valid
-     */
-    private boolean isValidPort(int port) {
-        if (port <= LARGEST_PORT && port >= SMALLEST_PORT)
-            return true;
-        else {
-            logger.error("Port number should be some number between "
-                    + SMALLEST_PORT + " and " +  LARGEST_PORT + ", instead of " + serverPort);
-            return false;
+    void setRemoteDb(DataServerFacade facade){
+
+        try{
+            this.remoteDb = new RemoteDb(facade, facade.getDataServer());
+
+        }catch (Exception e){
+            logger.fatal("Initialization database remote object failed");
+            e.printStackTrace();
         }
+    }
+    void saveCanvas(JSONObject canvas, String managerName){
+        dataWareHouse.setManagerName(managerName);
+        dataWareHouse.save(canvas);
     }
 }

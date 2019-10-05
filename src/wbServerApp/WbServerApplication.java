@@ -14,8 +14,7 @@ public class WbServerApplication {
     /** Largest available server port */
     private static final int LARGEST_PORT = 65535;
 
-    private String serverIP = null;
-    private int serverPort = 0;
+    private int serverPort = 1111;
 
     private IRemoteWb remoteWb = null;
     private IRemoteDb remoteDb = null;
@@ -24,24 +23,24 @@ public class WbServerApplication {
      * constructor
      */
     public WbServerApplication() {
-        remoteWb = new RemoteWb();
+        try {
+            remoteWb = new RemoteWb();
+        } catch (Exception e) {
+            logger.fatal("Initialization whiteboard remote object failed");
+        }
     }
 
     /**
      * start run server
      */
     public void runWbServer() {
-        if (serverIP == null || serverPort == 0) {
-            logger.fatal("Server address hasn't been specified");
-            return;
-        }
-
         try {
-            Registry registry = LocateRegistry.getRegistry(serverIP, serverPort);
-            registry.bind("Whiteboard", remoteWb);
+            Registry registry = LocateRegistry.createRegistry(serverPort);
+            registry.rebind("Whiteboard", remoteWb);
 
-            logger.info("Whiteboard server start running (by RMI) at IP: " + serverIP + ", Port: " + serverPort);
+            logger.info("Whiteboard server start running (by RMI) at port: " + serverPort);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.fatal(e.toString());
             logger.fatal("Whiteboard remote registry set up failed");
         }
@@ -62,7 +61,7 @@ public class WbServerApplication {
             return true;
         } catch (Exception e) {
             logger.fatal(e.toString());
-            logger.fatal("Obtain remote service from database server(" + ip + ", " + port + ") failed");
+            logger.fatal("Obtain remote service from database server(" + ip + ") failed");
             return false;
         }
     }
@@ -80,34 +79,12 @@ public class WbServerApplication {
     }
 
     /**
-     * Set up server address (ip, port)
-     * @param ip
+     * Set up server address (port)
      * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
-        this.serverIP = ip;
-
-        if (isValidPort(port)) {
-            this.serverPort = port;
-            return true;
-        }
-        else
-            return false;
-    }
-
-    /**
-     * Check whether given port number is valid
-     * @param port
-     * @return True if the port number is valid
-     */
-    private boolean isValidPort(int port) {
-        if (port <= LARGEST_PORT && port >= SMALLEST_PORT)
-            return true;
-        else {
-            logger.error("Port number should be some number between "
-                    + SMALLEST_PORT + " and " +  LARGEST_PORT + ", instead of " + serverPort);
-            return false;
-        }
+    public boolean setAddress(int port) {
+        this.serverPort = port;
+        return true;
     }
 }
