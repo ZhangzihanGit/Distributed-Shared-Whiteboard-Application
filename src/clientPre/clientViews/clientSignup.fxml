@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.ClientGUIController">
+    <children>
+        <AnchorPane layoutX="360.0" layoutY="11.0" prefHeight="379.0" prefWidth="326.0" styleClass="login-panel">
+            <children>
+                <Button fx:id="btnSignUp" layoutX="27.0" layoutY="310.0" mnemonicParsing="false" onAction="#controlSignup" prefHeight="31.0" prefWidth="273.0" styleClass="login-btn" text="Sign Up" />
+                <Label layoutX="48.0" layoutY="45.0" styleClass="login-header" text="Create a New Account" textFill="#1b1a1a">
+                    <effect>
+                        <Blend />
+                    </effect>
+                </Label>
+                <BorderPane layoutX="27.0" layoutY="117.0" prefHeight="31.0" prefWidth="273.0">
+                    <right>
+                        <TextField fx:id="signupUsernameField" prefHeight="31.0" prefWidth="238.0" promptText="Username" BorderPane.alignment="CENTER" />
+                    </right>
+                    <left>
+                        <ImageView fitHeight="31.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                            <image>
+                                <Image url="@../../assets/imgs/username.png" />
+                            </image>
+                        </ImageView>
+                    </left>
+                </BorderPane>
+                <BorderPane layoutX="27.0" layoutY="181.0" prefHeight="31.0" prefWidth="273.0">
+                    <right>
+                        <PasswordField fx:id="signupPasswordField1" prefHeight="31.0" prefWidth="238.0" promptText="Password" BorderPane.alignment="CENTER" />
+                    </right>
+                    <left>
+                        <ImageView fitHeight="31.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                            <image>
+                                <Image url="@../../assets/imgs/password.png" />
+                            </image>
+                        </ImageView>
+                    </left>
+                </BorderPane>
+            <BorderPane layoutX="27.0" layoutY="237.0" prefHeight="31.0" prefWidth="273.0">
+               <left>
+                  <ImageView fitHeight="31.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../../assets/imgs/password.png" />
+                     </image>
+                  </ImageView>
+               </left>
+               <right>
+                  <PasswordField fx:id="signupPasswordField2" prefHeight="31.0" prefWidth="238.0" promptText="Confirmed Password" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+            <Label fx:id="passwordLabel" layoutX="64.0" layoutY="216.0" styleClass="match-label" text="Passwords do not match!" />
+            <Label fx:id="usernameLabel" layoutX="64.0" layoutY="96.0" styleClass="match-label" text="This username has been used!" />
+            </children>
+        </AnchorPane>
+        <ImageView fitHeight="184.0" fitWidth="210.0" layoutX="84.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../assets/imgs/account.png" />
+            </image>
+        </ImageView>
+    </children>
+</AnchorPane>

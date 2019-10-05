@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.ClientGUIController">
+    <children>
+      <AnchorPane layoutX="103.0" layoutY="18.0" prefHeight="365.0" prefWidth="494.0" styleClass="welcome-container">
+         <children>
+              <ImageView fitHeight="148.0" fitWidth="214.0" layoutX="174.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../../assets/imgs/whiteboard.png" />
+                  </image>
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+              </ImageView>
+              <Label fx:id="lbWelcome" alignment="CENTER" layoutX="48.0" layoutY="198.0" prefHeight="44.0" prefWidth="398.0" text="Welcome to the WhiteBoard" />
+              <Button fx:id="btnStart" contentDisplay="CENTER" layoutX="83.0" layoutY="273.0" mnemonicParsing="false" onAction="#showLoginView" prefHeight="44.0" prefWidth="331.0" styleClass="welcome-btn" text="Get Started" />
+         </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>

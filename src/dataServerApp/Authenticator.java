@@ -1,12 +1,11 @@
 package dataServerApp;
 
+import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.json.simple.JSONObject;
-import sun.rmi.runtime.Log;
 
 class Authenticator {
     private final static Logger logger = Logger.getLogger(Authenticator.class);
