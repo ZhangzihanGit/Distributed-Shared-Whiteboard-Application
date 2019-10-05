@@ -35,6 +35,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
         System.out.println(returnMessage);
         return returnMessage.toJSONString();
     }
+    // TODO: 输出值根据Web Server决定。
     @Override
     public String saveWb(String managerName, String wbContent) throws RemoteException {
         /* NEED FIX */
@@ -43,7 +44,7 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
         facade.getDataServer().saveCanvas(message, "world");
         return null;
     }
-
+    // TODO: 输出值根据Web Server决定。 需要看能否存入Canva的东西。
     @Override
     public String loadAllWb(String managerName) throws RemoteException {
         /* NEED FIX */

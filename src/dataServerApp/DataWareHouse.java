@@ -77,7 +77,7 @@ class DataWareHouse {
             e.printStackTrace();
         }
     }
-    // Retrieve file that contain the name for the manager.
+    // TODO: 未完成： 需要返回一个Canva, 不是String.
     String retrieveData(String targetManager){
         try{
             int order = numOfCanvas -1;
@@ -86,11 +86,16 @@ class DataWareHouse {
 
             InputStream inputStream = new BufferedInputStream(Files.newInputStream(dbPath));
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            // 这一部分的返回值将会因Web Server而改变。
+            ////////////////////////////////////////
             String line =null;
             while((line = reader.readLine())!=null){
                 System.out.println(line);
             }
             return null;
+            ////////////////////////////////////////
+
         }catch (Exception e){
             logger.info("Target Manager not found on database. ");
             e.printStackTrace();
