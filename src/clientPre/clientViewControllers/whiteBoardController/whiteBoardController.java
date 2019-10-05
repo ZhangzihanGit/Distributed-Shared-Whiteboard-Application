@@ -12,12 +12,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -61,7 +58,7 @@ public class whiteBoardController<list> {
     @FXML
     private Pane pane;
 
-    private String clientType = "client";
+    private String clientType = "manager";
 
     private String mode = "draw";
 

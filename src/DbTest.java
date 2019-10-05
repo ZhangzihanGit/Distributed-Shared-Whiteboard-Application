@@ -1,9 +1,7 @@
 import dataServerApp.IRemoteDb;
 import dataServerApp.UserInformation;
 import org.json.simple.JSONObject;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;

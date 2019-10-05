@@ -43,7 +43,7 @@ gradle-app.setting
 *.iml
 *.ipr
 *.iws
-
+.idea/
 ##############################
 ## Eclipse
 ##############################
@@ -80,6 +80,11 @@ nb-configuration.xml
 ## log file
 /resources/log/*
 *log/
+
+.idea/
+*/.idea/
+
 ##############################
 ## ignore storage(database)
 /storage
+
