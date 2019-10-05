@@ -62,7 +62,7 @@ class DataWareHouse {
 //            File data = new File(dbPathString);
 //            data.createNewFile();
 
-            OutputStream out = new BufferedOutputStream(Files.newOutputStream(dbPath, CREATE_NEW));
+            OutputStream out = new BufferedOutputStream(Files.newOutputStream(dbPath));
             out.write("\n".getBytes());
             byte writeOutput[] =message.toJSONString().getBytes();
             out.write(writeOutput);
