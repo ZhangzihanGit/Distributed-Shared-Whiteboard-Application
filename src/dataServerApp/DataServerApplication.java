@@ -58,11 +58,12 @@ public class DataServerApplication {
     }
 
     /**
-     * exit server program
+     * exit data server program
      */
     public void exit() {
         try {
             UnicastRemoteObject.unexportObject(remoteDb, false);
+            
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remove remote object from rmi runtime failed");

@@ -52,15 +52,15 @@ public class DbTest {
         // Test if RemoteDB.checkUser (Authenticator.authenticate) works.
         String mockUsername = "hello";
         String mockPassword = "world";
-        System.out.println(test.checkUser(mockUsername,mockPassword));
+        System.out.println(test.checkUser(mockUsername,mockPassword) + "1111");
         assert (test.checkUser(mockUsername,mockPassword).equals("{\"header\":\"Fail\",\"message\":\"User not " +
                 "found in passbook\"}"));
 
         String wrongPassword = "nihao";
-        System.out.println(test.checkUser(username,wrongPassword));
+        System.out.println(test.checkUser(username,wrongPassword) + "222");
         assert (test.checkUser(username,wrongPassword).equals("{\"header\":\"Fail\",\"message\":\"Authentication failed\"}"));
 
-        System.out.println(test.checkUser(username,password));
+        System.out.println(test.checkUser(username,password)+"333");
         assert (test.checkUser(username, password).equals("{\"header\":\"Success\",\"message\":\"User authentication success\"}"));
 
     }
