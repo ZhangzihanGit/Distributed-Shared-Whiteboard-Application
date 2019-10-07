@@ -3,6 +3,7 @@ package wbServerApp;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import dataServerApp.IRemoteDb;
 import org.apache.log4j.Logger;
@@ -12,6 +13,9 @@ public class WbServerApplication {
 
     private IRemoteWb remoteWb = null;
     private IRemoteDb remoteDb = null;
+
+    private String manager = null;
+    private ArrayList<String> users = new ArrayList<>();
 
     /**
      * constructor
@@ -105,6 +109,34 @@ public class WbServerApplication {
 
         // return remoteDb.checkUser(username, password);
         return true;
+    }
+
+    /**
+     * Create new whiteboard and set the user to be the manager
+     * @param username Username, String
+     * @return True if create successfully, Boolean
+     */
+    public synchronized Boolean createWb(String username) {
+        if (this.manager == null) {
+            this.manager = username;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * join created whiteboard on server
+     * @param username Username, String
+     * @return True if join existing whiteboard successfully, Boolean
+     */
+    public synchronized Boolean joinWb(String username) {
+        if (this.manager != null) {
+            this.users.add(username);
+            return true;
+        }
+
+        return false;
     }
 
     /**

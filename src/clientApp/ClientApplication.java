@@ -10,6 +10,7 @@ public class ClientApplication {
     private final static Logger logger = Logger.getLogger(ClientApplication.class);
 
     private IRemoteWb remoteWb = null;
+    private String username = null;
 
     /**
      * constructor
@@ -82,47 +83,29 @@ public class ClientApplication {
 
     /**
      * Create new whiteboard and set the user to be the manager
-     * @param username Username
-     * @param wbName Whiteboard name
-     * @return Created whiteboard information
+     * @return True if created successfully, Boolean
      */
-    public String createWb(String username, String wbName) {
+    public Boolean createWb() {
         try {
-            return remoteWb.createWb(username, wbName);
+            return remoteWb.createWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Create whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Create whiteboard service from whiteboard server fail to execute";
+            return false;
         }
     }
 
     /**
-     * Get all available whiteboards
-     * @return List of available whiteboards
+     * Join whiteboard on server
+     * @return True if join successfully, Boolean
      */
-    public String getAvailableWb() {
+    public Boolean joinWb() {
         try {
-            return remoteWb.getAvailableWb();
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Get available whiteboards service from whiteboard server fail to execute");
-            return "[ERROR]: Get available whiteboards service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Join specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return join feedback
-     */
-    public String joinWb(String wbID, String username) {
-        try {
-            return remoteWb.joinWb(wbID, username);
+            return remoteWb.joinWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Join whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Join whiteboard service from whiteboard server fail to execute";
+            return false;
         }
     }
 
@@ -289,5 +272,25 @@ public class ClientApplication {
         }
     }
 
+    // getter and setter
+    /**
+     * Set the username of current client
+     * @param username Username, String
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
+    /**
+     * Get the username of current client
+     * @return Username, String
+     */
+    public String getUsername() {
+        if (this.username != null) {
+            return this.username;
+        }
+        else {
+            return "User";
+        }
+    }
 }

@@ -17,21 +17,13 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     }
 
     @Override
-    public String createWb(String username, String wbName) throws RemoteException {
-        /* NEED FIX */
-        return "CREATE WB FUNCTION NOT FINISH " + username + " " + wbName;
+    public Boolean createWb(String username) throws RemoteException {
+        return WbServerFacade.getInstance().createWb(username);
     }
 
     @Override
-    public String getAvailableWb() throws RemoteException {
-        /* NEED FIX */
-        return "GET AVAILABLE WB FUNCTION NOT FINISH ";
-    }
-
-    @Override
-    public String joinWb(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return "JOIN WB FUNCTION NOT FINISH ";
+    public Boolean joinWb(String username) throws RemoteException {
+        return WbServerFacade.getInstance().joinWb(username);
     }
 
     @Override

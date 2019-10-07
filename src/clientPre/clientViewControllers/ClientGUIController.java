@@ -101,8 +101,7 @@ public class ClientGUIController extends Application {
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.IDENTITY.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.IDENTITY.getTitle());
 
-//        String userName = ClientAppFacade.getUserName();
-        String userName = "Zihan";  // pass the username to me
+        String userName = ClientAppFacade.getInstance().getUsername();
         String header = userName + ", Which role do you wanna play today?";
 
 //        identityHeader.setText(header);   // null pointer error, dont know why
@@ -146,6 +145,7 @@ public class ClientGUIController extends Application {
             if (isMatch) {
                 // switch to next page
                 logger.info("User " + loginUsername + " log in successfully");
+                ClientAppFacade.getInstance().setUsername(loginUsername);
                 this.showChooseIdentityView();
             } else {
                 // prompt window
@@ -173,6 +173,7 @@ public class ClientGUIController extends Application {
                 if (addSuccess) {
                     // sign up successfully
                     logger.info("New user " + signupUsername + " sign up successfully");
+                    ClientAppFacade.getInstance().setUsername(signupUsername);
                     this.showChooseIdentityView();
                 } else {
                     logger.info("New user " + signupUsername + " sign up failed");
@@ -209,9 +210,26 @@ public class ClientGUIController extends Application {
     private void controlCheckBox() throws IOException {
         /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
-            this.showWhiteBoardView();
-            // pass role to the server
-            //ClientAppFacade.setRole(...);
+            if (visitorCheckBox.isSelected()) {
+                if (ClientAppFacade.getInstance().joinWb()) {
+                    this.showWhiteBoardView();
+                }
+                else {
+                    //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
+
+                    System.out.println("Join wb failed");
+                }
+            }
+            else if (managerCheckBox.isSelected()) {
+                if (ClientAppFacade.getInstance().createWb()) {
+                    this.showWhiteBoardView();
+                }
+                else {
+                    //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+
+                    System.out.println("Create wb failed");
+                }
+            }
         }
     }
 

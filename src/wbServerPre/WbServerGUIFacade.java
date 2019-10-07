@@ -35,7 +35,7 @@ public class WbServerGUIFacade {
     public void runWbServerGUI() {
         //TODO: connect to database server before start running
 
-        // WbServerFacade.getInstance().connectDbServer("localhost", "1111");
+        // WbServerFacade.getInstance().connectDbServer("localhost", "1099");
         WbServerFacade.getInstance().runWbServer("1111");
     }
 

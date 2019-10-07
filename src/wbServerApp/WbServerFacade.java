@@ -67,6 +67,24 @@ public class WbServerFacade {
     }
 
     /**
+     * Create new whiteboard and set the user to be the manager
+     * @param username Username, String
+     * @return True if create successfully, Boolean
+     */
+    public Boolean createWb(String username) {
+        return wbServer.createWb(username);
+    }
+
+    /**
+     * join created whiteboard on server
+     * @param username Username, String
+     * @return True if join existing whiteboard successfully, Boolean
+     */
+    public Boolean joinWb(String username) {
+        return wbServer.joinWb(username);
+    }
+
+    /**
      * exit server program
      */
     public void exit() {

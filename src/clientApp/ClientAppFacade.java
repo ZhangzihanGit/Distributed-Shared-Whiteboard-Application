@@ -63,31 +63,19 @@ public class ClientAppFacade {
     }
 
     /**
-     * Create new whiteboard and set the user to be the manager
-     * @param username Username
-     * @param wbName Whiteboard name
-     * @return Created whiteboard information
+     * Create new whiteboard on server and set the user to be the manager
+     * @return True if created successfully, Boolean
      */
-    public String createWb(String username, String wbName) {
-        return clientApp.createWb(username, wbName);
+    public Boolean createWb() {
+        return clientApp.createWb();
     }
 
     /**
-     * Get all available whiteboards
-     * @return List of available whiteboards
+     * Join whiteboard on server
+     * @return True if join successfully, Boolean
      */
-    public String getAvailableWb() {
-        return clientApp.getAvailableWb();
-    }
-
-    /**
-     * Join specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Join feedback
-     */
-    public String joinWb(String wbID, String username) {
-        return clientApp.joinWb(wbID, username);
+    public Boolean joinWb() {
+        return clientApp.joinWb();
     }
 
     /**
@@ -199,5 +187,21 @@ public class ClientAppFacade {
     public void exit() {
         logger.info("User exit client program");
         System.exit(1);
+    }
+
+    /**
+     * Set the username of current client
+     * @param username Username, String
+     */
+    public void setUsername(String username) {
+        clientApp.setUsername(username);
+    }
+
+    /**
+     * Get the username of current client
+     * @return Username, String
+     */
+    public String getUsername() {
+        return clientApp.getUsername();
     }
 }
