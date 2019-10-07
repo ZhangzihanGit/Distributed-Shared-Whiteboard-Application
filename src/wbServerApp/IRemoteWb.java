@@ -9,21 +9,21 @@ import java.rmi.RemoteException;
 public interface IRemoteWb extends Remote {
     /**
      * Register new users
-     * @param username Username
-     * @param password Password
-     * @return Registration feedback
+     * @param username Username, String
+     * @param password Password, String
+     * @return True if register successfully
      * @throws RemoteException
      */
-    public String register(String username, String password) throws RemoteException;
+    public Boolean register(String username, String password) throws RemoteException;
 
     /**
-     * Existing user login
-     * @param username Username
-     * @param password Password
-     * @return Login feedback
+     * Existing user login authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return True if authenticate success, Boolean
      * @throws RemoteException
      */
-    public String login(String username, String password) throws RemoteException;
+    public Boolean login(String username, String password) throws RemoteException;
 
     /**
      * Create new whiteboard and set the user to be the manager

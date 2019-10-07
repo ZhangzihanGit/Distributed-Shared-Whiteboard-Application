@@ -9,9 +9,6 @@ import java.rmi.registry.Registry;
 public class ClientApplication {
     private final static Logger logger = Logger.getLogger(ClientApplication.class);
 
-    private String serverIP = null;
-    private int serverPort = 0;
-
     private IRemoteWb remoteWb = null;
 
     /**
@@ -21,53 +18,65 @@ public class ClientApplication {
 
     /**
      * Connect to whiteboard server
-     * @param ip IP address
+     * @oaram ip IP address, String
+     * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip) {
+    public Boolean connectWbServer(String ip, String port) {
+        // parameter checking
+        int portNum = 1111;
+        try {
+            portNum = Integer.parseInt(port);
+        } catch (Exception e) {
+            logger.warn(e.toString());
+            logger.warn("port number specified not valid, use default port number 1111");
+        }
+
         try {
             //Connect to the rmiregistry that is running on localhost
-            Registry registry = LocateRegistry.getRegistry(ip);
+            Registry registry = LocateRegistry.getRegistry(ip, portNum);
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
+
+            logger.info("connect to server at ip: " + ip + ", port: " + portNum);
             return true;
         } catch (Exception e) {
             logger.fatal(e.toString());
-            logger.fatal("Obtain remote service from whiteboard server(" + ip + ") failed");
+            logger.fatal("Obtain remote service from whiteboard server(" + ip + ", " + portNum + ") failed");
             return false;
         }
     }
 
     /**
      * Register new user on server
-     * @param username Username
-     * @param password Password
-     * @return Register information
+     * @param username Username, String
+     * @param password Password, String
+     * @return True if register successfully
      */
-    public String register(String username, String password) {
+    public Boolean register(String username, String password) {
         try {
             return remoteWb.register(username, password);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Register new users service from whiteboard server fail to execute");
-            return "[ERROR]: Register new users service from whiteboard server fail to execute";
+            return false;
         }
     }
 
     /**
-     * Existing user log in
-     * @param username Username
-     * @param password Password
-     * @return Login information
+     * Existing user log in authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return True if authenticate success, Boolean
      */
-    public String login(String username, String password) {
+    public Boolean login(String username, String password) {
         try {
             return remoteWb.login(username, password);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Existing user login service from whiteboard server fail to execute");
-            return "[ERROR]: Existing user login service from whiteboard server fail to execute";
+            return false;
         }
     }
 
@@ -279,4 +288,6 @@ public class ClientApplication {
             return "[ERROR]: Send message to whiteboard service from whiteboard server fail to execute";
         }
     }
+
+
 }

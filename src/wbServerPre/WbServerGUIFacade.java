@@ -33,10 +33,10 @@ public class WbServerGUIFacade {
      * start run whiteboard server GUI, display frame
      */
     public void runWbServerGUI() {
-        /* NEED FIX */
-        /* Test */
-        WbServerFacade.getInstance().setAddress(1111);
-        WbServerFacade.getInstance().runWbServer();
+        //TODO: connect to database server before start running
+
+        // WbServerFacade.getInstance().connectDbServer("localhost", "1111");
+        WbServerFacade.getInstance().runWbServer("1111");
     }
 
     /**

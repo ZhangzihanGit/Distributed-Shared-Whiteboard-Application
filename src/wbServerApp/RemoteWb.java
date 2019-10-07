@@ -7,15 +7,13 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     protected RemoteWb() throws RemoteException {}
 
     @Override
-    public String register(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return "REGISTER FUNCTION NOT FINISH " + username + " " + password;
+    public Boolean register(String username, String password) throws RemoteException {
+        return WbServerFacade.getInstance().register(username, password);
     }
 
     @Override
-    public String login(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return "LOGIN FUNCTION NOT FINISH " + username + " " + password;
+    public Boolean login(String username, String password) throws RemoteException {
+        return WbServerFacade.getInstance().login(username, password);
     }
 
     @Override
