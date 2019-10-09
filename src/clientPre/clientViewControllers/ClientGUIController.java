@@ -27,7 +27,7 @@ public class ClientGUIController extends Application {
     @FXML private Scene scene;
     @FXML private TextField loginUsernameField;
     @FXML private PasswordField loginPasswordField;
-    @FXML private Label identityHeader;
+    @FXML private Label yyy;
     @FXML private BorderPane checkBoxField;
     @FXML private CheckBox visitorCheckBox;
     @FXML private CheckBox managerCheckBox;
@@ -100,7 +100,7 @@ public class ClientGUIController extends Application {
         String userName = "Zihan";  // pass the username to me
         String header = userName + ", Which role do you wanna play today?";
 
-//        this.identityHeader.setText(header);   // null pointer error, dont know why
+//        this.yyy.setText(header);   // null pointer error, dont know why
         baseView();
     }
 
