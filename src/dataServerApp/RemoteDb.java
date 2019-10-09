@@ -1,56 +1,84 @@
 package dataServerApp;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
-    private Authenticator authenticator = null;
     private DataServerFacade facade = null;
 
-
-    public RemoteDb(DataServerFacade facade, DataServerApplication application) throws RemoteException{
+    public RemoteDb(DataServerFacade facade) throws RemoteException{
         super();
-
-        this.facade= facade;
-        this.authenticator = facade.getAuthenticator();
+//        this.facade= facade;
+        this.facade = DataServerFacade.getInstance();
     }
 
-
-    // TODO: 需要确认： 1. remote得到的用户信息包括了什么？是一个JSON么？如果是的话会有什么field 2. 用户画的内容是什么形式？
-    // First two
+    /**
+     * Register a user into the database.
+     * @param username  Username entered
+     * @param password  Password entered
+     * @return
+     * @throws RemoteException
+     */
     @Override
-    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException {
-        JSONObject returnMessage = (JSONObject) authenticator.
-                registerUser(username, password);
+    public String addUser(String username, String password) throws RemoteException {
+        String returnMessage = facade.addUser(username, password);
 
-        if (returnMessage.get("Header").equals("Success")){
-            authenticator.iteratePassbook();
+        JSONParser jsonParser = new JSONParser();
+
+        //Read JSON requst
+        try {
+            JSONObject returnJSON = (JSONObject) jsonParser.parse(returnMessage);
+            if (returnJSON.get("header").equals("Success")){
+                facade.iteratePassBook();
+            }
+        } catch (Exception e) {
+            // TODO: Exception catching
         }
 
         return returnMessage;
     }
+
+    /**
+     * Check if a user is authorised to perform actions. This method envokes Authentication module.
+     * The return message will be a string but with json format. The message has: "header": [Success/ Fail],
+     * "message": [message body]
+     * @param username  username that the user entered.
+     * @param password  password that the user entered.
+     * @return  A string with JSON format.
+     * @throws RemoteException
+     */
     // Authenticate the user by using the information stored in Authenticator.
     @Override
     public String checkUser(String username, String password) throws RemoteException {
-        JSONObject returnMessage = authenticator.authenticate(username, password);
-        System.out.println(returnMessage);
-        return returnMessage.toJSONString();
-    }
-    @Override
-    public String saveWb(String username, String wbContent) throws RemoteException {
-        /* NEED FIX */
-        JSONObject message = new JSONObject();
-        message.put("hello", 123);
-        facade.getDataServer().saveCanvas(message, "world");
-        return null;
+        return facade.checkUser(username, password);
     }
 
+    /**
+     *  Save the cavas to local file system. Under the directory(with the name of the manager)
+     * @param managerName   The manager name that wants to associate the canvas with.
+     * @param wbContent   content of whiteboard(Should be a canvas object? or a png? or a JSON?)
+     * @return  Probably return a save success JSON string? Not too sure yet.
+     * @throws RemoteException
+     */
+    // TODO: 输出值根据Web Server决定。
     @Override
-    public String loadAllWb(String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String saveWb(String managerName, String wbContent) throws RemoteException {
+        return facade.saveWb(managerName, wbContent);
+    }
+
+    /**
+     * Load canvas with specified manager name. This manager could possibly hold several canvas(maybe?)
+     * @param managerName
+     * @return
+     * @throws RemoteException
+     */
+    // TODO: 输出值根据Web Server决定。 需要看能否存入Canva的东西。
+    @Override
+    public String loadAllWb(String managerName) throws RemoteException {
+        return facade.loadAllWb(managerName);
     }
     // This is for testing purpose. Not known the communication protocol between the web server.
     @Override

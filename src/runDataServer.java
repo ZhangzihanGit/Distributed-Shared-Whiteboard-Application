@@ -14,6 +14,8 @@ public class runDataServer {
         facade.setupRemoteApplication(); // Start DB server. Meanwhile remote object is created.
 
         DataServerApplication application = facade.getDataServer();
+
+
         application.setAddress("localhost");
         application.runDataServer();
 

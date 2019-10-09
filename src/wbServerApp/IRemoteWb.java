@@ -9,46 +9,37 @@ import java.rmi.RemoteException;
 public interface IRemoteWb extends Remote {
     /**
      * Register new users
-     * @param username Username
-     * @param password Password
-     * @return Registration feedback
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
     public String register(String username, String password) throws RemoteException;
 
     /**
-     * Existing user login
-     * @param username Username
-     * @param password Password
-     * @return Login feedback
+     * Existing user login authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
     public String login(String username, String password) throws RemoteException;
 
     /**
      * Create new whiteboard and set the user to be the manager
-     * @param username Username
-     * @param wbName Whiteboard name
-     * @return Created whiteboard information
+     * @param username Username, String
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public String createWb(String username, String wbName) throws RemoteException;
+    public String createWb(String username) throws RemoteException;
 
     /**
-     * Get all available whiteboards
-     * @return List of available whiteboards
+     * join created whiteboard on server
+     * @param username Username, String
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public String getAvailableWb() throws RemoteException;
-
-    /**
-     * join specific whiteboard
-     * @param username Username
-     * @param wbID Whiteboard id
-     * @return Join feedback
-     * @throws RemoteException
-     */
-    public String joinWb(String wbID, String username) throws RemoteException;
+    public String joinWb(String username) throws RemoteException;
 
     /**
      * Close specific whiteboard

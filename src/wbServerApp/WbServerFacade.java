@@ -29,20 +29,59 @@ public class WbServerFacade {
     }
 
     /**
-     * start run server
+     * start run server at localhost
+     * @param port Port number, String
      */
-    public void runWbServer() {
-        wbServer.runWbServer();
+    public void runWbServer(String port) {
+        wbServer.runWbServer(port);
     }
 
     /**
      * connect to database server
-     * @param ip
-     * @param port
-     * @return True if connect successfully
+     * @param ip IP address, String
+     * @param port port, String
+     * @return True if connect successfully, Boolean
      */
-    public boolean connectDbServer(String ip, int port) {
+    public Boolean connectDbServer(String ip, String port) {
         return wbServer.connectDbServer(ip, port);
+    }
+
+    /**
+     * Register new users
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
+     */
+    public String register(String username, String password) {
+        return wbServer.register(username, password);
+    }
+
+    /**
+     * Existing user login authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
+     */
+    public String login(String username, String password) {
+        return wbServer.login(username, password);
+    }
+
+    /**
+     * Create new whiteboard and set the user to be the manager
+     * @param username Username, String
+     * @return JSON respond, String
+     */
+    public String createWb(String username) {
+        return wbServer.createWb(username);
+    }
+
+    /**
+     * join created whiteboard on server
+     * @param username Username, String
+     * @return JSON respond, String
+     */
+    public String joinWb(String username) {
+        return wbServer.joinWb(username);
     }
 
     /**
@@ -52,14 +91,5 @@ public class WbServerFacade {
         wbServer.exit();
         logger.info("User exit whiteboard server program");
         System.exit(1);
-    }
-
-    /**
-     * Set up server address (port)
-     * @param port
-     * @return true if set successfully
-     */
-    public boolean setAddress(int port) {
-        return wbServer.setAddress(port);
     }
 }

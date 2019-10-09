@@ -13,11 +13,10 @@ public interface IRemoteDb extends Remote {
      * add new users
      * @param username
      * @param password
-     * @param message 假设全部信息都会以一个json格式传过来。
      * @return adding feedback
      * @throws RemoteException
      */
-    public JSONObject addUser(String username, String password, JSONObject message) throws RemoteException;
+    public String addUser(String username, String password) throws RemoteException;
 
     /**
      * check whether the user exist and use the correct password

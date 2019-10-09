@@ -25,7 +25,7 @@
                </viewport>
               </ImageView>
               <Label fx:id="lbWelcome" alignment="CENTER" layoutX="48.0" layoutY="198.0" prefHeight="44.0" prefWidth="398.0" text="Welcome to the WhiteBoard" />
-              <Button fx:id="btnStart" contentDisplay="CENTER" layoutX="83.0" layoutY="273.0" mnemonicParsing="false" onAction="#showLoginView" prefHeight="44.0" prefWidth="331.0" styleClass="welcome-btn" text="Get Started" />
+              <Button fx:id="btnStart" contentDisplay="CENTER" layoutX="83.0" layoutY="273.0" mnemonicParsing="false" onAction="#showConfigView" prefHeight="44.0" prefWidth="331.0" styleClass="welcome-btn" text="Get Started" />
          </children>
       </AnchorPane>
     </children>
