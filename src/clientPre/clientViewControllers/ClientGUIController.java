@@ -115,11 +115,19 @@ public class ClientGUIController extends Application {
         baseView();
     }
 
-    private void showLoginErrorView() {
+    private void showLoginErrorView(String msg) {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Unsuccessful");
         alert.setHeaderText("Sorry, login is unsuccessful");
-        alert.setContentText("Incorrect username or password, please try again!");
+
+        if (msg == null || msg.isEmpty()) {
+            alert.setContentText("Incorrect username or password, please try again!");
+        }
+        else {
+            alert.setContentText(msg);
+        }
+
         alert.showAndWait();
     }
 
@@ -140,7 +148,8 @@ public class ClientGUIController extends Application {
 
         /** If not empty, pass it to the server to authenticate  */
         if (!this.checkIsEmpty(loginUsernameField, loginPasswordField)) {
-            Boolean isMatch = ClientAppFacade.getInstance().login(loginUsername, loginPassword);
+            String respond = ClientAppFacade.getInstance().login(loginUsername, loginPassword);
+            Boolean isMatch = ClientAppFacade.getInstance().getHeader(respond);
 
             if (isMatch) {
                 // switch to next page
@@ -150,7 +159,7 @@ public class ClientGUIController extends Application {
             } else {
                 // prompt window
                 logger.info("User " + loginUsername + " log in failed");
-                this.showLoginErrorView();
+                this.showLoginErrorView(ClientAppFacade.getInstance().getMsg(respond));
             }
         }
     }
@@ -168,7 +177,8 @@ public class ClientGUIController extends Application {
             if (signupPassword1.equals(signupPassword2) ) {
                 passwordLabel.setStyle(LABELREMOVECSS);
 
-                boolean addSuccess = ClientAppFacade.getInstance().register(signupUsername, signupPassword1);
+                String respond = ClientAppFacade.getInstance().register(signupUsername, signupPassword1);
+                boolean addSuccess = ClientAppFacade.getInstance().getHeader(respond);
 
                 if (addSuccess) {
                     // sign up successfully
@@ -211,23 +221,27 @@ public class ClientGUIController extends Application {
         /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
-                if (ClientAppFacade.getInstance().joinWb()) {
+                String joinRespond = ClientAppFacade.getInstance().joinWb();
+
+                if (ClientAppFacade.getInstance().getHeader(joinRespond)) {
                     this.showWhiteBoardView();
                 }
                 else {
                     //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
 
-                    System.out.println("Join wb failed");
+                    System.out.println(ClientAppFacade.getInstance().getMsg(joinRespond));
                 }
             }
             else if (managerCheckBox.isSelected()) {
-                if (ClientAppFacade.getInstance().createWb()) {
+                String createRespond = ClientAppFacade.getInstance().createWb();
+
+                if (ClientAppFacade.getInstance().getHeader(createRespond)) {
                     this.showWhiteBoardView();
                 }
                 else {
                     //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
 
-                    System.out.println("Create wb failed");
+                    System.out.println(ClientAppFacade.getInstance().getMsg(createRespond));
                 }
             }
         }

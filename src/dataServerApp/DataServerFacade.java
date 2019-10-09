@@ -34,7 +34,7 @@ public class DataServerFacade {
     public void setupRemoteApplication(){
         // Singleton server application.
         if (this.dataServer != null){
-            logger.fatal("Remote application starts. ");
+            logger.info("Remote application starts. ");
             dataServer.setRemoteDb(this);
         }
         else{
@@ -68,7 +68,7 @@ public class DataServerFacade {
         return dataServer.setAddress(ip);
     }
 
-    JSONObject addUser(String username, String password){
+    String addUser(String username, String password){
         return dataServer.addUser(username, password);
     }
 

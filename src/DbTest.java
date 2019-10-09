@@ -1,6 +1,7 @@
 import dataServerApp.IRemoteDb;
 import dataServerApp.UserInformation;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -37,8 +38,19 @@ public class DbTest {
         message.put("abc","abcde");
 
         // Test if Register works(use Authenticator class and RemoteDB class)
-        JSONObject jsonObject = test.addUser(username, password);
-        if(jsonObject instanceof JSONObject){
+        String jsonString = test.addUser(username, password);
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = null;
+
+        //Read JSON requst
+        try {
+            jsonObject = (JSONObject) jsonParser.parse(jsonString);
+        } catch (Exception e) {
+            // TODO: Exception catching
+        }
+
+        if(jsonObject != null && jsonObject instanceof JSONObject){
             System.out.println(jsonObject);
             System.out.println(jsonObject.toString());
             System.out.println(jsonObject.toJSONString());

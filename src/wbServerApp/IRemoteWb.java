@@ -11,35 +11,35 @@ public interface IRemoteWb extends Remote {
      * Register new users
      * @param username Username, String
      * @param password Password, String
-     * @return True if register successfully
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
-    public Boolean register(String username, String password) throws RemoteException;
+    public String register(String username, String password) throws RemoteException;
 
     /**
      * Existing user login authentication
      * @param username Username, String
      * @param password Password, String
-     * @return True if authenticate success, Boolean
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
-    public Boolean login(String username, String password) throws RemoteException;
+    public String login(String username, String password) throws RemoteException;
 
     /**
      * Create new whiteboard and set the user to be the manager
      * @param username Username, String
-     * @return True if create successfully, Boolean
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public Boolean createWb(String username) throws RemoteException;
+    public String createWb(String username) throws RemoteException;
 
     /**
      * join created whiteboard on server
      * @param username Username, String
-     * @return True if join existing whiteboard successfully, Boolean
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public Boolean joinWb(String username) throws RemoteException;
+    public String joinWb(String username) throws RemoteException;
 
     /**
      * Close specific whiteboard

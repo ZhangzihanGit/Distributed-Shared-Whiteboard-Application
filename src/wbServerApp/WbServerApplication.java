@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import dataServerApp.IRemoteDb;
 import org.apache.log4j.Logger;
+import wbServerData.WbServerDataStrategyFactory;
 
 public class WbServerApplication {
     private final static Logger logger = Logger.getLogger(WbServerApplication.class);
@@ -74,7 +75,7 @@ public class WbServerApplication {
             Registry registry = LocateRegistry.getRegistry(ip, portNum);
 
             //Retrieve the stub/proxy for the remote math object from the registry
-            remoteDb = (IRemoteDb) registry.lookup("Database");
+            remoteDb = (IRemoteDb) registry.lookup("DB");
 
             logger.info("connect to data server at ip: " + ip + ", port: " + portNum);
             return true;
@@ -89,54 +90,62 @@ public class WbServerApplication {
      * Register new users
      * @param username Username, String
      * @param password Password, String
-     * @return True if register successfully
+     * @return JSON respond from data server, String
      */
-    public Boolean register(String username, String password) {
-        //TODO: Add remote database authendication
-
-        // return remoteDb.addUser(username, password);
-        return true;
+    public String register(String username, String password) {
+        try {
+            return remoteDb.addUser(username, password);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("New user register service from data server fail to execute");
+            return "";
+        }
     }
 
     /**
      * Existing user login authentication
      * @param username Username, String
      * @param password Password, String
-     * @return True if authenticate success, Boolean
+     * @return JSON respond from data server, String
      */
-    public Boolean login(String username, String password) {
-        //TODO: Add remote database authendication
-
-        // return remoteDb.checkUser(username, password);
-        return true;
+    public String login(String username, String password) {
+        try {
+            return remoteDb.checkUser(username, password);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("Existing user login authentication service from data server fail to execute");
+            return "";
+        }
     }
 
     /**
      * Create new whiteboard and set the user to be the manager
      * @param username Username, String
-     * @return True if create successfully, Boolean
+     * @return JSON respond, String
      */
-    public synchronized Boolean createWb(String username) {
+    public synchronized String createWb(String username) {
         if (this.manager == null) {
             this.manager = username;
-            return true;
+            return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
         }
 
-        return false;
+        return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
+                "There is one manager already sign up on this server, please join in");
     }
 
     /**
      * join created whiteboard on server
      * @param username Username, String
-     * @return True if join existing whiteboard successfully, Boolean
+     * @return JSON respond, String
      */
-    public synchronized Boolean joinWb(String username) {
+    public synchronized String joinWb(String username) {
         if (this.manager != null) {
             this.users.add(username);
-            return true;
+            return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
         }
 
-        return false;
+        return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
+                "No manager has signed up on this server, please sign up as manager first");
     }
 
     /**

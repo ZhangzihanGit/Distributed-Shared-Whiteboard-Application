@@ -7,22 +7,22 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     protected RemoteWb() throws RemoteException {}
 
     @Override
-    public Boolean register(String username, String password) throws RemoteException {
+    public String register(String username, String password) throws RemoteException {
         return WbServerFacade.getInstance().register(username, password);
     }
 
     @Override
-    public Boolean login(String username, String password) throws RemoteException {
+    public String login(String username, String password) throws RemoteException {
         return WbServerFacade.getInstance().login(username, password);
     }
 
     @Override
-    public Boolean createWb(String username) throws RemoteException {
+    public String createWb(String username) throws RemoteException {
         return WbServerFacade.getInstance().createWb(username);
     }
 
     @Override
-    public Boolean joinWb(String username) throws RemoteException {
+    public String joinWb(String username) throws RemoteException {
         return WbServerFacade.getInstance().joinWb(username);
     }
 

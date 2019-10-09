@@ -1,5 +1,6 @@
 package clientApp;
 
+import clientData.ClientDataStrategyFactory;
 import org.apache.log4j.Logger;
 import wbServerApp.IRemoteWb;
 
@@ -53,15 +54,15 @@ public class ClientApplication {
      * Register new user on server
      * @param username Username, String
      * @param password Password, String
-     * @return True if register successfully
+     * @return JSON respond from server, String
      */
-    public Boolean register(String username, String password) {
+    public String register(String username, String password) {
         try {
             return remoteWb.register(username, password);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Register new users service from whiteboard server fail to execute");
-            return false;
+            return "";
         }
     }
 
@@ -69,43 +70,43 @@ public class ClientApplication {
      * Existing user log in authentication
      * @param username Username, String
      * @param password Password, String
-     * @return True if authenticate success, Boolean
+     * @return JSON respond from server, String
      */
-    public Boolean login(String username, String password) {
+    public String login(String username, String password) {
         try {
             return remoteWb.login(username, password);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Existing user login service from whiteboard server fail to execute");
-            return false;
+            return "";
         }
     }
 
     /**
      * Create new whiteboard and set the user to be the manager
-     * @return True if created successfully, Boolean
+     * @return JSON response from server, String
      */
-    public Boolean createWb() {
+    public String createWb() {
         try {
             return remoteWb.createWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Create whiteboard service from whiteboard server fail to execute");
-            return false;
+            return "";
         }
     }
 
     /**
      * Join whiteboard on server
-     * @return True if join successfully, Boolean
+     * @return JSON response from server, String
      */
-    public Boolean joinWb() {
+    public String joinWb() {
         try {
             return remoteWb.joinWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Join whiteboard service from whiteboard server fail to execute");
-            return false;
+            return "";
         }
     }
 
@@ -138,23 +139,6 @@ public class ClientApplication {
             logger.error(e.toString());
             logger.error("Save whiteboard online service from whiteboard server fail to execute");
             return "[ERROR]: Save whiteboard online service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Save specific whiteboard locally
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param format File format
-     * @return Saving feedback
-     */
-    public String saveWbLocally(String wbID, String username, String format) {
-        try {
-            return remoteWb.saveWbLocally(wbID, username, format);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Save whiteboard locally service from whiteboard server fail to execute");
-            return "[ERROR]: Save whiteboard locally service from whiteboard server fail to execute";
         }
     }
 
@@ -239,23 +223,6 @@ public class ClientApplication {
     }
 
     /**
-     * Erase diagram
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param content Erasing content
-     * @return Erasing feedback
-     */
-    public String erase(String wbID, String username, String content) {
-        try {
-            return remoteWb.erase(wbID, username, content);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Erase distributed whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Erase distributed whiteboard service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
      * Send message
      * @param wbID Whiteboard id
      * @param username Username
@@ -270,6 +237,24 @@ public class ClientApplication {
             logger.error("Send message to whiteboard service from whiteboard server fail to execute");
             return "[ERROR]: Send message to whiteboard service from whiteboard server fail to execute";
         }
+    }
+
+    /**
+     * Resolve the header of JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return True if the header stores success, Boolean
+     */
+    public Boolean getHeader(String respond) {
+        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getHeader(respond);
+    }
+
+    /**
+     * Resolve the message appended in the JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return Message appended in the respond, String
+     */
+    public String getMsg(String respond) {
+        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(respond);
     }
 
     // getter and setter

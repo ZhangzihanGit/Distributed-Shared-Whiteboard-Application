@@ -50,9 +50,9 @@ public class WbServerFacade {
      * Register new users
      * @param username Username, String
      * @param password Password, String
-     * @return True if register successfully
+     * @return JSON respond from data server, String
      */
-    public Boolean register(String username, String password) {
+    public String register(String username, String password) {
         return wbServer.register(username, password);
     }
 
@@ -60,27 +60,27 @@ public class WbServerFacade {
      * Existing user login authentication
      * @param username Username, String
      * @param password Password, String
-     * @return True if authenticate success, Boolean
+     * @return JSON respond from data server, String
      */
-    public Boolean login(String username, String password) {
+    public String login(String username, String password) {
         return wbServer.login(username, password);
     }
 
     /**
      * Create new whiteboard and set the user to be the manager
      * @param username Username, String
-     * @return True if create successfully, Boolean
+     * @return JSON respond, String
      */
-    public Boolean createWb(String username) {
+    public String createWb(String username) {
         return wbServer.createWb(username);
     }
 
     /**
      * join created whiteboard on server
      * @param username Username, String
-     * @return True if join existing whiteboard successfully, Boolean
+     * @return JSON respond, String
      */
-    public Boolean joinWb(String username) {
+    public String joinWb(String username) {
         return wbServer.joinWb(username);
     }
 
