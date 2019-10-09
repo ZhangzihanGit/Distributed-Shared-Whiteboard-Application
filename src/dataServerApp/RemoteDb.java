@@ -1,6 +1,7 @@
 package dataServerApp;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -22,10 +23,19 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
      * @throws RemoteException
      */
     @Override
-    public JSONObject addUser(String username, String password) throws RemoteException {
-        JSONObject returnMessage = facade.addUser(username, password);
-        if (returnMessage.get("header").equals("Success")){
-            facade.iteratePassBook();
+    public String addUser(String username, String password) throws RemoteException {
+        String returnMessage = facade.addUser(username, password);
+
+        JSONParser jsonParser = new JSONParser();
+
+        //Read JSON requst
+        try {
+            JSONObject returnJSON = (JSONObject) jsonParser.parse(returnMessage);
+            if (returnJSON.get("header").equals("Success")){
+                facade.iteratePassBook();
+            }
+        } catch (Exception e) {
+            // TODO: Exception catching
         }
 
         return returnMessage;

@@ -34,59 +34,48 @@ public class ClientAppFacade {
 
     /**
      * Connect to whiteboard server
-     * @param ip IP address
+     * @param ip IP address, String
+     * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip) {
-        return clientApp.connectWbServer(ip);
+    public Boolean connectWbServer(String ip, String port) {
+        return clientApp.connectWbServer(ip, port);
     }
 
     /**
      * Register new user on server
-     * @param username Username
-     * @param password Password
-     * @return Register information
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from server, String
      */
     public String register(String username, String password) {
         return clientApp.register(username, password);
     }
 
     /**
-     * Existing user log in
-     * @param username Username
-     * @param password Password
-     * @return Login information
+     * Existing user log in authenticate
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from server, String
      */
     public String login(String username, String password) {
         return clientApp.login(username, password);
     }
 
     /**
-     * Create new whiteboard and set the user to be the manager
-     * @param username Username
-     * @param wbName Whiteboard name
-     * @return Created whiteboard information
+     * Create new whiteboard on server and set the user to be the manager
+     * @return JSON response from server, String
      */
-    public String createWb(String username, String wbName) {
-        return clientApp.createWb(username, wbName);
+    public String createWb() {
+        return clientApp.createWb();
     }
 
     /**
-     * Get all available whiteboards
-     * @return List of available whiteboards
+     * Join whiteboard on server
+     * @return JSON response from server, String
      */
-    public String getAvailableWb() {
-        return clientApp.getAvailableWb();
-    }
-
-    /**
-     * Join specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Join feedback
-     */
-    public String joinWb(String wbID, String username) {
-        return clientApp.joinWb(wbID, username);
+    public String joinWb() {
+        return clientApp.joinWb();
     }
 
     /**
@@ -107,17 +96,6 @@ public class ClientAppFacade {
      */
     public String saveWbOnline(String wbID, String username) {
         return clientApp.saveWbOnline(wbID, username);
-    }
-
-    /**
-     * Save specific whiteboard locally
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param format File format
-     * @return Saving feedback
-     */
-    public String saveWbLocally(String wbID, String username, String format) {
-        return clientApp.saveWbLocally(wbID, username, format);
     }
 
     /**
@@ -171,17 +149,6 @@ public class ClientAppFacade {
     }
 
     /**
-     * Erase diagram
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param content Erasing content
-     * @return Erasing feedback
-     */
-    public String erase(String wbID, String username, String content) {
-        return clientApp.erase(wbID, username, content);
-    }
-
-    /**
      * Send message
      * @param wbID Whiteboard id
      * @param username Username
@@ -193,10 +160,36 @@ public class ClientAppFacade {
     }
 
     /**
-     * Exit client program
+     * Resolve the header of JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return True if the header stores success, Boolean
      */
-    public void exit() {
-        logger.info("User exit client program");
-        System.exit(1);
+    public Boolean getHeader(String respond) {
+        return clientApp.getHeader(respond);
+    }
+
+    /**
+     * Resolve the message appended in the JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return Message appended in the respond, String
+     */
+    public String getMsg(String respond) {
+        return clientApp.getMsg(respond);
+    }
+
+    /**
+     * Set the username of current client
+     * @param username Username, String
+     */
+    public void setUsername(String username) {
+        clientApp.setUsername(username);
+    }
+
+    /**
+     * Get the username of current client
+     * @return Username, String
+     */
+    public String getUsername() {
+        return clientApp.getUsername();
     }
 }

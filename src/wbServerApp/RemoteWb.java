@@ -8,32 +8,22 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
 
     @Override
     public String register(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return "REGISTER FUNCTION NOT FINISH " + username + " " + password;
+        return WbServerFacade.getInstance().register(username, password);
     }
 
     @Override
     public String login(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return "LOGIN FUNCTION NOT FINISH " + username + " " + password;
+        return WbServerFacade.getInstance().login(username, password);
     }
 
     @Override
-    public String createWb(String username, String wbName) throws RemoteException {
-        /* NEED FIX */
-        return "CREATE WB FUNCTION NOT FINISH " + username + " " + wbName;
+    public String createWb(String username) throws RemoteException {
+        return WbServerFacade.getInstance().createWb(username);
     }
 
     @Override
-    public String getAvailableWb() throws RemoteException {
-        /* NEED FIX */
-        return "GET AVAILABLE WB FUNCTION NOT FINISH ";
-    }
-
-    @Override
-    public String joinWb(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return "JOIN WB FUNCTION NOT FINISH ";
+    public String joinWb(String username) throws RemoteException {
+        return WbServerFacade.getInstance().joinWb(username);
     }
 
     @Override

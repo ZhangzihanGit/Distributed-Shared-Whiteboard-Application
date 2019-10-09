@@ -47,10 +47,9 @@ public class DataServerApplication {
             // For testing purpose, IP address is not used(since it is for now only local machine)
             // Later the ip will be used for several machines testing purpose.
             registry = LocateRegistry.createRegistry(defaultPort);
-            System.out.println(serverIP);
             registry.bind("DB", remoteDb);
 
-            logger.info("Data server start running (by RMI) at IP: " + serverIP);
+            logger.info("Data server start running (by RMI) at localhost port: " + defaultPort);
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remote registry set up failed");
@@ -93,8 +92,8 @@ public class DataServerApplication {
         }
     }
 
-    JSONObject addUser(String username, String password){
-        return authenticator.registerUser(username, password);
+    String addUser(String username, String password){
+        return authenticator.registerUser(username, password).toJSONString();
     }
 
     String checkUser(String username, String password){

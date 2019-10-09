@@ -10,10 +10,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 
 public class ClientGUIController extends Application {
+    private final static Logger logger = Logger.getLogger(ClientGUIController.class);
 
     /**
      * private singleton instance
@@ -40,8 +42,6 @@ public class ClientGUIController extends Application {
     @FXML private TextField IPField;
     @FXML private TextField portField;
 
-    private ClientAppFacade facade = null;
-
     /**
      * private constructor
      */
@@ -65,7 +65,6 @@ public class ClientGUIController extends Application {
      */
     public void runClientGUI() {
         launch();
-        facade = ClientAppFacade.getInstance();
     }
 
     /**
@@ -102,8 +101,7 @@ public class ClientGUIController extends Application {
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.IDENTITY.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.IDENTITY.getTitle());
 
-//        String userName = ClientAppFacade.getUserName();
-        String userName = "Zihan";  // pass the username to me
+        String userName = ClientAppFacade.getInstance().getUsername();
         String header = userName + ", Which role do you wanna play today?";
 
 //        identityHeader.setText(header);   // null pointer error, dont know why
@@ -117,11 +115,19 @@ public class ClientGUIController extends Application {
         baseView();
     }
 
-    private void showLoginErrorView() {
+    private void showLoginErrorView(String msg) {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Unsuccessful");
         alert.setHeaderText("Sorry, login is unsuccessful");
-        alert.setContentText("Incorrect username or password, please try again!");
+
+        if (msg == null || msg.isEmpty()) {
+            alert.setContentText("Incorrect username or password, please try again!");
+        }
+        else {
+            alert.setContentText(msg);
+        }
+
         alert.showAndWait();
     }
 
@@ -137,20 +143,23 @@ public class ClientGUIController extends Application {
      */
     @FXML
     private void controlLogin() throws IOException {
-//        String loginUsername = this.loginUsernameField.getText();
-//        String loginPassword = this.loginPasswordField.getText();
+        String loginUsername = this.loginUsernameField.getText();
+        String loginPassword = this.loginPasswordField.getText();
 
         /** If not empty, pass it to the server to authenticate  */
         if (!this.checkIsEmpty(loginUsernameField, loginPasswordField)) {
-            // Boolean isMatch = ClientAppFacade.authenticate(loginUsername, loginPassword);
-            Boolean isMatch = true;
+            String respond = ClientAppFacade.getInstance().login(loginUsername, loginPassword);
+            Boolean isMatch = ClientAppFacade.getInstance().getHeader(respond);
 
             if (isMatch) {
                 // switch to next page
+                logger.info("User " + loginUsername + " log in successfully");
+                ClientAppFacade.getInstance().setUsername(loginUsername);
                 this.showChooseIdentityView();
             } else {
                 // prompt window
-                this.showLoginErrorView();
+                logger.info("User " + loginUsername + " log in failed");
+                this.showLoginErrorView(ClientAppFacade.getInstance().getMsg(respond));
             }
         }
     }
@@ -158,6 +167,7 @@ public class ClientGUIController extends Application {
     @FXML
     private void controlSignup() throws IOException {
 
+        String signupUsername = this.signupUsernameField.getText();
         String signupPassword1 = this.signupPasswordField1.getText();
         String signupPassword2 = this.signupPasswordField2.getText();
 
@@ -166,18 +176,21 @@ public class ClientGUIController extends Application {
             // if passwords match, , pass it to the server to authenticate
             if (signupPassword1.equals(signupPassword2) ) {
                 passwordLabel.setStyle(LABELREMOVECSS);
-                //TODO: boolean isUsed = ClientAppFacade.isUsed(signupUsername);
-                boolean isUsed = false;
 
-                if (!isUsed) {
+                String respond = ClientAppFacade.getInstance().register(signupUsername, signupPassword1);
+                boolean addSuccess = ClientAppFacade.getInstance().getHeader(respond);
+
+                if (addSuccess) {
                     // sign up successfully
-                    System.out.println("sign up successfully");
-                    //TODO: record the user info into server
+                    logger.info("New user " + signupUsername + " sign up successfully");
+                    ClientAppFacade.getInstance().setUsername(signupUsername);
                     this.showChooseIdentityView();
                 } else {
+                    logger.info("New user " + signupUsername + " sign up failed");
                     usernameLabel.setStyle(LABELCSS);
                 }
             } else {
+                logger.info("New user " + signupUsername + " sign up failed");
                 passwordLabel.setStyle(LABELCSS);
             }
         }
@@ -190,23 +203,47 @@ public class ClientGUIController extends Application {
         String port = this.portField.getText();
 
         if(!this.checkIsEmpty(IPField, portField)) {
-            //TODO: handle if IP and port is valid exception
+            // if connect to server successfully, go to login page, else report error message
+            if (ClientAppFacade.getInstance().connectWbServer(ip, port)) {
+                this.showLoginView();
+            }
+            else {
+                //TODO: display error message if can't connect to server
 
-
-//            this.showCanvasView();
-            System.out.println("move to canvas");
-            this.showWhiteBoardView();
+                System.exit(1);
+                // this.showConfigErrorView();
+            }
         }
-
     }
 
     @FXML
     private void controlCheckBox() throws IOException {
         /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
-            this.showConfigView();
-            // pass role to the server
-            //ClientAppFacade.setRole(...);
+            if (visitorCheckBox.isSelected()) {
+                String joinRespond = ClientAppFacade.getInstance().joinWb();
+
+                if (ClientAppFacade.getInstance().getHeader(joinRespond)) {
+                    this.showWhiteBoardView();
+                }
+                else {
+                    //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
+
+                    System.out.println(ClientAppFacade.getInstance().getMsg(joinRespond));
+                }
+            }
+            else if (managerCheckBox.isSelected()) {
+                String createRespond = ClientAppFacade.getInstance().createWb();
+
+                if (ClientAppFacade.getInstance().getHeader(createRespond)) {
+                    this.showWhiteBoardView();
+                }
+                else {
+                    //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+
+                    System.out.println(ClientAppFacade.getInstance().getMsg(createRespond));
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package clientApp;
 
+import clientData.ClientDataStrategyFactory;
 import org.apache.log4j.Logger;
 import wbServerApp.IRemoteWb;
 
@@ -9,10 +10,8 @@ import java.rmi.registry.Registry;
 public class ClientApplication {
     private final static Logger logger = Logger.getLogger(ClientApplication.class);
 
-    private String serverIP = null;
-    private int serverPort = 0;
-
     private IRemoteWb remoteWb = null;
+    private String username = null;
 
     /**
      * constructor
@@ -21,29 +20,41 @@ public class ClientApplication {
 
     /**
      * Connect to whiteboard server
-     * @param ip IP address
+     * @oaram ip IP address, String
+     * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip) {
+    public Boolean connectWbServer(String ip, String port) {
+        // parameter checking
+        int portNum = 1111;
+        try {
+            portNum = Integer.parseInt(port);
+        } catch (Exception e) {
+            logger.warn(e.toString());
+            logger.warn("port number specified not valid, use default port number 1111");
+        }
+
         try {
             //Connect to the rmiregistry that is running on localhost
-            Registry registry = LocateRegistry.getRegistry(ip);
+            Registry registry = LocateRegistry.getRegistry(ip, portNum);
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
+
+            logger.info("connect to server at ip: " + ip + ", port: " + portNum);
             return true;
         } catch (Exception e) {
             logger.fatal(e.toString());
-            logger.fatal("Obtain remote service from whiteboard server(" + ip + ") failed");
+            logger.fatal("Obtain remote service from whiteboard server(" + ip + ", " + portNum + ") failed");
             return false;
         }
     }
 
     /**
      * Register new user on server
-     * @param username Username
-     * @param password Password
-     * @return Register information
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from server, String
      */
     public String register(String username, String password) {
         try {
@@ -51,15 +62,15 @@ public class ClientApplication {
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Register new users service from whiteboard server fail to execute");
-            return "[ERROR]: Register new users service from whiteboard server fail to execute";
+            return "";
         }
     }
 
     /**
-     * Existing user log in
-     * @param username Username
-     * @param password Password
-     * @return Login information
+     * Existing user log in authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from server, String
      */
     public String login(String username, String password) {
         try {
@@ -67,53 +78,35 @@ public class ClientApplication {
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Existing user login service from whiteboard server fail to execute");
-            return "[ERROR]: Existing user login service from whiteboard server fail to execute";
+            return "";
         }
     }
 
     /**
      * Create new whiteboard and set the user to be the manager
-     * @param username Username
-     * @param wbName Whiteboard name
-     * @return Created whiteboard information
+     * @return JSON response from server, String
      */
-    public String createWb(String username, String wbName) {
+    public String createWb() {
         try {
-            return remoteWb.createWb(username, wbName);
+            return remoteWb.createWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Create whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Create whiteboard service from whiteboard server fail to execute";
+            return "";
         }
     }
 
     /**
-     * Get all available whiteboards
-     * @return List of available whiteboards
+     * Join whiteboard on server
+     * @return JSON response from server, String
      */
-    public String getAvailableWb() {
+    public String joinWb() {
         try {
-            return remoteWb.getAvailableWb();
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Get available whiteboards service from whiteboard server fail to execute");
-            return "[ERROR]: Get available whiteboards service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Join specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return join feedback
-     */
-    public String joinWb(String wbID, String username) {
-        try {
-            return remoteWb.joinWb(wbID, username);
+            return remoteWb.joinWb(this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Join whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Join whiteboard service from whiteboard server fail to execute";
+            return "";
         }
     }
 
@@ -146,23 +139,6 @@ public class ClientApplication {
             logger.error(e.toString());
             logger.error("Save whiteboard online service from whiteboard server fail to execute");
             return "[ERROR]: Save whiteboard online service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Save specific whiteboard locally
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param format File format
-     * @return Saving feedback
-     */
-    public String saveWbLocally(String wbID, String username, String format) {
-        try {
-            return remoteWb.saveWbLocally(wbID, username, format);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Save whiteboard locally service from whiteboard server fail to execute");
-            return "[ERROR]: Save whiteboard locally service from whiteboard server fail to execute";
         }
     }
 
@@ -247,23 +223,6 @@ public class ClientApplication {
     }
 
     /**
-     * Erase diagram
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param content Erasing content
-     * @return Erasing feedback
-     */
-    public String erase(String wbID, String username, String content) {
-        try {
-            return remoteWb.erase(wbID, username, content);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Erase distributed whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Erase distributed whiteboard service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
      * Send message
      * @param wbID Whiteboard id
      * @param username Username
@@ -277,6 +236,46 @@ public class ClientApplication {
             logger.error(e.toString());
             logger.error("Send message to whiteboard service from whiteboard server fail to execute");
             return "[ERROR]: Send message to whiteboard service from whiteboard server fail to execute";
+        }
+    }
+
+    /**
+     * Resolve the header of JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return True if the header stores success, Boolean
+     */
+    public Boolean getHeader(String respond) {
+        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getHeader(respond);
+    }
+
+    /**
+     * Resolve the message appended in the JSON respond from server
+     * @param respond JSON respond from server, String
+     * @return Message appended in the respond, String
+     */
+    public String getMsg(String respond) {
+        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(respond);
+    }
+
+    // getter and setter
+    /**
+     * Set the username of current client
+     * @param username Username, String
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * Get the username of current client
+     * @return Username, String
+     */
+    public String getUsername() {
+        if (this.username != null) {
+            return this.username;
+        }
+        else {
+            return "User";
         }
     }
 }
