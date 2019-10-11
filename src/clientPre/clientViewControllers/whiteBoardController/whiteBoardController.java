@@ -12,9 +12,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -23,6 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class whiteBoardController<list> {
+
+    private static whiteBoardController instance;
+    public static whiteBoardController getInstance(){
+        if(instance == null){
+            instance = new whiteBoardController();
+        }
+        return instance;
+    }
+
+
     @FXML
     private Canvas canvas;
     @FXML
@@ -58,11 +71,15 @@ public class whiteBoardController<list> {
     @FXML
     private Pane pane;
 
-    private String clientType = "manager";
+    private String clientType = "client";
 
     private String mode = "draw";
 
     private String saveFilePath = "";
+
+    public void setClientType(String clientType){
+        this.clientType = clientType;
+    }
 
     private void initSendMessage(){
 
@@ -87,6 +104,11 @@ public class whiteBoardController<list> {
             messageRecord.setText(text);
             sendMessage.clear();
         });
+    }
+    public void updateWhiteBoard(){
+        pane.getChildren().remove(canvas);
+        //TODO canvas = get updated canvas from rmi
+        pane.getChildren().add(canvas);
     }
 
     private void initDrawMethods(){
@@ -139,11 +161,13 @@ public class whiteBoardController<list> {
                 gc.beginPath();
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
             else if(mode.equals("circle")){
                 SetRadius setRadius = new SetRadius();
                 Double radius = setRadius.display();
                 gc.strokeOval(e.getX() - radius/2, e.getY() - radius/2, radius, radius);
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
             else if(mode.equals("rectangle")){
                 SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
@@ -156,6 +180,7 @@ public class whiteBoardController<list> {
                 }
 
                 gc.strokeRect(e.getX() - width/2, e.getY() - height/2, width, height);
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
             else if(mode.equals("oval")){
                 SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
@@ -166,13 +191,14 @@ public class whiteBoardController<list> {
                     width = list.get(0);
                     height = list.get(1);
                 }
-
                 gc.strokeOval(e.getX() - width/2, e.getY() - height/2, width, height);
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
             else if(mode.equals("text")){
                 InputText inputText = new InputText();
                 String content = inputText.display();
                 gc.fillText(content, e.getX(), e.getY());
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
         });
 
@@ -181,6 +207,7 @@ public class whiteBoardController<list> {
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
             }
+            //TODO send the new canvas object to RMI, maybe call draw()? 
         });
 
         canvas.setOnMouseDragged(e->{
@@ -190,16 +217,17 @@ public class whiteBoardController<list> {
 
                 gc.lineTo(x, y);
                 gc.stroke();
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
             else if(mode.equals("erase")){
                 gc.clearRect(x, y, slider.getValue(), slider.getValue());
+                //TODO send the new canvas object to RMI, maybe call draw()? 
             }
         });
     }
+
     ObservableList<String> list = FXCollections.observableArrayList(
             "Manager", "coworker1", "coworker2", "coworker3");
-
-
 
     private void initListView(ObservableList<String> list){
         listView.setItems(list);
@@ -264,6 +292,7 @@ public class whiteBoardController<list> {
         double w = canvas.getWidth();
         gc.clearRect(0, 0, w, h);
         saveFilePath = "";
+        //TODO send the new canvas object to RMI, maybe call draw()? 
     }
 
     public void save(){
@@ -288,6 +317,7 @@ public class whiteBoardController<list> {
             saveAs();
         }
     }
+
     public void open(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         DoYouWantToSave d = new DoYouWantToSave();
@@ -307,10 +337,11 @@ public class whiteBoardController<list> {
             gc.drawImage(image, 0, 0, w, h);
             saveFilePath = filePath;
         }
-
+        //TODO send the new canvas object to RMI, maybe call draw()?
     }
 
     public void close(){
+        //TODO force all the coworkers to exit the white board view
         System.exit(0);
     }
 }
