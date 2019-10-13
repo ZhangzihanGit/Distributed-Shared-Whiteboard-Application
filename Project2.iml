@@ -27,5 +27,6 @@
     </orderEntry>
     <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" name="log4j-1.2.17" level="project" />
+    <orderEntry type="library" name="org.eclipse.paho.client.mqttv3-1.1.0" level="project" />
   </component>
 </module>

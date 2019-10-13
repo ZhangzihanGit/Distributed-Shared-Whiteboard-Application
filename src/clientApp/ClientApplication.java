@@ -2,6 +2,9 @@ package clientApp;
 
 import clientData.ClientDataStrategyFactory;
 import org.apache.log4j.Logger;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerApp.IRemoteWb;
 
 import java.rmi.registry.LocateRegistry;
@@ -12,6 +15,8 @@ public class ClientApplication {
 
     private IRemoteWb remoteWb = null;
     private String username = null;
+
+    private MqttClient mqttSubscriber = null;
 
     /**
      * constructor
@@ -24,7 +29,7 @@ public class ClientApplication {
      * @param port port, String
      * @return True if connect successfully
      */
-    public Boolean connectWbServer(String ip, String port) {
+    public boolean connectWbServer(String ip, String port) {
         // parameter checking
         int portNum = 1111;
         try {
@@ -34,18 +39,82 @@ public class ClientApplication {
             logger.warn("port number specified not valid, use default port number 1111");
         }
 
+        String ipAddr = "localhost";
+        if (!ip.equals("")) {
+            ipAddr = ip;
+        }
+
         try {
             //Connect to the rmiregistry that is running on localhost
-            Registry registry = LocateRegistry.getRegistry(ip, portNum);
+            Registry registry = LocateRegistry.getRegistry(ipAddr, portNum);
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
 
-            logger.info("connect to server at ip: " + ip + ", port: " + portNum);
+            logger.info("connect to server at ip: " + ipAddr + ", port: " + portNum);
             return true;
         } catch (Exception e) {
             logger.fatal(e.toString());
-            logger.fatal("Obtain remote service from whiteboard server(" + ip + ", " + portNum + ") failed");
+            logger.fatal("Obtain remote service from whiteboard server(" + ipAddr + ", " + portNum + ") failed");
+            return false;
+        }
+    }
+
+    /**
+     * Connect to a remote broker
+     * @param ip Ip address
+     * @param port Port
+     * @return True if connect successfully
+     */
+    public boolean connectBroker(String ip, String port) {
+        String broker = "tcp://localhost:1883";
+        MemoryPersistence persistence = new MemoryPersistence();
+
+        if (ip != null && !ip.equals("")) {
+            broker = "tcp://" + ip + ":1883";
+            if (port != null && !port.equals("")) {
+                broker = "tcp://" + ip + ":" + port;
+            }
+        }
+
+        try {
+            this.mqttSubscriber = new MqttClient(broker, MqttClient.generateClientId(), persistence);
+
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setAutomaticReconnect(true);
+            connOpts.setCleanSession(true);
+            connOpts.setConnectionTimeout(10);
+
+            logger.info("Connecting to broker: " + broker);
+            this.mqttSubscriber.connect(connOpts);
+            logger.info("Connected to broker successfully");
+
+            this.mqttSubscriber.setCallback(new ClientMqttCallBack());
+            return true;
+        } catch(Exception e) {
+            logger.fatal(e.toString());
+            logger.fatal("Connect to remote broker failed");
+            return false;
+        }
+    }
+
+    /**
+     * Let this client subscribe to a specific topic
+     * @param topic Topic that this client will subscribe
+     * @return True if subscribe successfully
+     */
+    public boolean subscribeTopic(String topic) {
+        if (this.mqttSubscriber == null) {
+            return false;
+        }
+
+        try {
+            this.mqttSubscriber.subscribe(topic);
+            logger.info("Subscribe to topic: " + topic + " successfully");
+            return true;
+        } catch(Exception e) {
+            logger.error(e.toString());
+            logger.error("Subscribe topic: " + topic + " failed");
             return false;
         }
     }
@@ -84,11 +153,12 @@ public class ClientApplication {
 
     /**
      * Create new whiteboard and set the user to be the manager
+     * @param wbName Name of whiteboard, String
      * @return JSON response from server, String
      */
-    public String createWb() {
+    public String createWb(String wbName) {
         try {
-            return remoteWb.createWb(this.getUsername());
+            return remoteWb.createWb(wbName, this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Create whiteboard service from whiteboard server fail to execute");
@@ -98,14 +168,29 @@ public class ClientApplication {
 
     /**
      * Join whiteboard on server
+     * @param wbName Name of whiteboard, String
      * @return JSON response from server, String
      */
-    public String joinWb() {
+    public String joinWb(String wbName) {
         try {
-            return remoteWb.joinWb(this.getUsername());
+            return remoteWb.joinWb(wbName, this.getUsername());
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Join whiteboard service from whiteboard server fail to execute");
+            return "";
+        }
+    }
+
+    /**
+     * Get the name of all created whiteboards
+     * @return JSON response from server, String
+     */
+    public String getCreatedWb() {
+        try {
+            return remoteWb.getCreatedWb();
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("Get all created whiteboard names service from whiteboard server fail to execute");
             return "";
         }
     }
@@ -277,5 +362,21 @@ public class ClientApplication {
         else {
             return "User";
         }
+    }
+
+    /**
+     * Exit client program
+     */
+    public void exit() {
+        try {
+            if (this.mqttSubscriber != null) {
+                this.mqttSubscriber.disconnect();
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("Disconnect with remote broker failed");
+        }
+
+        System.exit(1);
     }
 }

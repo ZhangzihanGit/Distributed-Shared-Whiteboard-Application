@@ -222,7 +222,13 @@ public class ClientGUIController extends Application {
         /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
-                String joinRespond = ClientAppFacade.getInstance().joinWb();
+                // TODO: display existing whiteboard name list to client and get his choice
+                // to get the whiteboard name name list:
+                // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
+                // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
+                String wbName = "whiteboard1";
+
+                String joinRespond = ClientAppFacade.getInstance().joinWb(wbName);
 
                 if (ClientAppFacade.getInstance().getHeader(joinRespond)) {
                     this.showWhiteBoardView();
@@ -234,7 +240,10 @@ public class ClientGUIController extends Application {
                 }
             }
             else if (managerCheckBox.isSelected()) {
-                String createRespond = ClientAppFacade.getInstance().createWb();
+                // TODO: get whiteboard name from input of manager
+                String wbName = "whiteboard1";
+
+                String createRespond = ClientAppFacade.getInstance().createWb(wbName);
 
                 if (ClientAppFacade.getInstance().getHeader(createRespond)) {
                     this.showWhiteBoardView();

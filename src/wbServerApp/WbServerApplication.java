@@ -7,6 +7,9 @@ import java.util.ArrayList;
 
 import dataServerApp.IRemoteDb;
 import org.apache.log4j.Logger;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerData.WbServerDataStrategyFactory;
 
 public class WbServerApplication {
@@ -15,8 +18,10 @@ public class WbServerApplication {
     private IRemoteWb remoteWb = null;
     private IRemoteDb remoteDb = null;
 
-    private String manager = null;
-    private ArrayList<String> users = new ArrayList<>();
+    private Process mosquittoProc = null;
+    MqttClient mqttPublisher = null;
+
+    private ArrayList<Whiteboard> whiteboards = new ArrayList<>();
 
     /**
      * constructor
@@ -25,7 +30,10 @@ public class WbServerApplication {
         try {
             remoteWb = new RemoteWb();
         } catch (Exception e) {
+            logger.fatal(e.toString());
             logger.fatal("Initialization whiteboard remote object failed");
+
+            this.exit();
         }
     }
 
@@ -51,6 +59,7 @@ public class WbServerApplication {
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Whiteboard remote registry set up failed");
+            this.exit();
         }
     }
 
@@ -58,9 +67,8 @@ public class WbServerApplication {
      * Connect to data server
      * @param ip IP address, String
      * @param port port, String
-     * @return True if connect successfully, Boolean
      */
-    public boolean connectDbServer(String ip, String port) {
+    public void connectDbServer(String ip, String port) {
         // parameter checking
         int portNum = 1111;
         try {
@@ -78,11 +86,45 @@ public class WbServerApplication {
             remoteDb = (IRemoteDb) registry.lookup("DB");
 
             logger.info("connect to data server at ip: " + ip + ", port: " + portNum);
-            return true;
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Obtain remote service from database server(" + ip + ") failed");
-            return false;
+            this.exit();
+        }
+    }
+
+    /**
+     * Create new subprocess to start mosquitto broker
+     * @param port Port
+     */
+    public void startBroker(String port) {
+        String[] cmd = new String[] {"/bin/bash", "-c", "/usr/local/sbin/mosquitto"};
+        String broker = "tcp://localhost:1883";
+
+        if (port != null && !port.equals("")) {
+            cmd = new String[] {"/bin/bash", "-c", "/usr/local/sbin/mosquitto", "-p", port};
+            broker = "tcp://localhost:" + port;
+        }
+
+        MemoryPersistence persistence = new MemoryPersistence();
+
+        try {
+            this.mosquittoProc = new ProcessBuilder(cmd).start();
+
+            this.mqttPublisher  = new MqttClient(broker, "wbServer", persistence);
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setAutomaticReconnect(true);
+            connOpts.setCleanSession(true);
+            connOpts.setConnectionTimeout(10);
+
+            logger.info("Connecting to broker: " + broker);
+            mqttPublisher.connect(connOpts);
+            logger.info("Connected to broker successfully");
+        } catch (Exception e) {
+            logger.fatal(e.toString());
+            logger.fatal("Create process to start broker and connect to it failed");
+
+            this.exit();
         }
     }
 
@@ -120,32 +162,55 @@ public class WbServerApplication {
 
     /**
      * Create new whiteboard and set the user to be the manager
+     * @param wbName Name of whiteboard, String
      * @param username Username, String
      * @return JSON respond, String
      */
-    public synchronized String createWb(String username) {
-        if (this.manager == null) {
-            this.manager = username;
-            return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
+    public synchronized String createWb(String wbName, String username) {
+        // check whether the same whiteboard is already created
+        for (Whiteboard wb: whiteboards) {
+            if (wb.getName().equals(wbName)) {
+                return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
+                        "There is one manager already sign up on this server, please join in");
+            }
         }
 
-        return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
-                "There is one manager already sign up on this server, please join in");
+        whiteboards.add(new Whiteboard(wbName, username));
+
+        return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
     }
 
     /**
      * join created whiteboard on server
+     * @param wbName Name of whiteboard, String
      * @param username Username, String
      * @return JSON respond, String
      */
-    public synchronized String joinWb(String username) {
-        if (this.manager != null) {
-            this.users.add(username);
-            return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
+    public synchronized String joinWb(String wbName, String username) {
+        for (Whiteboard wb: whiteboards) {
+            if (wb.getName().equals(wbName)) {
+                wb.addUser(username);
+                return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, "");
+            }
         }
 
         return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
                 "No manager has signed up on this server, please sign up as manager first");
+    }
+
+    /**
+     * Get the name of all created whiteboards
+     * @return JSON response, String
+     */
+    public String getCreatedWb() {
+        String msg = "";
+
+        for (Whiteboard wb: whiteboards) {
+            msg += wb.getName() + ",";
+        }
+
+        return WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(false,
+                msg);
     }
 
     /**
@@ -154,9 +219,18 @@ public class WbServerApplication {
     public void exit() {
         try {
             UnicastRemoteObject.unexportObject(remoteWb, false);
+
+            if (this.mosquittoProc != null) {
+                mosquittoProc.destroy();
+            }
+            if (this.mqttPublisher != null) {
+                mqttPublisher.disconnect();
+            }
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Whiteboard server remove remote object from rmi runtime failed");
         }
+
+        System.exit(1);
     }
 }

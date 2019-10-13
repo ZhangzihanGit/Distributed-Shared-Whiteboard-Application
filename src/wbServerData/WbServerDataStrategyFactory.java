@@ -8,12 +8,15 @@ public class WbServerDataStrategyFactory {
     private static WbServerDataStrategyFactory instance = null;
     /** JSON strategy */
     private WbServerJsonDataStrategy json = null;
+    /** MQTT publish */
+    private WbServerMqttPublish mqttPublish = null;
 
     /**
      * Constructor
      */
     private WbServerDataStrategyFactory() {
         json = new WbServerJsonDataStrategy();
+        mqttPublish = new WbServerMqttPublish();
     }
 
     /**
@@ -33,5 +36,13 @@ public class WbServerDataStrategyFactory {
      */
     public WbServerDataStrategy getJsonStrategy() {
         return json;
+    }
+
+    /**
+     * Get Mqtt publish implementation
+     * @return WbServerMqttPublish
+     */
+    public WbServerMqttPublish getMqttPublish() {
+        return this.mqttPublish;
     }
 }
