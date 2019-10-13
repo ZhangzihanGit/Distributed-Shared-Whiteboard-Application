@@ -17,13 +17,18 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     }
 
     @Override
-    public String createWb(String username) throws RemoteException {
-        return WbServerFacade.getInstance().createWb(username);
+    public String createWb(String wbName, String username) throws RemoteException {
+        return WbServerFacade.getInstance().createWb(wbName, username);
     }
 
     @Override
-    public String joinWb(String username) throws RemoteException {
-        return WbServerFacade.getInstance().joinWb(username);
+    public String joinWb(String wbName, String username) throws RemoteException {
+        return WbServerFacade.getInstance().joinWb(wbName, username);
+    }
+
+    @Override
+    public String getCreatedWb() {
+        return WbServerFacade.getInstance().getCreatedWb();
     }
 
     @Override

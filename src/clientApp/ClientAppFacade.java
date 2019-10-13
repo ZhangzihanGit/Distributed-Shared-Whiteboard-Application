@@ -38,8 +38,27 @@ public class ClientAppFacade {
      * @param port port, String
      * @return True if connect successfully
      */
-    public Boolean connectWbServer(String ip, String port) {
+    public boolean connectWbServer(String ip, String port) {
         return clientApp.connectWbServer(ip, port);
+    }
+
+    /**
+     * Connect to a remote broker
+     * @param ip Ip address
+     * @param port Port
+     * @return True if connect successfully
+     */
+    public boolean connectBroker(String ip, String port) {
+        return clientApp.connectBroker(ip, port);
+    }
+
+    /**
+     * Let this client subscribe to a specific topic
+     * @param topic Topic that this client will subscribe
+     * @return True if subscribe successfully
+     */
+    public boolean subscribeTopic(String topic) {
+        return clientApp.subscribeTopic(topic);
     }
 
     /**
@@ -64,18 +83,28 @@ public class ClientAppFacade {
 
     /**
      * Create new whiteboard on server and set the user to be the manager
+     * @param wbName Name of whiteboard, String
      * @return JSON response from server, String
      */
-    public String createWb() {
-        return clientApp.createWb();
+    public String createWb(String wbName) {
+        return clientApp.createWb(wbName);
     }
 
     /**
      * Join whiteboard on server
+     * @param wbName Name of whiteboard, String
      * @return JSON response from server, String
      */
-    public String joinWb() {
-        return clientApp.joinWb();
+    public String joinWb(String wbName) {
+        return clientApp.joinWb(wbName);
+    }
+
+    /**
+     * Get the name of all created whiteboards
+     * @return JSON response from server, String
+     */
+    public String getCreatedWb() {
+        return clientApp.getCreatedWb();
     }
 
     /**
@@ -191,5 +220,12 @@ public class ClientAppFacade {
      */
     public String getUsername() {
         return clientApp.getUsername();
+    }
+
+    /**
+     * Exit client program
+     */
+    public void exit() {
+        clientApp.exit();
     }
 }

@@ -27,19 +27,27 @@ public interface IRemoteWb extends Remote {
 
     /**
      * Create new whiteboard and set the user to be the manager
+     * @param wbName Name of whiteboard, String
      * @param username Username, String
      * @return JSON response, String
      * @throws RemoteException
      */
-    public String createWb(String username) throws RemoteException;
+    public String createWb(String wbName, String username) throws RemoteException;
 
     /**
      * join created whiteboard on server
+     * @param wbName Name of whiteboard, String
      * @param username Username, String
      * @return JSON response, String
      * @throws RemoteException
      */
-    public String joinWb(String username) throws RemoteException;
+    public String joinWb(String wbName, String username) throws RemoteException;
+
+    /**
+     * Get the name of all created whiteboards
+     * @return JSON response, String
+     */
+    public String getCreatedWb() throws RemoteException;
 
     /**
      * Close specific whiteboard
