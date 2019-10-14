@@ -25,6 +25,20 @@ public class Whiteboard {
         return this.name;
     }
 
+    public String getManager() {
+        return this.manager;
+    }
+
+    public String getAllUsers() {
+        String result = manager;
+
+        for (String user: users) {
+            result += "," + user;
+        }
+
+        return result;
+    }
+
     public void addUser(String user) {
         this.users.add(user);
     }

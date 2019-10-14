@@ -15,6 +15,7 @@ public class ClientApplication {
 
     private IRemoteWb remoteWb = null;
     private String username = null;
+    private String wbName = null;
 
     private MqttClient mqttSubscriber = null;
 
@@ -100,21 +101,29 @@ public class ClientApplication {
 
     /**
      * Let this client subscribe to a specific topic
-     * @param topic Topic that this client will subscribe
+     * @param wbName Name of whiteboard
+     * @param subtopics Subtopics that this client will subscribe
+     * @param qos Quality of services tags for each topic
      * @return True if subscribe successfully
      */
-    public boolean subscribeTopic(String topic) {
-        if (this.mqttSubscriber == null) {
+    public boolean subscribeTopic(String wbName, String[] subtopics, int[] qos) {
+        if (this.mqttSubscriber == null || subtopics == null || qos == null) {
             return false;
         }
 
+        // assembly topics
+        String [] topics = new String[subtopics.length];
+        for (int i = 0; i < subtopics.length; i++) {
+            topics[i] = new String(wbName + "/" + subtopics[i]);
+        }
+
         try {
-            this.mqttSubscriber.subscribe(topic);
-            logger.info("Subscribe to topic: " + topic + " successfully");
+            this.mqttSubscriber.subscribe(topics, qos);
+            logger.info("Subscribe to topic successfully");
             return true;
         } catch(Exception e) {
             logger.error(e.toString());
-            logger.error("Subscribe topic: " + topic + " failed");
+            logger.error("Subscribe topic: failed");
             return false;
         }
     }
@@ -182,6 +191,20 @@ public class ClientApplication {
     }
 
     /**
+     * Update pending join request from the specific user
+     * @param username Username
+     * @param isAllow True is the join request is approved
+     */
+    public void allowJoin(String username, boolean isAllow) {
+        try {
+            remoteWb.allowJoin(username, isAllow);
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("Join whiteboard service from whiteboard server fail to execute");
+        }
+    }
+
+    /**
      * Get the name of all created whiteboards
      * @return JSON response from server, String
      */
@@ -197,133 +220,72 @@ public class ClientApplication {
 
     /**
      * Close specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Closing feedback
      */
-    public String closeWb(String wbID, String username) {
+    public void closeWb() {
         try {
-            return remoteWb.closeWb(wbID, username);
+            remoteWb.closeWb(this.wbName);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Close whiteboard service from whiteboard server fail to execute";
         }
     }
 
     /**
-     * Save specific whiteboard online
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Saving feedback
+     * Kick out specific visitor
+     * @param visitor Username of visitor
      */
-    public String saveWbOnline(String wbID, String username) {
+    public void kickUser(String visitor) {
         try {
-            return remoteWb.saveWbOnline(wbID, username);
+            remoteWb.kickUser(this.wbName, visitor);
         } catch (Exception e) {
             logger.error(e.toString());
-            logger.error("Save whiteboard online service from whiteboard server fail to execute");
-            return "[ERROR]: Save whiteboard online service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Get all online-stored whiteboard files for a specific user
-     * @param username Username
-     * @return All whiteboard files
-     */
-    public String getAllStoredFiles(String username) {
-        try {
-            return remoteWb.getAllStoredFiles(username);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Get all online stored whiteboard files service from whiteboard server fail to execute");
-            return "[ERROR]: Get all online stored whiteboard files service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Open specific online-stored whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Open feedback
-     */
-    public String openWbOnline(String wbID, String username) {
-        try {
-            return remoteWb.openWbOnline(wbID, username);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Open online stored whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Open online stored whiteboard service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Open specific locally-stored whiteboard
-     * @param username Username
-     * @param wbContent Whiteboard content
-     * @return Open feedback
-     */
-    public String openWbLocally(String username, String wbContent) {
-        try {
-            return remoteWb.openWbLocally(username, wbContent);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Open locally stored whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Open locally stored whiteboard service from whiteboard server fail to execute";
+            logger.error("Close whiteboard service from whiteboard server fail to execute");
         }
     }
 
     /**
      * Render all the whiteboards
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Whiteboard content
+     * @param wb Whiteboard, String
      */
-    public String render(String wbID, String username) {
+    public void updateWb(String wb) {
         try {
-            return remoteWb.render(wbID, username);
+            remoteWb.updateWb(this.wbName, this.username, wb);
         } catch (Exception e) {
             logger.error(e.toString());
-            logger.error("Render distributed whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Render distributed whiteboard service from whiteboard server fail to execute";
-        }
-    }
-
-    /**
-     * Draw diagram
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param content Drawing content
-     * @return Drawing feedback
-     */
-    public String draw(String wbID, String username, String content) {
-        try {
-            return remoteWb.draw(wbID, username, content);
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Draw distributed whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Draw distributed whiteboard service from whiteboard server fail to execute";
+            logger.error("Close whiteboard service from whiteboard server fail to execute");
         }
     }
 
     /**
      * Send message
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param msg Message
-     * @return Sending feeback
+     * @param msg Message, String
      */
-    public String sendMsg(String wbID, String username, String msg) {
+    public void sendMsg(String msg) {
         try {
-            return remoteWb.sendMsg(wbID, username, msg);
+            remoteWb.sendMsg(this.wbName, this.username, msg);
         } catch (Exception e) {
             logger.error(e.toString());
-            logger.error("Send message to whiteboard service from whiteboard server fail to execute");
-            return "[ERROR]: Send message to whiteboard service from whiteboard server fail to execute";
+            logger.error("Close whiteboard service from whiteboard server fail to execute");
         }
     }
 
+    /**
+     * Exit client program
+     */
+    public void exit() {
+        try {
+            if (this.mqttSubscriber != null) {
+                this.mqttSubscriber.disconnect();
+            }
+        } catch (Exception e) {
+            logger.error(e.toString());
+            logger.error("Disconnect with remote broker failed");
+        }
+
+        System.exit(1);
+    }
+
+    // services provided from data layer
     /**
      * Resolve the header of JSON respond from server
      * @param respond JSON respond from server, String
@@ -343,40 +305,19 @@ public class ClientApplication {
     }
 
     // getter and setter
-    /**
-     * Set the username of current client
-     * @param username Username, String
-     */
     public void setUsername(String username) {
         this.username = username;
     }
 
-    /**
-     * Get the username of current client
-     * @return Username, String
-     */
     public String getUsername() {
-        if (this.username != null) {
-            return this.username;
-        }
-        else {
-            return "User";
-        }
+        return this.username;
     }
 
-    /**
-     * Exit client program
-     */
-    public void exit() {
-        try {
-            if (this.mqttSubscriber != null) {
-                this.mqttSubscriber.disconnect();
-            }
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Disconnect with remote broker failed");
-        }
+    public void setWbName(String wbName) {
+        this.wbName = wbName;
+    }
 
-        System.exit(1);
+    public String getWbName() {
+        return this.wbName;
     }
 }

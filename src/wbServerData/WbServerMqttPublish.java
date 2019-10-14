@@ -25,11 +25,11 @@ public class WbServerMqttPublish {
             message.setRetained(true);
 
             publisher.publish(topic, message);
-            logger.info("Message published successfully");
+            logger.info("Message " + content + " published successfully on topic: " + topic);
             return true;
         } catch (Exception e) {
             logger.error(e.toString());
-            logger.error("Message published failed");
+            logger.error("Message " + content + " published failed on topic: " + topic);
             return false;
         }
     }

@@ -35,6 +35,7 @@ public class WbServerGUIFacade {
     public void runWbServerGUI() {
         WbServerFacade.getInstance().connectDbServer("localhost", "1099");
         WbServerFacade.getInstance().runWbServer("1111");
+        WbServerFacade.getInstance().startBroker("1883");
     }
 
     /**

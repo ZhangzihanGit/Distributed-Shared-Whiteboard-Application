@@ -13,34 +13,32 @@ public class ClientJsonDataStrategy implements ClientDataStrategy {
 
     @Override
     public Boolean getHeader(String respond) {
-        if (respond == null || respond.isEmpty()) {
-            logger.error("Receive empty or null response from server");
-            return false;
-        }
-
         Boolean result = false;
-        JSONParser jsonParser = new JSONParser();
 
-        //Read JSON requst
-        try {
-            JSONObject respondJSON = (JSONObject) jsonParser.parse(respond);
-            String header = (String) respondJSON.get("header");
-
-            if (header.equals("Success")) {
-                result = true;
-            }
-        } catch (Exception e) {
-            logger.error(e.toString());
-            logger.error("Parse json failed from respond: " + respond);
-            return result;
+        String header = getValue(respond, "header");
+        if (header.equals("Success")) {
+            result = true;
         }
 
-        logger.info("Resolve server response header successfully");
         return result;
     }
 
     @Override
     public String getMsg(String respond) {
+        return getValue(respond, "message");
+    }
+
+    @Override
+    public String getCategory(String respond) {
+        return getValue(respond, "category");
+    }
+
+    @Override
+    public String getUser(String respond) {
+        return getValue(respond, "user");
+    }
+
+    private String getValue(String respond, String key) {
         if (respond == null || respond.isEmpty()) {
             logger.error("Receive empty or null response from server");
             return "";
@@ -52,7 +50,7 @@ public class ClientJsonDataStrategy implements ClientDataStrategy {
         //Read JSON requst
         try {
             JSONObject respondJSON = (JSONObject) jsonParser.parse(respond);
-            result = (String) respondJSON.get("message");
+            result = (String) respondJSON.get(key);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Parse json failed from respond: " + respond);
