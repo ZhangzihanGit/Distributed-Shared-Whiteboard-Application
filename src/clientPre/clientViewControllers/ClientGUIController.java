@@ -76,6 +76,7 @@ public class ClientGUIController extends Application {
         showWelcomeView();
     }
 
+    @FXML
     private void showWelcomeView() throws IOException {
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.WELCOME.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.WELCOME.getTitle());
@@ -104,7 +105,6 @@ public class ClientGUIController extends Application {
         String userName = ClientAppFacade.getInstance().getUsername();
         String header = userName + ", Which role do you wanna play today?";
 
-
 //        identityHeader.setText(header);   // null pointer error, dont know why
         baseView();
     }
@@ -116,7 +116,8 @@ public class ClientGUIController extends Application {
         baseView();
     }
 
-    private void showLoginErrorView(String msg) {
+    @FXML
+    public void showLoginErrorView(String msg) {
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Login Unsuccessful");
@@ -133,7 +134,40 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void showWhiteBoardView() throws IOException{
+    public void showJoinDeniedView(String msg) throws IOException {
+        // TODO: Finish this function to notify user that the join request denied by manager
+        System.out.println(msg);
+        this.showChooseIdentityView();
+    }
+
+    @FXML
+    public void showJoinRequestView(String username) {
+        // TODO: Finish this function to notify manager that there is a new user request join, and obtain manager's respond (agree / disagree)
+        System.out.println("User: " + username + " request join the whiteboard");
+
+        boolean agreeJoin = true;
+
+        if (agreeJoin) {
+            logger.info("Manager agreed the join request from " + username);
+            ClientAppFacade.getInstance().allowJoin(username, true);
+        }
+        else {
+            logger.info("Manager refused the join request from " + username);
+            ClientAppFacade.getInstance().allowJoin(username, false);
+        }
+    }
+
+    @FXML
+    public void showCloseView(String msg) throws IOException {
+        // TODO: Finish this function to notify user that the whiteboard will closed for him for reason described in msg
+        System.out.println(msg);
+        ClientAppFacade.getInstance().setWbName("");
+        this.showChooseIdentityView();
+    }
+
+    @FXML
+    public void showWhiteBoardView() throws IOException{
+        // TODO: Fix: When calling this function outside of this class, not working
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.CANVAS.getTitle());
         baseView();
@@ -149,18 +183,19 @@ public class ClientGUIController extends Application {
 
         /** If not empty, pass it to the server to authenticate  */
         if (!this.checkIsEmpty(loginUsernameField, loginPasswordField)) {
-            String respond = ClientAppFacade.getInstance().login(loginUsername, loginPassword);
-            Boolean isMatch = ClientAppFacade.getInstance().getHeader(respond);
+            ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            String respond = clientApp.login(loginUsername, loginPassword);
+            Boolean isMatch = clientApp.getHeader(respond);
 
             if (isMatch) {
                 // switch to next page
                 logger.info("User " + loginUsername + " log in successfully");
-                ClientAppFacade.getInstance().setUsername(loginUsername);
+                clientApp.setUsername(loginUsername);
                 this.showChooseIdentityView();
             } else {
                 // prompt window
                 logger.info("User " + loginUsername + " log in failed");
-                this.showLoginErrorView(ClientAppFacade.getInstance().getMsg(respond));
+                this.showLoginErrorView(clientApp.getMsg(respond));
             }
         }
     }
@@ -177,14 +212,15 @@ public class ClientGUIController extends Application {
             // if passwords match, , pass it to the server to authenticate
             if (signupPassword1.equals(signupPassword2) ) {
                 passwordLabel.setStyle(LABELREMOVECSS);
+                ClientAppFacade clientApp = ClientAppFacade.getInstance();
 
-                String respond = ClientAppFacade.getInstance().register(signupUsername, signupPassword1);
-                boolean addSuccess = ClientAppFacade.getInstance().getHeader(respond);
+                String respond = clientApp.register(signupUsername, signupPassword1);
+                boolean addSuccess = clientApp.getHeader(respond);
 
                 if (addSuccess) {
                     // sign up successfully
                     logger.info("New user " + signupUsername + " sign up successfully");
-                    ClientAppFacade.getInstance().setUsername(signupUsername);
+                    clientApp.setUsername(signupUsername);
                     this.showChooseIdentityView();
                 } else {
                     logger.info("New user " + signupUsername + " sign up failed");
@@ -204,8 +240,13 @@ public class ClientGUIController extends Application {
         String port = this.portField.getText();
 
         if(!this.checkIsEmpty(IPField, portField)) {
+            ClientAppFacade clientApp = ClientAppFacade.getInstance();
+
             // if connect to server successfully, go to login page, else report error message
-            if (ClientAppFacade.getInstance().connectWbServer(ip, port)) {
+            if (clientApp.connectWbServer(ip, port)) {
+                // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
+                clientApp.connectBroker("localhost", "1883");
+
                 this.showLoginView();
             }
             else {
@@ -219,6 +260,8 @@ public class ClientGUIController extends Application {
 
     @FXML
     private void controlCheckBox() throws IOException {
+        ClientAppFacade clientApp = ClientAppFacade.getInstance();
+
         /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
@@ -228,30 +271,33 @@ public class ClientGUIController extends Application {
                 // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
                 String wbName = "whiteboard1";
 
-                String joinRespond = ClientAppFacade.getInstance().joinWb(wbName);
+                String joinRespond = clientApp.joinWb(wbName);
 
-                if (ClientAppFacade.getInstance().getHeader(joinRespond)) {
-                    this.showWhiteBoardView();
+                if (clientApp.getHeader(joinRespond)) {
+                    clientApp.subscribeTopic(wbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
                 }
                 else {
                     //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
 
-                    System.out.println(ClientAppFacade.getInstance().getMsg(joinRespond));
+                    System.out.println(clientApp.getMsg(joinRespond));
                 }
             }
             else if (managerCheckBox.isSelected()) {
                 // TODO: get whiteboard name from input of manager
                 String wbName = "whiteboard1";
 
-                String createRespond = ClientAppFacade.getInstance().createWb(wbName);
+                String createRespond = clientApp.createWb(wbName);
 
-                if (ClientAppFacade.getInstance().getHeader(createRespond)) {
+                if (clientApp.getHeader(createRespond)) {
+                    clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
+                    clientApp.setWbName(wbName);
+
                     this.showWhiteBoardView();
                 }
                 else {
                     //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
 
-                    System.out.println(ClientAppFacade.getInstance().getMsg(createRespond));
+                    System.out.println(clientApp.getMsg(createRespond));
                 }
             }
         }

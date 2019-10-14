@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Whiteboard class that stores all information related to this whiteboard
  */
 public class Whiteboard {
-    private String name = null;
-    private String manager = null;
+    private String name;
+    private String manager;
     private ArrayList<String> users = new ArrayList<>();
 
     /**
@@ -23,6 +23,20 @@ public class Whiteboard {
     // getter and setter
     public String getName() {
         return this.name;
+    }
+
+    public String getManager() {
+        return this.manager;
+    }
+
+    public String getAllUsers() {
+        String result = manager;
+
+        for (String user: users) {
+            result += "," + user;
+        }
+
+        return result;
     }
 
     public void addUser(String user) {

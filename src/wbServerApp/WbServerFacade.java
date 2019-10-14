@@ -3,8 +3,6 @@ package wbServerApp;
 import org.apache.log4j.Logger;
 
 public class WbServerFacade {
-    private final static Logger logger = Logger.getLogger(WbServerFacade.class);
-
     /** private singleton instance */
     private static WbServerFacade instance = null;
 
@@ -84,7 +82,7 @@ public class WbServerFacade {
     }
 
     /**
-     * join created whiteboard on server
+     * Request to join created whiteboard on server
      * @param wbName Name of whiteboard, String
      * @param username Username, String
      * @return JSON respond, String
@@ -94,11 +92,57 @@ public class WbServerFacade {
     }
 
     /**
+     * Update pending join request from the specific user
+     * @param username Username
+     * @param isAllow True is the join request is approved
+     */
+    public void allowJoin(String username, boolean isAllow) {
+        wbServer.allowJoin(username, isAllow);
+    }
+
+    /**
      * Get the name of all created whiteboards
      * @return JSON response, String
      */
     public String getCreatedWb() {
         return wbServer.getCreatedWb();
+    }
+
+    /**
+     * Close specific whiteboard
+     * @param wbName Whiteboard name, String
+     */
+    public void closeWb(String wbName) {
+        wbServer.closeWb(wbName);
+    }
+
+    /**
+     * Kick out specific visitor
+     * @param wbName Whiteboard name, String
+     * @param visitor Username of visitor
+     */
+    public void kickUser(String wbName, String visitor) {
+        wbServer.kickUser(wbName, visitor);
+    }
+
+    /**
+     * Render all the whiteboards
+     * @param wbName Whiteboard name, String
+     * @param username Username, String
+     * @param wb Whiteboard, String
+     */
+    public void updateWb(String wbName, String username, String wb) {
+        wbServer.updateWb(wbName, username, wb);
+    }
+
+    /**
+     * Send message
+     * @param wbName Whiteboard name, String
+     * @param username Username, String
+     * @param msg Message, String
+     */
+    public void sendMsg(String wbName, String username, String msg) {
+        wbServer.sendMsg(wbName, username, msg);
     }
 
     /**

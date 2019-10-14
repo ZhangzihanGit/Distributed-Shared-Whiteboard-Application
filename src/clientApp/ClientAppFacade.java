@@ -2,17 +2,23 @@ package clientApp;
 
 import org.apache.log4j.Logger;
 
+import java.io.IOException;
+
 /**
  * Application layer facade of client
  * provide single control point of client application logic
  */
 public class ClientAppFacade {
-    private final static Logger logger = Logger.getLogger(ClientAppFacade.class);
+    // settings
+    public final static String[] UserTopics = {"whiteboard", "message", "users", "general"};
+    public final static int[] UserQos = {2, 2, 2, 2};
+    public final static String[] nonUserTopics = {"join"};
+    public final static int[] nonUserQos = {2};
 
     /** private singleton instance */
     private static ClientAppFacade instance = null;
 
-    private ClientApplication clientApp = null;
+    private ClientApplication clientApp;
 
     /**
      * Private constructor
@@ -38,7 +44,7 @@ public class ClientAppFacade {
      * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip, String port) {
+    public boolean connectWbServer(String ip, String port) throws IOException {
         return clientApp.connectWbServer(ip, port);
     }
 
@@ -54,11 +60,13 @@ public class ClientAppFacade {
 
     /**
      * Let this client subscribe to a specific topic
-     * @param topic Topic that this client will subscribe
+     * @param wbName Name of whiteboard
+     * @param subtopics Subtopics that this client will subscribe
+     * @param qos Quality of services tags for each topic
      * @return True if subscribe successfully
      */
-    public boolean subscribeTopic(String topic) {
-        return clientApp.subscribeTopic(topic);
+    public boolean subscribeTopic(String wbName, String[] subtopics, int[] qos) {
+        return clientApp.subscribeTopic(wbName, subtopics, qos);
     }
 
     /**
@@ -100,6 +108,15 @@ public class ClientAppFacade {
     }
 
     /**
+     * Update pending join request from the specific user
+     * @param username Username
+     * @param isAllow True is the join request is approved
+     */
+    public void allowJoin(String username, boolean isAllow) {
+        clientApp.allowJoin(username, isAllow);
+    }
+
+    /**
      * Get the name of all created whiteboards
      * @return JSON response from server, String
      */
@@ -109,85 +126,44 @@ public class ClientAppFacade {
 
     /**
      * Close specific whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
      * @return Closing feedback
      */
-    public String closeWb(String wbID, String username) {
-        return clientApp.closeWb(wbID, username);
+    public void closeWb() {
+        clientApp.closeWb();
     }
 
     /**
-     * Save specific whiteboard online
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Saving feedback
+     * Kick out specific visitor
+     * @param visitor Username of visitor
      */
-    public String saveWbOnline(String wbID, String username) {
-        return clientApp.saveWbOnline(wbID, username);
-    }
-
-    /**
-     * Get all online-stored whiteboard files for a specific user
-     * @param username Username
-     * @return All whiteboard files
-     */
-    public String getAllStoredFiles(String username) {
-        return clientApp.getAllStoredFiles(username);
-    }
-
-    /**
-     * Open specific online-stored whiteboard
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Open feedback
-     */
-    public String openWbOnline(String wbID, String username) {
-        return clientApp.openWbOnline(wbID, username);
-    }
-
-    /**
-     * Open specific locally-stored whiteboard
-     * @param username Username
-     * @param wbContent Whiteboard content
-     * @return Open feedback
-     */
-    public String openWbLocally(String username, String wbContent) {
-        return clientApp.openWbLocally(username, wbContent);
+    public void kickUser(String visitor) {
+        clientApp.kickUser(visitor);
     }
 
     /**
      * Render all the whiteboards
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @return Whiteboard content
+     * @param wb Whiteboard, String
      */
-    public String render(String wbID, String username) {
-        return clientApp.render(wbID, username);
-    }
-
-    /**
-     * Draw diagram
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param content Drawing content
-     * @return Drawing feedback
-     */
-    public String draw(String wbID, String username, String content) {
-        return clientApp.draw(wbID, username, content);
+    public void updateWb(String wb) {
+        clientApp.updateWb(wb);
     }
 
     /**
      * Send message
-     * @param wbID Whiteboard id
-     * @param username Username
-     * @param msg Message
-     * @return Sending feeback
+     * @param msg Message, String
      */
-    public String sendMsg(String wbID, String username, String msg) {
-        return clientApp.sendMsg(wbID, username, msg);
+    public void sendMsg(String msg) {
+        clientApp.sendMsg(msg);
     }
 
+    /**
+     * Exit client program
+     */
+    public void exit() {
+        clientApp.exit();
+    }
+
+    // services provided from data layer
     /**
      * Resolve the header of JSON respond from server
      * @param respond JSON respond from server, String
@@ -206,26 +182,20 @@ public class ClientAppFacade {
         return clientApp.getMsg(respond);
     }
 
-    /**
-     * Set the username of current client
-     * @param username Username, String
-     */
+    // getter and setter
     public void setUsername(String username) {
         clientApp.setUsername(username);
     }
 
-    /**
-     * Get the username of current client
-     * @return Username, String
-     */
     public String getUsername() {
         return clientApp.getUsername();
     }
 
-    /**
-     * Exit client program
-     */
-    public void exit() {
-        clientApp.exit();
+    public void setWbName(String wbName) {
+        clientApp.setWbName(wbName);
+    }
+
+    public String getWbName() {
+        return clientApp.getWbName();
     }
 }
