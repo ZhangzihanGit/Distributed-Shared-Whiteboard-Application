@@ -4,6 +4,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+/**
+ * Publish method for whiteboard server to publish updates to clients
+ */
 public class WbServerMqttPublish {
     /** logger */
     private final static Logger logger = Logger.getLogger(WbServerMqttPublish.class);

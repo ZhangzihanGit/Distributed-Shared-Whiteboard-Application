@@ -6,8 +6,8 @@ import java.util.ArrayList;
  * Whiteboard class that stores all information related to this whiteboard
  */
 public class Whiteboard {
-    private String name = null;
-    private String manager = null;
+    private String name;
+    private String manager;
     private ArrayList<String> users = new ArrayList<>();
 
     /**

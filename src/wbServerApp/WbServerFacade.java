@@ -3,8 +3,6 @@ package wbServerApp;
 import org.apache.log4j.Logger;
 
 public class WbServerFacade {
-    private final static Logger logger = Logger.getLogger(WbServerFacade.class);
-
     /** private singleton instance */
     private static WbServerFacade instance = null;
 

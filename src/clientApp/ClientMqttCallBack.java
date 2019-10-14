@@ -2,6 +2,7 @@ package clientApp;
 
 import clientData.ClientDataStrategyFactory;
 import clientPre.clientViewControllers.ClientGUIController;
+import javafx.application.Platform;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -9,10 +10,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.IOException;
 
+/**
+ * Client call back implementation
+ */
 public class ClientMqttCallBack implements MqttCallback {
     /** logger */
     private final static Logger logger = Logger.getLogger(ClientMqttCallBack.class);
 
+    // settings
     private final static String WB_PANEL = "whiteboard";
     private final static String MSG_PANEL = "message";
     private final static String USER_PANEL = "users";
@@ -29,9 +34,8 @@ public class ClientMqttCallBack implements MqttCallback {
 
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
-        // TODO: Deal with arrived msg
         String msg = new String(mqttMessage.getPayload());
-        System.out.println("Message received: " + s + ", " + msg);
+        logger.info("Message received: " + s + ", " + msg);
 
         if (s.contains(JOIN_PANEL)) {
             this.joinPanelHandle(s, msg);
@@ -40,16 +44,40 @@ public class ClientMqttCallBack implements MqttCallback {
         if (s.contains(WB_PANEL)) {
             // TODO call whiteboard update function in clientGUI
             // msg contains the string version of updated whiteboard
+            /* Platform.runLater(()-> {
+                try {
+                    ClientGUIController.getInstance().methodName();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    logger.error("Update whiteboard failed");
+                }
+            }); */
         }
 
         if (s.contains(MSG_PANEL)) {
             // TODO call message update function in clientGUI
             // msg contains the string version of updated texts communication
+            /* Platform.runLater(()-> {
+                try {
+                    ClientGUIController.getInstance().methodName();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    logger.error("Update message box failed");
+                }
+            }); */
         }
 
         if (s.contains(USER_PANEL)) {
             // TODO call user list update function in clientGUI
             // msg contains the list of users: manager,user1,user2,user3
+            /* Platform.runLater(()-> {
+                try {
+                    ClientGUIController.getInstance().methodName();
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    logger.error("Update user list failed");
+                }
+            }); */
         }
 
         if (s.contains(GENERAL_PANEL)) {
@@ -74,11 +102,27 @@ public class ClientMqttCallBack implements MqttCallback {
             if (clientApp.getHeader(msg)) {
                 logger.info("join request approved");
                 clientApp.setWbName(s.split("/")[0]);
-                ClientGUIController.getInstance().showWhiteBoardView();
+
+                Platform.runLater(()-> {
+                    try {
+                        ClientGUIController.getInstance().showWhiteBoardView();
+                    } catch (IOException e) {
+                        logger.error(e.getMessage());
+                        logger.error("Show whiteboard view failed");
+                    }
+                });
             }
             else {
                 logger.info("join request refused");
-                ClientGUIController.getInstance().showJoinDeniedView(ClientAppFacade.getInstance().getMsg(msg));
+
+                Platform.runLater(()-> {
+                    try {
+                        ClientGUIController.getInstance().showJoinDeniedView(ClientAppFacade.getInstance().getMsg(msg));
+                    } catch (IOException e) {
+                        logger.error(e.getMessage());
+                        logger.error("Show join denied view failed");
+                    }
+                });
             }
         }
     }
@@ -95,11 +139,20 @@ public class ClientMqttCallBack implements MqttCallback {
             String message = ClientAppFacade.getInstance().getMsg(msg);
 
             if (category.equals("joinRequest")) {
-                ClientGUIController.getInstance().showJoinRequestView(message);
+                Platform.runLater(()-> {
+                    ClientGUIController.getInstance().showJoinRequestView(message);
+                });
             }
 
             else if (category.equals("close")) {
-                ClientGUIController.getInstance().showCloseView(message);
+                Platform.runLater(()-> {
+                    try {
+                        ClientGUIController.getInstance().showCloseView(message);
+                    } catch (IOException e) {
+                        logger.error(e.getMessage());
+                        logger.error("Show close view failed");
+                    }
+                });
             }
         }
     }

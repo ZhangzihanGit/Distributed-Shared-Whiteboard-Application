@@ -318,7 +318,7 @@ public class WbServerApplication {
      * @param username Username, String
      * @param wb Whiteboard, String
      */
-    public void updateWb(String wbName, String username, String wb) {
+    public synchronized void updateWb(String wbName, String username, String wb) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
                 wbName + "/whiteboard", wb);
     }
@@ -329,7 +329,7 @@ public class WbServerApplication {
      * @param username Username, String
      * @param msg Message, String
      */
-    public void sendMsg(String wbName, String username, String msg) {
+    public synchronized void sendMsg(String wbName, String username, String msg) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
                 wbName + "/message", msg);
     }

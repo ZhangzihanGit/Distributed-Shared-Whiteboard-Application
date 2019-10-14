@@ -9,27 +9,27 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     protected RemoteWb() throws RemoteException {}
 
     @Override
-    public String register(String username, String password) throws RemoteException {
+    public String register(String username, String password) {
         return WbServerFacade.getInstance().register(username, password);
     }
 
     @Override
-    public String login(String username, String password) throws RemoteException {
+    public String login(String username, String password) {
         return WbServerFacade.getInstance().login(username, password);
     }
 
     @Override
-    public String createWb(String wbName, String username) throws RemoteException {
+    public String createWb(String wbName, String username) {
         return WbServerFacade.getInstance().createWb(wbName, username);
     }
 
     @Override
-    public String joinWb(String wbName, String username) throws RemoteException {
+    public String joinWb(String wbName, String username) {
         return WbServerFacade.getInstance().joinWb(wbName, username);
     }
 
     @Override
-    public void allowJoin(String username, boolean isAllow) throws RemoteException {
+    public void allowJoin(String username, boolean isAllow) {
         WbServerFacade.getInstance().allowJoin(username, isAllow);
     }
 
@@ -39,22 +39,22 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     }
 
     @Override
-    public void closeWb(String username) throws RemoteException {
+    public void closeWb(String username) {
         WbServerFacade.getInstance().closeWb(username);
     }
 
     @Override
-    public void kickUser(String manager, String visitor) throws RemoteException {
+    public void kickUser(String manager, String visitor) {
         WbServerFacade.getInstance().kickUser(manager, visitor);
     }
 
     @Override
-    public void updateWb(String wbName, String username, String wb) throws RemoteException {
+    public void updateWb(String wbName, String username, String wb) {
         WbServerFacade.getInstance().updateWb(wbName, username, wb);
     }
 
     @Override
-    public void sendMsg(String wbName, String username, String msg) throws RemoteException {
+    public void sendMsg(String wbName, String username, String msg) {
         WbServerFacade.getInstance().sendMsg(wbName, username, msg);
     }
 }

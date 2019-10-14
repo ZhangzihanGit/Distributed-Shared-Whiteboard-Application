@@ -1,6 +1,5 @@
 package clientApp;
 
-import clientPre.clientViewControllers.ClientGUIController;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -10,8 +9,7 @@ import java.io.IOException;
  * provide single control point of client application logic
  */
 public class ClientAppFacade {
-    private final static Logger logger = Logger.getLogger(ClientAppFacade.class);
-
+    // settings
     public final static String[] UserTopics = {"whiteboard", "message", "users", "general"};
     public final static int[] UserQos = {2, 2, 2, 2};
     public final static String[] nonUserTopics = {"join"};
@@ -20,7 +18,7 @@ public class ClientAppFacade {
     /** private singleton instance */
     private static ClientAppFacade instance = null;
 
-    private ClientApplication clientApp = null;
+    private ClientApplication clientApp;
 
     /**
      * Private constructor
