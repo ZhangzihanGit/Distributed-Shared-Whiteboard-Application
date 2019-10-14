@@ -165,6 +165,7 @@ public class ClientGUIController extends Application {
         this.showChooseIdentityView();
     }
 
+    @FXML
     public void showWhiteBoardView() throws IOException{
         // TODO: Fix: When calling this function outside of this class, not working
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));

@@ -74,7 +74,7 @@ public class ClientMqttCallBack implements MqttCallback {
             if (clientApp.getHeader(msg)) {
                 logger.info("join request approved");
                 clientApp.setWbName(s.split("/")[0]);
-                ClientGUIController.getInstance().showJoinDeniedView(ClientAppFacade.getInstance().getMsg(msg));
+                ClientGUIController.getInstance().showWhiteBoardView();
             }
             else {
                 logger.info("join request refused");

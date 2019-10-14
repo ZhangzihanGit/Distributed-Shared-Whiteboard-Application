@@ -200,8 +200,4 @@ public class ClientAppFacade {
     public String getWbName() {
         return clientApp.getWbName();
     }
-
-    public void test() throws IOException {
-        ClientGUIController.getInstance().showWhiteBoardView();
-    }
 }
