@@ -104,8 +104,17 @@ public class WbServerApplication {
         String[] cmd = new String[] {"/bin/bash", "-c", "/usr/local/sbin/mosquitto"};
         String broker = "tcp://localhost:1883";
 
+        String os = System.getProperty("os.name");
+        if (os.startsWith("Windows")) {
+            cmd = new String[] {"E:\\MQTT\\install\\mosquitto\\mosquitto", "-v"};
+        }
+
         if (port != null && !port.equals("")) {
             cmd = new String[] {"/bin/bash", "-c", "/usr/local/sbin/mosquitto", "-p", port};
+            if (os.startsWith("Windows")) {
+                cmd = new String[] {"E:\\MQTT\\install\\mosquitto\\mosquitto", "-v", "-p", port};
+            }
+
             broker = "tcp://localhost:" + port;
         }
 
@@ -262,20 +271,30 @@ public class WbServerApplication {
     /**
      * Close specific whiteboard
      * @param wbName Whiteboard name, String
+     * @param username Username
      */
-    public void closeWb(String wbName) {
+    public void closeWb(String wbName, String username) {
         WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
         Whiteboard deleteWb = null;
 
         // get this whiteboard, notify all user using it and remove it from server
         for (Whiteboard wb: whiteboards) {
             if (wb.getName().equals(wbName)) {
-                deleteWb = wb;
+                // manager close the whiteboard, notify all other users and close
+                if (wb.getManager().equals(username)) {
+                    deleteWb = wb;
+                    String respond = factory.getJsonStrategy().packRespond(true, "Manager close the whiteboard",
+                            "close", "");
 
-                String respond = factory.getJsonStrategy().packRespond(true, "Manager close the whiteboard",
-                        "close", "");
-
-                factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond);
+                    factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond);
+                }
+                // visitor close the whiteboard, update the user list
+                else {
+                    wb.removeUser(username);
+                    String users = wb.getAllUsers();
+                    factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users);
+                }
+                break;
             }
         }
 
@@ -303,6 +322,7 @@ public class WbServerApplication {
                         "close", visitor);
 
                 factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond);
+                break;
             }
         }
 

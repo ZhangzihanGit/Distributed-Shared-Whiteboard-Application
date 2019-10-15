@@ -59,9 +59,10 @@ public interface IRemoteWb extends Remote {
     /**
      * Close specific whiteboard
      * @param wbName Whiteboard name, String
+     * @param username Username
      * @throws RemoteException
      */
-    public void closeWb(String wbName) throws RemoteException;
+    public void closeWb(String wbName, String username) throws RemoteException;
 
     /**
      * Kick out specific visitor

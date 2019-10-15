@@ -223,7 +223,7 @@ public class ClientApplication {
      */
     public void closeWb() {
         try {
-            remoteWb.closeWb(this.wbName);
+            remoteWb.closeWb(this.wbName, this.username);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");
