@@ -245,7 +245,7 @@ public class ClientGUIController extends Application {
             // if connect to server successfully, go to login page, else report error message
             if (clientApp.connectWbServer(ip, port)) {
                 // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
-                clientApp.connectBroker("localhost", "1883");
+                clientApp.connectBroker(ip, "1883");
 
                 this.showLoginView();
             }

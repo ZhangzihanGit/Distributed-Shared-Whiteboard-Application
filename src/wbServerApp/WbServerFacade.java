@@ -111,9 +111,10 @@ public class WbServerFacade {
     /**
      * Close specific whiteboard
      * @param wbName Whiteboard name, String
+     * @param username Username
      */
-    public void closeWb(String wbName) {
-        wbServer.closeWb(wbName);
+    public void closeWb(String wbName, String username) {
+        wbServer.closeWb(wbName, username);
     }
 
     /**

@@ -46,7 +46,7 @@ public class ClientMqttCallBack implements MqttCallback {
             // msg contains the string version of updated whiteboard
             /* Platform.runLater(()-> {
                 try {
-                    ClientGUIController.getInstance().methodName();
+                    whiteBoardController.getInstance().methodName(msg);
                 } catch (IOException e) {
                     logger.error(e.getMessage());
                     logger.error("Update whiteboard failed");
@@ -59,7 +59,7 @@ public class ClientMqttCallBack implements MqttCallback {
             // msg contains the string version of updated texts communication
             /* Platform.runLater(()-> {
                 try {
-                    ClientGUIController.getInstance().methodName();
+                    whiteBoardController.getInstance().methodName(msg);
                 } catch (IOException e) {
                     logger.error(e.getMessage());
                     logger.error("Update message box failed");
@@ -72,7 +72,7 @@ public class ClientMqttCallBack implements MqttCallback {
             // msg contains the list of users: manager,user1,user2,user3
             /* Platform.runLater(()-> {
                 try {
-                    ClientGUIController.getInstance().methodName();
+                    whiteBoardController.getInstance().methodName();
                 } catch (IOException e) {
                     logger.error(e.getMessage());
                     logger.error("Update user list failed");

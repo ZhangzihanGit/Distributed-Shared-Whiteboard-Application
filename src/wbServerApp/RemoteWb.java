@@ -39,8 +39,8 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     }
 
     @Override
-    public void closeWb(String username) {
-        WbServerFacade.getInstance().closeWb(username);
+    public void closeWb(String wbName, String username) {
+        WbServerFacade.getInstance().closeWb(wbName, username);
     }
 
     @Override
