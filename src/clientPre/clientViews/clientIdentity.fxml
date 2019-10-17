@@ -51,7 +51,7 @@
                   </BorderPane>
                </bottom>
             </BorderPane>
-            <Label fx:id="identityHeader" alignment="CENTER" layoutX="71.0" layoutY="52.0" prefHeight="30.0" prefWidth="470.0" styleClass="identity-header" text="Which role do you wanna play today?" textFill="#1b1a1a">
+            <Label fx:id="yyy" alignment="CENTER" layoutX="71.0" layoutY="52.0" prefHeight="30.0" prefWidth="470.0" styleClass="identity-header" text="Which role do you wanna play today?" textFill="#1b1a1a">
                <effect>
                   <Blend />
                </effect>

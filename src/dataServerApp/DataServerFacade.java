@@ -1,6 +1,7 @@
 package dataServerApp;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 
 import java.rmi.RemoteException;
 // TODO: 问题找到了， static class在compile 的时候就已经fix了，runtime无法改变他本身的状态了。
@@ -15,8 +16,8 @@ public class DataServerFacade {
     /**
      * Private constructor
      */
-    private DataServerFacade() {
-        dataServer = new DataServerApplication(this);
+    private DataServerFacade(){
+        dataServer = new DataServerApplication();
     }
 
     /**
@@ -29,6 +30,18 @@ public class DataServerFacade {
         }
         return instance;
     }
+
+    public void setupRemoteApplication(){
+        // Singleton server application.
+        if (this.dataServer != null){
+            logger.info("Remote application starts. ");
+            dataServer.setRemoteDb(this);
+        }
+        else{
+            logger.fatal("Error. Server application does not start properly. ");
+        }
+    }
+
 
     /**
      * start run server
@@ -55,22 +68,33 @@ public class DataServerFacade {
         return dataServer.setAddress(ip);
     }
 
+    String addUser(String username, String password){
+        return dataServer.addUser(username, password);
+    }
 
-    public Authenticator getAuthenticator(){
-        return dataServer.getAuthenticator();
+
+    String checkUser(String username, String password){
+        return dataServer.checkUser(username, password);
+    }
+
+
+
+    String saveWb(String managerName, String wbContent){
+        JSONObject message = new JSONObject();
+        message.put("hello", 123);
+        return dataServer.saveCanvas(message, "world");
+    }
+
+
+    String loadAllWb(String managerName){
+       return dataServer.retrieveCanvas(managerName);
+    }
+
+    void iteratePassBook(){
+        dataServer.iteratePassBook();
     }
 
     public DataServerApplication getDataServer() {
         return this.dataServer;
-    }
-    public void setupRemoteApplication(){
-        // Singleton server application.
-        if (this.dataServer != null){
-            logger.fatal("Remote application starts. ");
-            dataServer.setRemoteDb(this);
-        }
-        else{
-            logger.fatal("Error. Server application does not start properly. ");
-        }
     }
 }

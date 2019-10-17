@@ -12,9 +12,12 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
+
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -23,6 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class whiteBoardController<list> {
+
+    private static whiteBoardController instance;
+    public static whiteBoardController getInstance(){
+        if(instance == null){
+            instance = new whiteBoardController();
+        }
+        return instance;
+    }
+
+
     @FXML
     private Canvas canvas;
     @FXML
@@ -64,6 +77,8 @@ public class whiteBoardController<list> {
 
     private String saveFilePath = "";
 
+    private double[] beginCoordinate = {0,0};
+
     private void initSendMessage(){
 
         messageRecord.setEditable(false);
@@ -87,6 +102,10 @@ public class whiteBoardController<list> {
             messageRecord.setText(text);
             sendMessage.clear();
         });
+    }
+    public void updateWhiteBoard(){
+        pane.getChildren().remove(canvas);
+        pane.getChildren().add(canvas);
     }
 
     private void initDrawMethods(){
@@ -134,52 +153,50 @@ public class whiteBoardController<list> {
             label.setText(str);
             gc.setLineWidth(value);
         });
+
         canvas.setOnMousePressed(e->{
+            double x = e.getX();
+            double y = e.getY();
+
             if(mode.equals("draw") || mode.equals("line") ){
                 gc.beginPath();
-                gc.lineTo(e.getX(), e.getY());
+                gc.lineTo(x, y);
                 gc.stroke();
             }
-            else if(mode.equals("circle")){
-                SetRadius setRadius = new SetRadius();
-                Double radius = setRadius.display();
-                gc.strokeOval(e.getX() - radius/2, e.getY() - radius/2, radius, radius);
-            }
-            else if(mode.equals("rectangle")){
-                SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
-                List<Double> list = setHeightAndWidth.display();
-                Double width = 0.0;
-                Double height = 0.0;
-                if(list.size() == 2){
-                    width = list.get(0);
-                    height = list.get(1);
-                }
-
-                gc.strokeRect(e.getX() - width/2, e.getY() - height/2, width, height);
-            }
-            else if(mode.equals("oval")){
-                SetHeightAndWidth setHeightAndWidth = new SetHeightAndWidth();
-                List<Double> list = setHeightAndWidth.display();
-                Double width = 0.0;
-                Double height = 0.0;
-                if(list.size() == 2){
-                    width = list.get(0);
-                    height = list.get(1);
-                }
-
-                gc.strokeOval(e.getX() - width/2, e.getY() - height/2, width, height);
+            else if(mode.equals("circle") || mode.equals("rectangle") || mode.equals("oval")){
+                beginCoordinate[0] = x;
+                beginCoordinate[1] = y;
             }
             else if(mode.equals("text")){
                 InputText inputText = new InputText();
                 String content = inputText.display();
-                gc.fillText(content, e.getX(), e.getY());
+                gc.fillText(content, x, y);
             }
         });
 
         canvas.setOnMouseReleased(e->{
+            double x = e.getX();
+            double y = e.getY();
+            double originX = beginCoordinate[0];
+            double originY = beginCoordinate[1];
+            double width = Math.abs(x - originX);
+            double height = Math.abs(y - originY);
+            double upLeftX = (originX - x > 0) ? x : originX;
+            double upLeftY = (originY - y > 0) ? y : originY;
+            double distance = Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));
+
             if(mode.equals("line")){
                 gc.lineTo(e.getX(), e.getY());
                 gc.stroke();
+            }
+            else if(mode.equals("rectangle")){
+                gc.strokeRect(upLeftX, upLeftY, width, height);
+            }
+            else if(mode.equals("circle")){
+                gc.strokeOval(originX - distance , originY - distance , distance*2, distance*2);
+            }
+            else if(mode.equals("oval")){
+                gc.strokeOval(upLeftX , upLeftY , width, height);
             }
         });
 
@@ -196,10 +213,9 @@ public class whiteBoardController<list> {
             }
         });
     }
+
     ObservableList<String> list = FXCollections.observableArrayList(
             "Manager", "coworker1", "coworker2", "coworker3");
-
-
 
     private void initListView(ObservableList<String> list){
         listView.setItems(list);
@@ -239,7 +255,7 @@ public class whiteBoardController<list> {
             SnapshotParameters sp = new SnapshotParameters();
             sp.setFill(Color.TRANSPARENT);
             WritableImage image = canvas.snapshot(sp, null);
-            File file = new File(fileLocation +"\\" + fileName +"."+ fileType);
+            File file = new File(fileLocation +"/" + fileName +"."+ fileType);
 
             try {
                 ImageIO.write(SwingFXUtils.fromFXImage(image, null), fileType, file);
@@ -255,11 +271,6 @@ public class whiteBoardController<list> {
 
     public void newCanvas(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        DoYouWantToSave d = new DoYouWantToSave();
-        Boolean choice = d.display();
-        if(choice){
-            save();
-        }
         double h = canvas.getHeight();
         double w = canvas.getWidth();
         gc.clearRect(0, 0, w, h);
@@ -288,18 +299,14 @@ public class whiteBoardController<list> {
             saveAs();
         }
     }
+
     public void open(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        DoYouWantToSave d = new DoYouWantToSave();
-        Boolean choice = d.display();
-        if(choice){
-            save();
-        }
         OpenFrom openFrom= new OpenFrom();
         String filePath =  openFrom.display();
         if(!filePath.isEmpty()){
 
-            String imagePath = "file:\\" + filePath;
+            String imagePath = "file:/" + filePath;
             Image image = new Image(imagePath);
             double h = canvas.getHeight();
             double w = canvas.getWidth();
@@ -307,7 +314,6 @@ public class whiteBoardController<list> {
             gc.drawImage(image, 0, 0, w, h);
             saveFilePath = filePath;
         }
-
     }
 
     public void close(){

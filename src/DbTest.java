@@ -1,6 +1,7 @@
 import dataServerApp.IRemoteDb;
 import dataServerApp.UserInformation;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -21,6 +22,7 @@ public class DbTest {
            test = (IRemoteDb) registry.lookup("DB");
            testAuthentication(test);
            testSaveCanvas(test);
+           testRetrieveCanvas(test);
 
        }catch (RemoteException e){
            e.printStackTrace();
@@ -36,8 +38,19 @@ public class DbTest {
         message.put("abc","abcde");
 
         // Test if Register works(use Authenticator class and RemoteDB class)
-        JSONObject jsonObject = test.addUser(username, password, message);
-        if(jsonObject instanceof JSONObject){
+        String jsonString = test.addUser(username, password);
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = null;
+
+        //Read JSON requst
+        try {
+            jsonObject = (JSONObject) jsonParser.parse(jsonString);
+        } catch (Exception e) {
+            // TODO: Exception catching
+        }
+
+        if(jsonObject != null && jsonObject instanceof JSONObject){
             System.out.println(jsonObject);
             System.out.println(jsonObject.toString());
             System.out.println(jsonObject.toJSONString());
@@ -51,21 +64,26 @@ public class DbTest {
         // Test if RemoteDB.checkUser (Authenticator.authenticate) works.
         String mockUsername = "hello";
         String mockPassword = "world";
-        System.out.println(test.checkUser(mockUsername,mockPassword));
-        assert (test.checkUser(mockUsername,mockPassword).equals("{\"Header\":\"Fail\",\"Message\":\"User not " +
+        System.out.println(test.checkUser(mockUsername,mockPassword) + "1111");
+        assert (test.checkUser(mockUsername,mockPassword).equals("{\"header\":\"Fail\",\"message\":\"User not " +
                 "found in passbook\"}"));
 
         String wrongPassword = "nihao";
-        System.out.println(test.checkUser(username,wrongPassword));
-        assert (test.checkUser(username,wrongPassword).equals("{\"Header\":\"Fail\",\"Message\":\"Authentication failed\"}"));
+        System.out.println(test.checkUser(username,wrongPassword) + "222");
+        assert (test.checkUser(username,wrongPassword).equals("{\"header\":\"Fail\",\"message\":\"Authentication failed\"}"));
 
-        System.out.println(test.checkUser(username,password));
-        assert (test.checkUser(username, password).equals("{\"Header\":\"Success\",\"Message\":\"User authentication success\"}"));
+        System.out.println(test.checkUser(username,password)+"333");
+        assert (test.checkUser(username, password).equals("{\"header\":\"Success\",\"message\":\"User authentication success\"}"));
 
     }
     private static void testSaveCanvas(IRemoteDb test) throws RemoteException{
         String username = "world";
         String password = "world";
         test.saveWb(username,password);
+    }
+    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
+        String manager = "world";
+        String password = "world";
+        test.loadAllWb(manager);
     }
 }
