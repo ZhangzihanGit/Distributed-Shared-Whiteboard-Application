@@ -180,7 +180,8 @@ public class WbServerApplication {
      * @return JSON respond, String
      */
     public synchronized String createWb(String wbName, String username) {
-        WbServerDataStrategy json = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
+        WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
+        WbServerDataStrategy json = factory.getJsonStrategy();
 
         // check whether the same whiteboard is already created
         for (Whiteboard wb: whiteboards) {
@@ -191,6 +192,7 @@ public class WbServerApplication {
         }
 
         whiteboards.add(new Whiteboard(wbName, username));
+        factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", username);
 
         return json.packRespond(true, "", "", "");
     }

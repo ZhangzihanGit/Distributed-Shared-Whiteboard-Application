@@ -291,6 +291,7 @@ public class ClientGUIController extends Application {
                 if (clientApp.getHeader(createRespond)) {
                     clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
                     clientApp.setWbName(wbName);
+                    clientApp.setManager(true);
 
                     this.showWhiteBoardView();
                 }

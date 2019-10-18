@@ -16,6 +16,7 @@ public class ClientApplication {
     private IRemoteWb remoteWb = null;
     private String username = null;
     private String wbName = null;
+    private boolean isManager = false;
 
     private MqttClient mqttSubscriber = null;
 
@@ -319,5 +320,13 @@ public class ClientApplication {
 
     public String getWbName() {
         return this.wbName;
+    }
+
+    public boolean isManager() {
+        return this.isManager;
+    }
+
+    public void setManager(boolean isManager) {
+        this.isManager = isManager;
     }
 }

@@ -2,6 +2,7 @@ package clientApp;
 
 import clientData.ClientDataStrategyFactory;
 import clientPre.clientViewControllers.ClientGUIController;
+import clientPre.clientViewControllers.whiteBoardController.whiteBoardController;
 import javafx.application.Platform;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -70,14 +71,9 @@ public class ClientMqttCallBack implements MqttCallback {
         if (s.contains(USER_PANEL)) {
             // TODO call user list update function in clientGUI
             // msg contains the list of users: manager,user1,user2,user3
-            /* Platform.runLater(()-> {
-                try {
-                    whiteBoardController.getInstance().methodName();
-                } catch (IOException e) {
-                    logger.error(e.getMessage());
-                    logger.error("Update user list failed");
-                }
-            }); */
+             Platform.runLater(()-> {
+//                 whiteBoardController.getInstance().changeListView();
+            });
         }
 
         if (s.contains(GENERAL_PANEL)) {

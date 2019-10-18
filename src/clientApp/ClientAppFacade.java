@@ -198,4 +198,12 @@ public class ClientAppFacade {
     public String getWbName() {
         return clientApp.getWbName();
     }
+
+    public void setManager(boolean isManager) {
+        clientApp.setManager(isManager);
+    }
+
+    public boolean isManager() {
+        return clientApp.isManager();
+    }
 }

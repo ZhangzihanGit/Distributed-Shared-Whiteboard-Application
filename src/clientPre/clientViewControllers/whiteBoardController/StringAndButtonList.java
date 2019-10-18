@@ -29,6 +29,7 @@ public class StringAndButtonList extends ListCell<String> {
             @Override
             public void handle(ActionEvent event) {
                 list.remove(lastItem);
+
             }
         });
     }
