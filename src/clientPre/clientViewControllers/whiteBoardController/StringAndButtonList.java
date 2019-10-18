@@ -44,7 +44,7 @@ public class StringAndButtonList extends ListCell<String> {
         } else {
             lastItem = item;
             label.setText(item!=null ? item : "<null>");
-            if(label.getText().equals("Manager")){
+            if(label.getText().equals(list.get(0))){
                 button.setVisible(false);
             }
             setGraphic(hbox);

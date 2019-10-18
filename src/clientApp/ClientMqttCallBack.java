@@ -72,7 +72,7 @@ public class ClientMqttCallBack implements MqttCallback {
             // TODO call user list update function in clientGUI
             // msg contains the list of users: manager,user1,user2,user3
              Platform.runLater(()-> {
-//                 whiteBoardController.getInstance().changeListView();
+                 whiteBoardController.getInstance().updateUserList(msg);
             });
         }
 

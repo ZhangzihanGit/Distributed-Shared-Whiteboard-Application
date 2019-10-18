@@ -106,10 +106,6 @@ public class whiteBoardController<list> {
             sendMessage.clear();
         });
     }
-    public void updateWhiteBoard(){
-        pane.getChildren().remove(canvas);
-        pane.getChildren().add(canvas);
-    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -199,6 +195,7 @@ public class whiteBoardController<list> {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
+                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
@@ -337,19 +334,15 @@ public class whiteBoardController<list> {
     }
 
     public void updateUserList(String msg) {
-        System.out.println(msg);
-        this.list.removeAll();
-        this.list.addAll(Arrays.asList(msg.split(",")));
-        StringAndButtonList.list = list;
-        initListView(StringAndButtonList.list);
+        StringAndButtonList.list.setAll(Arrays.asList(msg.split(",")));
     }
 
-    public void changeListView(){
-        String a = "111";
-        ObservableList<String> list = FXCollections.observableArrayList();
-        list.addAll(Arrays.asList(a.split(",")));
-        StringAndButtonList.list = list;
-        initListView(StringAndButtonList.list);
+    public void updateWhiteBoard(String msg){
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        ArrayList<String> inst = new ArrayList<>();
+        inst.addAll(Arrays.asList(msg.split(",")));
     }
+
+
 }
 
