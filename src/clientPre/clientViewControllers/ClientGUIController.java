@@ -26,7 +26,6 @@ public class ClientGUIController extends Application {
     private final String LABELCSS = "-fx-font-family: NunitoSans;-fx-text-fill: red;visibility: true;";
     private final String LABELREMOVECSS = "visibility: false;";
     private static Stage primaryStage;
-    private String ip = "";
     @FXML
     private Parent root;
     @FXML
@@ -197,6 +196,11 @@ public class ClientGUIController extends Application {
                 header = "Sorry, creating " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to create the whiteboard, please try again!" : msg;
                 break;
+            case "visitorSubscribe":
+                title = "Subscribe whiteboard Unsuccessful";
+                header = "Sorry, subscribing " + wbName + " is unsuccessful";
+                text = isEmpty ? "Fail to subscribe the whiteboard, please try again!" : msg;
+                break;
             default:
                 title = "Error";
                 header = "Sorry, something wrong happened.";
@@ -293,8 +297,8 @@ public class ClientGUIController extends Application {
                 String respond = clientApp.register(signupUsername, signupPassword1);
                 boolean addSuccess = clientApp.getHeader(respond);
 
-//                if (addSuccess) {
-                if (true) {
+                if (addSuccess) {
+//                if (false) {
                     // sign up successfully
                     logger.info("New user " + signupUsername + " sign up successfully");
                     clientApp.setUsername(signupUsername);
@@ -316,7 +320,6 @@ public class ClientGUIController extends Application {
 
         String ip = this.IPField.getText();
         String port = this.portField.getText();
-        this.ip = ip;
 
         if (!this.checkIsEmpty(IPField, portField)) {
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
@@ -325,7 +328,8 @@ public class ClientGUIController extends Application {
 //            String respond = clientApp.connectWbServer(ip, port);
 //            Boolean isSuccess = clientApp.getHeader(respond);
             Boolean isSuccess = true;
-            if (isSuccess) {
+//            if (isSuccess) {
+            if (clientApp.connectWbServer(ip, port)){
                 // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
                 this.showMqttConfigView();
             } else {
@@ -339,18 +343,21 @@ public class ClientGUIController extends Application {
 
     @FXML
     private void controlMqttConfig() throws IOException {
+        ClientAppFacade clientApp = ClientAppFacade.getInstance();
         String broker = this.brokerField.getText();
-        this.ip = this.ip.isEmpty() ? "localhost" : this.ip;  // make sure ip is not empty
+        String ip = clientApp.getIp().isEmpty() ? "localhost" : clientApp.getIp();  // make sure ip is not empty
+
 
         if (!this.checkIsEmpty(brokerField)) {
-            ClientAppFacade clientApp = ClientAppFacade.getInstance();
+
             // TODO: 能不能把connectBroker返回类型改成String，然后通过getHeader返回boolean
             //                clientApp.connectBroker(ip, "1883");
-//            String respond = clientApp.connectBroker(this.ip, broker);
+//            String respond = clientApp.connectBroker(ip, broker);
 //            Boolean isSuccess = clientApp.getHeader(respond);
             Boolean isSuccess = true;
-            clientApp.connectBroker(this.ip, broker);
+//            clientApp.connectBroker(ip, broker);
             if (isSuccess) {
+//            if (clientApp.connectBroker(ip, broker)) {
                 // move to LoginView
                 this.showLoginView();
             } else {
@@ -367,26 +374,10 @@ public class ClientGUIController extends Application {
 
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
-                // TODO: display existing whiteboard name list to client and get his choice
-
+                //  visitor can join one of existing whiteboards
                 this.showCurrentWbView();
-                // to get the whiteboard name name list:
-                // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
-                // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
-//                String wbName = "whiteboard1";
-//                System.out.println("visitor selected");
-//
-//                String joinRespond = clientApp.joinWb(wbName);
-//
-//                if (clientApp.getHeader(joinRespond)) {
-//                    clientApp.subscribeTopic(wbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
-//                } else {
-//                    //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
-//                    this.showErrorView("visitorJoin", clientApp.getMsg(joinRespond), clientApp.getWbName());
-//                    System.out.println(clientApp.getMsg(joinRespond));
-//                }
             } else if (managerCheckBox.isSelected()) {
-                // TODO: get whiteboard name from input of manager
+                //  manager can create the whiteboard by enter the name
                 this.showCreateWbView();
             }
         }
@@ -415,12 +406,6 @@ public class ClientGUIController extends Application {
             }
         }
     }
-
-    @FXML
-    private void controlJoinWb() {
-
-    }
-
 
     @FXML
     private void handleVisitor() {

@@ -16,6 +16,7 @@ public class ClientApplication {
     private IRemoteWb remoteWb = null;
     private String username = null;
     private String wbName = null;
+    private String ip = null;
 
     private MqttClient mqttSubscriber = null;
 
@@ -48,6 +49,7 @@ public class ClientApplication {
         try {
             //Connect to the rmiregistry that is running on localhost
             Registry registry = LocateRegistry.getRegistry(ipAddr, portNum);
+            this.ip = ipAddr;
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
@@ -320,4 +322,6 @@ public class ClientApplication {
     public String getWbName() {
         return this.wbName;
     }
+
+    public String getIp() { return this.ip; }
 }

@@ -11,11 +11,11 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.ClientGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.WbListViewController">
     <children>
         <AnchorPane layoutX="44.0" layoutY="11.0" prefHeight="379.0" prefWidth="612.0" styleClass="login-panel">
             <children>
-                <Button layoutX="147.0" layoutY="289.0" mnemonicParsing="false" onAction="#controlMqttConfig" prefHeight="31.0" prefWidth="324.0" styleClass="login-btn" text="next" />
+                <Button layoutX="147.0" layoutY="289.0" mnemonicParsing="false" onAction="#controlJoinWb" prefHeight="31.0" prefWidth="324.0" styleClass="login-btn" text="next" />
                 <Label layoutX="31.0" layoutY="37.0" styleClass="config-header" text="Which whiteboard do you want to join?" textFill="#1b1a1a">
                     <effect>
                         <Blend />
