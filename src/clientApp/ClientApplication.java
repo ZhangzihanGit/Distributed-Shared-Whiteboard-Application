@@ -101,7 +101,7 @@ public class ClientApplication {
     }
 
     /**
-     * Let this client subscribe to a specific topic
+     * Let this client subscribe to a set of specific topics
      * @param wbName Name of whiteboard
      * @param subtopics Subtopics that this client will subscribe
      * @param qos Quality of services tags for each topic
@@ -125,6 +125,34 @@ public class ClientApplication {
         } catch(Exception e) {
             logger.error(e.toString());
             logger.error("Subscribe topic: failed");
+            return false;
+        }
+    }
+
+    /**
+     * Let this client unsubscribe a set of specific topics
+     * @param wbName Name of whiteboard
+     * @param subtopics Subtopics that this client will subscribe
+     * @return True if subscribe successfully
+     */
+    public boolean unsubscribeTopic(String wbName, String[] subtopics) {
+        if (this.mqttSubscriber == null || subtopics == null) {
+            return false;
+        }
+
+        // assembly topics
+        String [] topics = new String[subtopics.length];
+        for (int i = 0; i < subtopics.length; i++) {
+            topics[i] = new String(wbName + "/" + subtopics[i]);
+        }
+
+        try {
+            this.mqttSubscriber.unsubscribe(topics);
+            logger.info("Unsubscribe topics successfully");
+            return true;
+        } catch(Exception e) {
+            logger.error(e.toString());
+            logger.error("Unsubscribe topics: failed");
             return false;
         }
     }
@@ -224,6 +252,7 @@ public class ClientApplication {
      */
     public void closeWb() {
         try {
+            this.unsubscribeTopic(this.getWbName(), ClientAppFacade.UserTopics);
             remoteWb.closeWb(this.wbName, this.username);
         } catch (Exception e) {
             logger.error(e.toString());

@@ -94,10 +94,14 @@ public class ClientMqttCallBack implements MqttCallback {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
 
+        clientApp.setWbName(s.split("/")[0]);
+        String wbName = clientApp.getWbName();
+        clientApp.unsubscribeTopic(wbName, ClientAppFacade.nonUserTopics);
+
         if (user.equals("") || user.equals(clientApp.getUsername())) {
             if (clientApp.getHeader(msg)) {
                 logger.info("join request approved");
-                clientApp.setWbName(s.split("/")[0]);
+                clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
 
                 Platform.runLater(()-> {
                     try {
@@ -110,6 +114,7 @@ public class ClientMqttCallBack implements MqttCallback {
             }
             else {
                 logger.info("join request refused");
+                clientApp.setWbName("");
 
                 Platform.runLater(()-> {
                     try {
@@ -128,11 +133,12 @@ public class ClientMqttCallBack implements MqttCallback {
      * @param msg Server respond message, JSON String
      */
     private void generalPanelHandle(String msg) throws IOException {
+        ClientAppFacade clientApp = ClientAppFacade.getInstance();
         String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
 
         if (user.equals("") || user.equals(ClientAppFacade.getInstance().getUsername())) {
             String category = ClientDataStrategyFactory.getInstance().getJsonStrategy().getCategory(msg);
-            String message = ClientAppFacade.getInstance().getMsg(msg);
+            String message = clientApp.getMsg(msg);
 
             if (category.equals("joinRequest")) {
                 Platform.runLater(()-> {
@@ -141,6 +147,9 @@ public class ClientMqttCallBack implements MqttCallback {
             }
 
             else if (category.equals("close")) {
+                String wbName = clientApp.getWbName();
+                clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
+
                 Platform.runLater(()-> {
                     try {
                         ClientGUIController.getInstance().showCloseView(message);
