@@ -9,137 +9,84 @@ import java.rmi.RemoteException;
 public interface IRemoteWb extends Remote {
     /**
      * Register new users
-     * @param username
-     * @param password
-     * @return registration feedback in JSON
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
     public String register(String username, String password) throws RemoteException;
 
     /**
-     * existing user login
-     * @param username
-     * @param password
-     * @return login feedback in JSON
+     * Existing user login authentication
+     * @param username Username, String
+     * @param password Password, String
+     * @return JSON respond from data server, String
      * @throws RemoteException
      */
     public String login(String username, String password) throws RemoteException;
 
     /**
-     * create new whiteboard and set the user to be the manager
-     * @param username
-     * @param wbName whiteboard name
-     * @return created whiteboard information in JSON
+     * Create new whiteboard and set the user to be the manager
+     * @param wbName Name of whiteboard, String
+     * @param username Username, String
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public String createWb(String username, String wbName) throws RemoteException;
+    public String createWb(String wbName, String username) throws RemoteException;
 
     /**
-     * get all available whiteboards
-     * @return list of available whiteboards in JSON
+     * Request to join created whiteboard on server
+     * @param wbName Name of whiteboard, String
+     * @param username Username, String
+     * @return JSON response, String
      * @throws RemoteException
      */
-    public String getAvaliableWb() throws RemoteException;
+    public String joinWb(String wbName, String username) throws RemoteException;
 
     /**
-     * join specific whiteboard
-     * @param username
-     * @param wbID
-     * @return join feedback in JSON
-     * @throws RemoteException
+     * Update pending join request from the specific user
+     * @param username Username
+     * @param isAllow True is the join request is approved
      */
-    public String joinWb(String wbID, String username) throws RemoteException;
+    public void allowJoin(String username, boolean isAllow) throws RemoteException;
+
+    /**
+     * Get the name of all created whiteboards
+     * @return JSON response, String
+     */
+    public String getCreatedWb() throws RemoteException;
 
     /**
      * Close specific whiteboard
-     * @param wbID whiteboard id
-     * @param username
-     * @return closing feedback
+     * @param wbName Whiteboard name, String
+     * @param username Username
      * @throws RemoteException
      */
-    public String closeWb(String wbID, String username) throws RemoteException;
+    public void closeWb(String wbName, String username) throws RemoteException;
 
     /**
-     * Save specific whiteboard online
-     * @param wbID whiteboard id
-     * @param username
-     * @return saving feedback
+     * Kick out specific visitor
+     * @param wbName Whiteboard name, String
+     * @param visitor Username of visitor, String
      * @throws RemoteException
      */
-    public String saveWbOnline(String wbID, String username) throws RemoteException;
-
-    /**
-     * Save specific whiteboard locally
-     * @param wbID whiteboard id
-     * @param username
-     * @param format file format
-     * @return saving feedback
-     * @throws RemoteException
-     */
-    public String saveWbLocally(String wbID, String username, String format) throws RemoteException;
-
-    /**
-     * get all online-stored whiteboard files for a specific user
-     * @param username
-     * @return all whiteboard files in JSON
-     * @throws RemoteException
-     */
-    public String getAllStoredFiles(String username) throws RemoteException;
-
-    /**
-     * Open specific online-stored whiteboard
-     * @param wbID whiteboard id
-     * @param username
-     * @return open feedback
-     * @throws RemoteException
-     */
-    public String openWbOnline(String wbID, String username) throws RemoteException;
-
-    /**
-     * Open specific locally-stored whiteboard
-     * @param wbID whiteboard id
-     * @param wbContent whiteboard content
-     * @return open feedback
-     * @throws RemoteException
-     */
-    public String openWbLocally(String username, String wbContent) throws RemoteException;
+    public void kickUser(String wbName, String visitor) throws RemoteException;
 
     /**
      * Render all the whiteboards
-     * @param wbID whiteboard id
-     * @param username
-     * @return whiteboard content in JSON
+     * @param wbName Whiteboard name, String
+     * @param username Username, String
+     * @param wb Whiteboard, String
      * @throws RemoteException
      */
-    public String render(String wbID, String username) throws RemoteException;
+    public void updateWb(String wbName, String username, String wb) throws RemoteException;
 
     /**
-     * draw diagram
-     * @param wbID whiteboard id
-     * @param username
-     * @param content drawing content
-     * @return drawing feedback
+     * Send message
+     * @param wbName Whiteboard name, String
+     * @param username Username, String
+     * @param msg Message, String
      * @throws RemoteException
      */
-    public String draw(String wbID, String username, String content) throws RemoteException;
-
-    /**
-     * erase diagram
-     * @param wbID whiteboard id
-     * @param username
-     * @param content erasing content
-     * @return erasing feedback
-     * @throws RemoteException
-     */
-    public String erase(String wbID, String username, String content) throws RemoteException;
-
-    /**
-     * send message
-     * @param wbID whiteboard id
-     * @param username
-     * @param msg message
-     * @return sending feeback
-     * @throws RemoteException
-     */
-    public String sendMsg(String wbID, String username, String msg) throws RemoteException;
+    public void sendMsg(String wbName, String username, String msg) throws RemoteException;
 }

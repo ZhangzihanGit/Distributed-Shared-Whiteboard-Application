@@ -1,5 +1,7 @@
 package dataServerApp;
 
+import org.json.simple.JSONObject;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -41,4 +43,6 @@ public interface IRemoteDb extends Remote {
      * @throws RemoteException
      */
     public String loadAllWb(String username) throws RemoteException;
+
+    public UserInformation transferInformation(String username, String password) throws RemoteException;
 }

@@ -1,7 +1,10 @@
 package dataServerApp;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 
+import java.rmi.RemoteException;
+// TODO: 问题找到了， static class在compile 的时候就已经fix了，runtime无法改变他本身的状态了。
 public class DataServerFacade {
     private final static Logger logger = Logger.getLogger(DataServerFacade.class);
 
@@ -13,7 +16,7 @@ public class DataServerFacade {
     /**
      * Private constructor
      */
-    private DataServerFacade() {
+    private DataServerFacade(){
         dataServer = new DataServerApplication();
     }
 
@@ -22,11 +25,23 @@ public class DataServerFacade {
      * @return singleton instance of DataServerFacade
      */
     public static DataServerFacade getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new DataServerFacade();
-
+        }
         return instance;
     }
+
+    public void setupRemoteApplication(){
+        // Singleton server application.
+        if (this.dataServer != null){
+            logger.info("Remote application starts. ");
+            dataServer.setRemoteDb(this);
+        }
+        else{
+            logger.fatal("Error. Server application does not start properly. ");
+        }
+    }
+
 
     /**
      * start run server
@@ -47,10 +62,39 @@ public class DataServerFacade {
     /**
      * Set up server address (ip, port)
      * @param ip
-     * @param port
      * @return true if set successfully
      */
-    public boolean setAddress(String ip, int port) {
-        return dataServer.setAddress(ip, port);
+    public boolean setAddress(String ip) {
+        return dataServer.setAddress(ip);
+    }
+
+    String addUser(String username, String password){
+        return dataServer.addUser(username, password);
+    }
+
+
+    String checkUser(String username, String password){
+        return dataServer.checkUser(username, password);
+    }
+
+
+
+    String saveWb(String managerName, String wbContent){
+        JSONObject message = new JSONObject();
+        message.put("hello", 123);
+        return dataServer.saveCanvas(message, "world");
+    }
+
+
+    String loadAllWb(String managerName){
+       return dataServer.retrieveCanvas(managerName);
+    }
+
+    void iteratePassBook(){
+        dataServer.iteratePassBook();
+    }
+
+    public DataServerApplication getDataServer() {
+        return this.dataServer;
     }
 }

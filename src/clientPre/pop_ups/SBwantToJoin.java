@@ -40,7 +40,7 @@ public class SBwantToJoin {
             choose[0] = false;
             window.close();
         });
-        
+
         FlowPane choosePane = new FlowPane();
         choosePane.setPadding(new Insets(11, 12, 13, 30));
 

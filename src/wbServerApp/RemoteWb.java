@@ -1,95 +1,60 @@
 package wbServerApp;
 
+import wbServerData.WbServerDataStrategy;
+
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
-public class RemoteWb implements IRemoteWb {
+public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
+    protected RemoteWb() throws RemoteException {}
+
     @Override
-    public String register(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String register(String username, String password) {
+        return WbServerFacade.getInstance().register(username, password);
     }
 
     @Override
-    public String login(String username, String password) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String login(String username, String password) {
+        return WbServerFacade.getInstance().login(username, password);
     }
 
     @Override
-    public String createWb(String username, String wbName) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String createWb(String wbName, String username) {
+        return WbServerFacade.getInstance().createWb(wbName, username);
     }
 
     @Override
-    public String getAvaliableWb() throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String joinWb(String wbName, String username) {
+        return WbServerFacade.getInstance().joinWb(wbName, username);
     }
 
     @Override
-    public String joinWb(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public void allowJoin(String username, boolean isAllow) {
+        WbServerFacade.getInstance().allowJoin(username, isAllow);
     }
 
     @Override
-    public String closeWb(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public String getCreatedWb() {
+        return WbServerFacade.getInstance().getCreatedWb();
     }
 
     @Override
-    public String saveWbOnline(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public void closeWb(String wbName, String username) {
+        WbServerFacade.getInstance().closeWb(wbName, username);
     }
 
     @Override
-    public String saveWbLocally(String wbID, String username, String format) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public void kickUser(String manager, String visitor) {
+        WbServerFacade.getInstance().kickUser(manager, visitor);
     }
 
     @Override
-    public String getAllStoredFiles(String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public void updateWb(String wbName, String username, String wb) {
+        WbServerFacade.getInstance().updateWb(wbName, username, wb);
     }
 
     @Override
-    public String openWbOnline(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
-    }
-
-    @Override
-    public String openWbLocally(String username, String wbContent) throws RemoteException {
-        /* NEED FIX */
-        return null;
-    }
-
-    @Override
-    public String render(String wbID, String username) throws RemoteException {
-        /* NEED FIX */
-        return null;
-    }
-
-    @Override
-    public String draw(String wbID, String username, String content) throws RemoteException {
-        /* NEED FIX */
-        return null;
-    }
-
-    @Override
-    public String erase(String wbID, String username, String content) throws RemoteException {
-        /* NEED FIX */
-        return null;
-    }
-
-    @Override
-    public String sendMsg(String wbID, String username, String msg) throws RemoteException {
-        /* NEED FIX */
-        return null;
+    public void sendMsg(String wbName, String username, String msg) {
+        WbServerFacade.getInstance().sendMsg(wbName, username, msg);
     }
 }

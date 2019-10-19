@@ -3,7 +3,6 @@
 ##############################
 .mtj.tmp/
 *.class
-*.jar
 *.war
 *.ear
 *.nar
@@ -36,13 +35,14 @@ gradle-app.setting
 ##############################
 ## IntelliJ
 ##############################
-out/
-.idea/
+/out/
+/.idea/
+*out/
 .idea_modules/
 *.iml
 *.ipr
 *.iws
-
+.idea/
 ##############################
 ## Eclipse
 ##############################
@@ -74,3 +74,16 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store
+
+##############################
+## log file
+/resources/log/*
+*log/
+
+.idea/
+*/.idea/
+
+##############################
+## ignore storage(database)
+/storage
+

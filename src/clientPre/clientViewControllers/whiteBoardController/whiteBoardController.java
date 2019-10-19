@@ -162,8 +162,6 @@ public class whiteBoardController<list> {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         canvas.setOnMousePressed(e->{
-            System.out.println(gc.getStroke());
-            System.out.println(gc.getLineWidth());
             double x = e.getX();
             double y = e.getY();
 
@@ -202,6 +200,7 @@ public class whiteBoardController<list> {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
+                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
@@ -241,13 +240,13 @@ public class whiteBoardController<list> {
 
     public void initialize(){
         initLeftButtons();
-//        boolean isManager = ClientAppFacade.getInstance().isManager();
-//        if(isManager){
-//            clientType = "manager";
-//        }
-//        else{
-//            clientType = "client";
-//        }
+        boolean isManager = ClientAppFacade.getInstance().isManager();
+        if(isManager){
+            clientType = "manager";
+        }
+        else{
+            clientType = "client";
+        }
         if(!clientType.equals("manager")){
             menuBar.setVisible(false);
         }
@@ -341,17 +340,11 @@ public class whiteBoardController<list> {
     }
 
     public void updateUserList(String msg) {
-        System.out.println(msg);
-        StringAndButtonList.getInstance(clientType).list.removeAll();
-        StringAndButtonList.getInstance(clientType).list.addAll(Arrays.asList(msg.split(",")));
-        initListView(StringAndButtonList.getInstance(clientType).list);
+        StringAndButtonList.list.setAll(Arrays.asList(msg.split(",")));
     }
 
     public void updateWhiteBoard(String msg){
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Paint originalColor = gc.getStroke();
-        Color c = Color.web("0x0000FF",1.0);
-        gc.setStroke(c);
         ArrayList<String> inst = new ArrayList<>();
         inst.addAll(Arrays.asList(msg.split(",")));
     }
