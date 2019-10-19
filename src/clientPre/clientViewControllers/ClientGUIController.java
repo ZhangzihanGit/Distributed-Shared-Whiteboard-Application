@@ -269,7 +269,7 @@ public class ClientGUIController extends Application {
                 // to get the whiteboard name name list:
                 // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
                 // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
-                String wbName = "whiteboard1";
+                String wbName = "DS-board";
 
                 String joinRespond = clientApp.joinWb(wbName);
 
@@ -284,7 +284,7 @@ public class ClientGUIController extends Application {
             }
             else if (managerCheckBox.isSelected()) {
                 // TODO: get whiteboard name from input of manager
-                String wbName = "whiteboard1";
+                String wbName = "DS-board";
 
                 String createRespond = clientApp.createWb(wbName);
 

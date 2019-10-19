@@ -75,9 +75,9 @@
    </bottom>
    <center>
       <Pane fx:id="pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <Canvas fx:id="canvas" height="511.0" layoutX="-1.0" width="903.0" />
-         </children>
+<!--         <children>-->
+<!--            <Canvas fx:id="canvas" height="511.0" layoutX="-1.0" width="903.0" />-->
+<!--         </children>-->
       </Pane>
    </center>
 </BorderPane>

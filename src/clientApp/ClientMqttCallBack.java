@@ -37,7 +37,7 @@ public class ClientMqttCallBack implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String msg = new String(mqttMessage.getPayload());
         logger.info("Message received: " + s + ", " + msg);
-
+        System.out.println(msg);
         if (s.contains(JOIN_PANEL)) {
             this.joinPanelHandle(s, msg);
         }
@@ -45,14 +45,11 @@ public class ClientMqttCallBack implements MqttCallback {
         if (s.contains(WB_PANEL)) {
             // TODO call whiteboard update function in clientGUI
             // msg contains the string version of updated whiteboard
-            /* Platform.runLater(()-> {
-                try {
-                    whiteBoardController.getInstance().methodName(msg);
-                } catch (IOException e) {
-                    logger.error(e.getMessage());
-                    logger.error("Update whiteboard failed");
-                }
-            }); */
+             Platform.runLater(()-> {
+                    System.out.println(msg);
+                    whiteBoardController.getInstance().
+                            updateWhiteBoard(msg);
+            });
         }
 
         if (s.contains(MSG_PANEL)) {
