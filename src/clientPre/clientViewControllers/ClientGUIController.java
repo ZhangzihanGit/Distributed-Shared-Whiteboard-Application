@@ -326,9 +326,10 @@ public class ClientGUIController extends Application {
             // TODO: 能不能把connectWbServer返回类型改成String，然后通过getHeader返回boolean
 //            String respond = clientApp.connectWbServer(ip, port);
 //            Boolean isSuccess = clientApp.getHeader(respond);
-            Boolean isSuccess = true;
+            String respond = clientApp.connectWbServer(ip,port);
+            Boolean isSuccess = clientApp.getHeader(respond);
 //            if (isSuccess) {
-            if (clientApp.connectWbServer(ip, port)) {
+            if (isSuccess) {
                 // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
                 this.showMqttConfigView();
             } else {
@@ -362,12 +363,12 @@ public class ClientGUIController extends Application {
 
             // TODO: 能不能把connectBroker返回类型改成String，然后通过getHeader返回boolean
             //                clientApp.connectBroker(ip, "1883");
-//            String respond = clientApp.connectBroker(ip, broker);
-//            Boolean isSuccess = clientApp.getHeader(respond);
-            Boolean isSuccess = true;
+            String respond = clientApp.connectBroker(ip, broker);
+            Boolean isSuccess = clientApp.getHeader(respond);
+//            Boolean isSuccess = true;
 //            clientApp.connectBroker(ip, broker);
 //            if (isSuccess) {
-            if (clientApp.connectBroker(ip, broker)) {
+            if (isSuccess) {
                 // move to LoginView
                 this.showLoginView();
             } else {
