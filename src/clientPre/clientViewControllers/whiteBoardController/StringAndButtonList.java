@@ -11,14 +11,23 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
 public class StringAndButtonList extends ListCell<String> {
-    static ObservableList<String> list;
+    private static StringAndButtonList instance;
+
+    public static StringAndButtonList getInstance(String clientType) {
+        if(instance == null){
+            instance = new StringAndButtonList(clientType);
+        }
+        return instance;
+    }
+
+    public ObservableList<String> list;
     HBox hbox = new HBox();
     Label label = new Label("(empty)");
     Pane pane = new Pane();
     Button button = new Button("x");
     String lastItem;
 
-    public StringAndButtonList(String clientType) {
+    private StringAndButtonList(String clientType) {
         super();
         if(!clientType.equals("manager")){
             button.setVisible(false);
@@ -29,6 +38,7 @@ public class StringAndButtonList extends ListCell<String> {
             @Override
             public void handle(ActionEvent event) {
                 list.remove(lastItem);
+
             }
         });
     }

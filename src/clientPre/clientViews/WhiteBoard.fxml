@@ -16,22 +16,22 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="887.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
             <MenuBar fx:id="menuBar" prefHeight="20.0" prefWidth="598.0">
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#newCanvas" text="new" />
+               <menus>
+                  <Menu mnemonicParsing="false" text="File">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#newCanvas" text="new" />
                         <MenuItem mnemonicParsing="false" onAction="#open" text="open" />
                         <MenuItem mnemonicParsing="false" onAction="#save" text="save" />
                         <MenuItem mnemonicParsing="false" onAction="#saveAs" text="saveAs" />
                         <MenuItem mnemonicParsing="false" onAction="#close" text="close" />
-                  </items>
-                </Menu>
-              </menus>
+                     </items>
+                  </Menu>
+               </menus>
             </MenuBar>
          </children>
       </VBox>
@@ -64,9 +64,9 @@
       <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
          <children>
             <TextArea fx:id="messageRecord" prefHeight="118.0" prefWidth="1199.0" />
-            <Pane prefHeight="36.0" prefWidth="1199.0" >
+            <Pane prefHeight="36.0" prefWidth="1199.0">
                <children>
-                  <Button fx:id="send" layoutX="1137.0" layoutY="4.0" mnemonicParsing="false" text="Send" />
+                  <Button fx:id="send" layoutX="1129.0" layoutY="4.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="62.0" text="Send" />
                   <TextField fx:id="sendMessage" layoutX="5.0" layoutY="2.0" prefHeight="23.0" prefWidth="1116.0" />
                </children>
             </Pane>
@@ -74,9 +74,9 @@
       </VBox>
    </bottom>
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="pane">
+      <Pane fx:id="pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Canvas fx:id="canvas" height="708.0" layoutX="-1.0" width="916.0" />
+            <Canvas fx:id="canvas" height="511.0" layoutX="-1.0" width="903.0" />
          </children>
       </Pane>
    </center>
