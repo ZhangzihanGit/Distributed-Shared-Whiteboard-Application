@@ -6,6 +6,8 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerApp.IRemoteWb;
+import wbServerData.WbServerDataStrategy;
+import wbServerData.WbServerDataStrategyFactory;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -31,8 +33,10 @@ public class ClientApplication {
      * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip, String port) {
+    public String connectWbServer(String ip, String port) {
         // parameter checking
+        WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
+        WbServerDataStrategy parser = factory.getJsonStrategy();
         int portNum = 1111;
         try {
             portNum = Integer.parseInt(port);
@@ -55,11 +59,13 @@ public class ClientApplication {
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
 
             logger.info("connect to server at ip: " + ipAddr + ", port: " + portNum);
-            return true;
+            return parser.packRespond(true,"Successfully connect to the web server at ip: "+ip+" port: "+port,
+                    "Webser Connection", this.username);
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Obtain remote service from whiteboard server(" + ipAddr + ", " + portNum + ") failed");
-            return false;
+            return parser.packRespond(false, "Fail to connect to the web server at "+ ip+ "port: "+port,
+            "Webser Connection", this.username);
         }
     }
 
@@ -69,9 +75,12 @@ public class ClientApplication {
      * @param port Port
      * @return True if connect successfully
      */
-    public boolean connectBroker(String ip, String port) {
+    public String connectBroker(String ip, String port) {
         String broker = "tcp://localhost:1883";
         MemoryPersistence persistence = new MemoryPersistence();
+        WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
+        WbServerDataStrategy parser = factory.getJsonStrategy();
+
 
         if (ip != null && !ip.equals("")) {
             broker = "tcp://" + ip + ":1883";
@@ -93,11 +102,14 @@ public class ClientApplication {
             logger.info("Connected to broker successfully");
 
             this.mqttSubscriber.setCallback(new ClientMqttCallBack());
-            return true;
+            return parser.packRespond(true, "Successfully connect to the broker at port: "+port,"" +
+                    "Broker connection",this.username);
+//            return true;
         } catch(Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Connect to remote broker failed");
-            return false;
+            return parser.packRespond(false, "Fail to connect to the broker at port: "+port, "Broker connection" +
+                    "",this.username);
         }
     }
 

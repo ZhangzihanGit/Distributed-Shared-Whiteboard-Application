@@ -42,7 +42,7 @@ public class ClientAppFacade {
      * @param port port, String
      * @return True if connect successfully
      */
-    public boolean connectWbServer(String ip, String port) throws IOException {
+    public String connectWbServer(String ip, String port) throws IOException {
         return clientApp.connectWbServer(ip, port);
     }
 
@@ -52,7 +52,7 @@ public class ClientAppFacade {
      * @param port Port
      * @return True if connect successfully
      */
-    public boolean connectBroker(String ip, String port) {
+    public String connectBroker(String ip, String port) {
         return clientApp.connectBroker(ip, port);
     }
 
