@@ -1,7 +1,10 @@
 package clientPre.clientViewControllers.whiteBoardController;
 
 import clientApp.ClientAppFacade;
-import clientPre.pop_ups.*;
+import clientPre.pop_ups.AlertBox;
+import clientPre.pop_ups.InputText;
+import clientPre.pop_ups.OpenFrom;
+import clientPre.pop_ups.SaveAs;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -13,12 +16,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Callback;
-
 
 import javax.imageio.ImageIO;
 import java.io.File;

@@ -33,10 +33,13 @@ public class WbListViewController {
 
         if (!isEmpty) {
             String joinRespond = clientApp.joinWb(selectedWbName);
+            clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
+
+            /*
             // receive msg from server to know if join successfully
             if (clientApp.getHeader(joinRespond)) {
                 System.out.println("join success");
-//                boolean isSubscribeSuccess = clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
+                boolean isSubscribeSuccess = clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
                 boolean isSubscribeSuccess = true;
                 if (isSubscribeSuccess) {
                     // move to the canvas
@@ -50,7 +53,7 @@ public class WbListViewController {
                 // Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
                 clientGUI.showErrorView("visitorJoin", clientApp.getMsg(joinRespond), selectedWbName);
                 System.out.println(clientApp.getMsg(joinRespond));
-            }
+            }*/
         } else {
             listView.setStyle(WARNINGCSS);
         }

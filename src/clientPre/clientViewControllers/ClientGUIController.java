@@ -329,7 +329,7 @@ public class ClientGUIController extends Application {
 //            Boolean isSuccess = clientApp.getHeader(respond);
             Boolean isSuccess = true;
 //            if (isSuccess) {
-            if (clientApp.connectWbServer(ip, port)){
+            if (clientApp.connectWbServer(ip, port)) {
                 // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
                 this.showMqttConfigView();
             } else {
@@ -355,7 +355,7 @@ public class ClientGUIController extends Application {
 //            String respond = clientApp.connectBroker(ip, broker);
 //            Boolean isSuccess = clientApp.getHeader(respond);
             Boolean isSuccess = true;
-//            clientApp.connectBroker(ip, broker);
+            clientApp.connectBroker(ip, broker);
             if (isSuccess) {
 //            if (clientApp.connectBroker(ip, broker)) {
                 // move to LoginView
@@ -389,26 +389,21 @@ public class ClientGUIController extends Application {
 
         if (!this.checkIsEmpty(wbNameField)) {
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
             System.out.println("manager selected");
             String createRespond = clientApp.createWb(wbName);
 
+            // if create whiteboard successfully
             if (clientApp.getHeader(createRespond)) {
-                clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
                 clientApp.setWbName(wbName);
                 clientApp.setManager(true);
 
-                // if create whiteboard successfully
-//            if (clientApp.getHeader(createRespond)) {
-                if (true) {
-                    clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
-                    clientApp.setWbName(wbName);
-
-                    this.showWhiteBoardView();  // move to whiteboard page
-                } else {
-                    //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
-                    this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
-                    System.out.println(clientApp.getMsg(createRespond));
-                }
+                this.showWhiteBoardView();  // move to whiteboard page
+            } else {
+                //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+                clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
+                this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
+                System.out.println(clientApp.getMsg(createRespond));
             }
         }
     }

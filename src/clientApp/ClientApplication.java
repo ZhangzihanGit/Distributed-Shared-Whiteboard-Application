@@ -121,7 +121,6 @@ public class ClientApplication {
 
         try {
             this.mqttSubscriber.subscribe(topics, qos);
-            logger.info("Subscribe to topic successfully");
             return true;
         } catch(Exception e) {
             logger.error(e.toString());
