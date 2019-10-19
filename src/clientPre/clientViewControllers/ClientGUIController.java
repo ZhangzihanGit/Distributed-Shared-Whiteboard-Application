@@ -26,21 +26,41 @@ public class ClientGUIController extends Application {
     private final String LABELCSS = "-fx-font-family: NunitoSans;-fx-text-fill: red;visibility: true;";
     private final String LABELREMOVECSS = "visibility: false;";
     private static Stage primaryStage;
-    @FXML private Parent root;
-    @FXML private Scene scene;
-    @FXML private TextField loginUsernameField;
-    @FXML private PasswordField loginPasswordField;
-    @FXML private Label yyy;
-    @FXML private BorderPane checkBoxField;
-    @FXML private CheckBox visitorCheckBox;
-    @FXML private CheckBox managerCheckBox;
-    @FXML private TextField signupUsernameField;
-    @FXML private PasswordField signupPasswordField1;
-    @FXML private PasswordField signupPasswordField2;
-    @FXML private Label usernameLabel;
-    @FXML private Label passwordLabel;
-    @FXML private TextField IPField;
-    @FXML private TextField portField;
+    @FXML
+    private Parent root;
+    @FXML
+    private Scene scene;
+    @FXML
+    private TextField loginUsernameField;
+    @FXML
+    private PasswordField loginPasswordField;
+    @FXML
+    private BorderPane checkBoxField;
+    @FXML
+    private CheckBox visitorCheckBox;
+    @FXML
+    private CheckBox managerCheckBox;
+    @FXML
+    private TextField signupUsernameField;
+    @FXML
+    private PasswordField signupPasswordField1;
+    @FXML
+    private PasswordField signupPasswordField2;
+    @FXML
+    private Label usernameLabel;
+    @FXML
+    private Label passwordLabel;
+    @FXML
+    private TextField IPField;
+    @FXML
+    private TextField portField;
+    @FXML
+    private TextField brokerField;
+    @FXML
+    private TextField wbNameField;
+    @FXML
+    private ListView<String> listView;
+
 
     /**
      * private constructor
@@ -117,21 +137,83 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    public void showLoginErrorView(String msg) {
+    private void showMqttConfigView() throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource(FxmlView.MQTT.getFxmlFile()));
+        this.primaryStage.setTitle(FxmlView.MQTT.getTitle());
+        baseView();
+    }
 
+    @FXML
+    private void showCurrentWbView() throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource(FxmlView.WB_LIST.getFxmlFile()));
+        this.primaryStage.setTitle(FxmlView.WB_LIST.getTitle());
+        baseView();
+    }
+
+    @FXML
+    private void showCreateWbView() throws IOException {
+        this.root = FXMLLoader.load(getClass().getResource(FxmlView.CREATE_WB.getFxmlFile()));
+        this.primaryStage.setTitle(FxmlView.CREATE_WB.getTitle());
+        baseView();
+    }
+
+    @FXML
+    public void showErrorView(String type, String msg, String wbName) {
+
+        String title, header, text;
+        Boolean isEmpty = msg == null || msg.isEmpty();
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Login Unsuccessful");
-        alert.setHeaderText("Sorry, login is unsuccessful");
 
-        if (msg == null || msg.isEmpty()) {
-            alert.setContentText("Incorrect username or password, please try again!");
-        }
-        else {
-            alert.setContentText(msg);
+        switch (type) {
+            case "login":
+                title = "Login Unsuccessful";
+                header = "Sorry, login is unsuccessful";
+                // TODO: better to return which is correct: username or password in msg
+                text = isEmpty ? "Incorrect username or password, please try again!" : msg;
+                break;
+            case "signup":
+                title = "Sign up Unsuccessful";
+                header = "Sorry, Sign up is unsuccessful";
+                text = isEmpty ? "Fail to create a new account, please try again!" : msg;
+                break;
+            case "config":
+                title = "Config Unsuccessful";
+                header = "Sorry, configuration is unsuccessful";
+                text = isEmpty ? "Fail to connect to the server, please try again!" : msg;
+                break;
+            case "mqttConfig":
+                title = "Config Broker Unsuccessful";
+                header = "Sorry, broker configuration is unsuccessful";
+                text = isEmpty ? "Fail to connect to the broker, please try again!" : msg;
+                break;
+            case "visitorJoin":
+                title = "Join whiteboard Unsuccessful";
+                header = "Sorry, joining " + wbName + " is unsuccessful";
+                text = isEmpty ? "Fail to join the whiteboard, please try again!" : msg;
+                break;
+            case "managerCreate":
+                title = "Create whiteboard Unsuccessful";
+                header = "Sorry, creating " + wbName + " is unsuccessful";
+                text = isEmpty ? "Fail to create the whiteboard, please try again!" : msg;
+                break;
+            case "visitorSubscribe":
+                title = "Subscribe whiteboard Unsuccessful";
+                header = "Sorry, subscribing " + wbName + " is unsuccessful";
+                text = isEmpty ? "Fail to subscribe the whiteboard, please try again!" : msg;
+                break;
+            default:
+                title = "Error";
+                header = "Sorry, something wrong happened.";
+                text = "Sorry, we have detected an error, please try again!";
+                break;
         }
 
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
         alert.showAndWait();
     }
+
 
     @FXML
     public void showJoinDeniedView(String msg) throws IOException {
@@ -150,8 +232,7 @@ public class ClientGUIController extends Application {
         if (agreeJoin) {
             logger.info("Manager agreed the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, true);
-        }
-        else {
+        } else {
             logger.info("Manager refused the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, false);
         }
@@ -166,7 +247,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    public void showWhiteBoardView() throws IOException{
+    public void showWhiteBoardView() throws IOException {
         // TODO: Fix: When calling this function outside of this class, not working
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.CANVAS.getTitle());
@@ -195,7 +276,7 @@ public class ClientGUIController extends Application {
             } else {
                 // prompt window
                 logger.info("User " + loginUsername + " log in failed");
-                this.showLoginErrorView(clientApp.getMsg(respond));
+                this.showErrorView("login", clientApp.getMsg(respond), "");
             }
         }
     }
@@ -207,10 +288,9 @@ public class ClientGUIController extends Application {
         String signupPassword1 = this.signupPasswordField1.getText();
         String signupPassword2 = this.signupPasswordField2.getText();
 
-        /** If not empty */
         if (!this.checkIsEmpty(signupUsernameField, signupPasswordField1, signupPasswordField2)) {
             // if passwords match, , pass it to the server to authenticate
-            if (signupPassword1.equals(signupPassword2) ) {
+            if (signupPassword1.equals(signupPassword2)) {
                 passwordLabel.setStyle(LABELREMOVECSS);
                 ClientAppFacade clientApp = ClientAppFacade.getInstance();
 
@@ -224,10 +304,11 @@ public class ClientGUIController extends Application {
                     this.showChooseIdentityView();
                 } else {
                     logger.info("New user " + signupUsername + " sign up failed");
-                    usernameLabel.setStyle(LABELCSS);
+                    showErrorView("signup", clientApp.getMsg(respond), "");
+                    //                    usernameLabel.setStyle(LABELCSS);
                 }
             } else {
-                logger.info("New user " + signupUsername + " sign up failed");
+                logger.info("Entered two passwords do not match ");
                 passwordLabel.setStyle(LABELCSS);
             }
         }
@@ -239,74 +320,115 @@ public class ClientGUIController extends Application {
         String ip = this.IPField.getText();
         String port = this.portField.getText();
 
-        if(!this.checkIsEmpty(IPField, portField)) {
+        if (!this.checkIsEmpty(IPField, portField)) {
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
-
             // if connect to server successfully, go to login page, else report error message
+            // TODO: 能不能把connectWbServer返回类型改成String，然后通过getHeader返回boolean
+//            String respond = clientApp.connectWbServer(ip, port);
+//            Boolean isSuccess = clientApp.getHeader(respond);
+            Boolean isSuccess = true;
+//            if (isSuccess) {
             if (clientApp.connectWbServer(ip, port)) {
                 // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
-                clientApp.connectBroker(ip, "1883");
-
-                this.showLoginView();
-            }
-            else {
+                this.showMqttConfigView();
+            } else {
                 //TODO: display error message if can't connect to server
+                // TODO: 这样可以把具体的错误信息显示出来，比如IP非数字还是port非数字，或者是server没开？
+//                this.showErrorView("config" , clientApp.getMsg(respond));
+                this.showErrorView("config", "Fail to connect to the server: IP/Port number is wrong", "");
+            }
+        }
+    }
 
-                System.exit(1);
-                // this.showConfigErrorView();
+    @FXML
+    private void controlMqttConfig() throws IOException {
+        ClientAppFacade clientApp = ClientAppFacade.getInstance();
+        String broker = this.brokerField.getText();
+        String ip = clientApp.getIp().isEmpty() ? "localhost" : clientApp.getIp();  // make sure ip is not empty
+
+//<<<<<<< HEAD
+//        /** If not empty, pass it to next page  */
+//        if (!this.checkIsEmpty()) {
+//            if (visitorCheckBox.isSelected()) {
+//                // TODO: display existing whiteboard name list to client and get his choice
+//                // to get the whiteboard name name list:
+//                // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
+//                // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
+//                String wbName = "DS-board";
+//=======
+//>>>>>>> clientGUI
+
+        if (!this.checkIsEmpty(brokerField)) {
+
+            // TODO: 能不能把connectBroker返回类型改成String，然后通过getHeader返回boolean
+            //                clientApp.connectBroker(ip, "1883");
+//            String respond = clientApp.connectBroker(ip, broker);
+//            Boolean isSuccess = clientApp.getHeader(respond);
+            Boolean isSuccess = true;
+//            clientApp.connectBroker(ip, broker);
+//            if (isSuccess) {
+            if (clientApp.connectBroker(ip, broker)) {
+                // move to LoginView
+                this.showLoginView();
+            } else {
+                // TODO: display error message if can't connect to server
+                // TODO: 这样可以把具体的错误信息显示出来，比如IP非数字还是port非数字，或者是server没开？
+//                this.showErrorView("mqttConfig" , clientApp.getMsg(respond));
+                this.showErrorView("mqttConfig", "Fail to connect to the Broker: IP/Port number is wrong", "");
             }
         }
     }
 
     @FXML
     private void controlCheckBox() throws IOException {
-        ClientAppFacade clientApp = ClientAppFacade.getInstance();
 
-        /** If not empty, pass it to next page  */
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
-                // TODO: display existing whiteboard name list to client and get his choice
-                // to get the whiteboard name name list:
-                // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
-                // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
-                String wbName = "DS-board";
-
-                String joinRespond = clientApp.joinWb(wbName);
-
-                if (clientApp.getHeader(joinRespond)) {
-                    clientApp.subscribeTopic(wbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
-                }
-                else {
-                    //TODO: Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
-
-                    System.out.println(clientApp.getMsg(joinRespond));
-                }
+                //  visitor can join one of existing whiteboards
+                this.showCurrentWbView();
+            } else if (managerCheckBox.isSelected()) {
+                //  manager can create the whiteboard by enter the name
+                this.showCreateWbView();
             }
-            else if (managerCheckBox.isSelected()) {
-                // TODO: get whiteboard name from input of manager
-                String wbName = "DS-board";
+        }
+    }
+////<<<<<<< HEAD
+////            else if (managerCheckBox.isSelected()) {
+////                // TODO: get whiteboard name from input of manager
+////                String wbName = "DS-board";
+////=======
+////        }
+//    }
+//>>>>>>> clientGUI
 
-                String createRespond = clientApp.createWb(wbName);
+    @FXML
+    private void controlCreateWb() throws IOException {
+        String wbName = this.wbNameField.getText();
 
-                if (clientApp.getHeader(createRespond)) {
-                    clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
-                    clientApp.setWbName(wbName);
-                    clientApp.setManager(true);
+        if (!this.checkIsEmpty(wbNameField)) {
+            ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
+            System.out.println("manager selected");
+            String createRespond = clientApp.createWb(wbName);
 
-                    this.showWhiteBoardView();
-                }
-                else {
-                    //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+            // if create whiteboard successfully
+            if (clientApp.getHeader(createRespond)) {
+                clientApp.setWbName(wbName);
+                clientApp.setManager(true);
 
-                    System.out.println(clientApp.getMsg(createRespond));
-                }
+                this.showWhiteBoardView();  // move to whiteboard page
+            } else {
+                //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+                clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
+                this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
+                System.out.println(clientApp.getMsg(createRespond));
             }
         }
     }
 
     @FXML
     private void handleVisitor() {
-        if (this.visitorCheckBox.isSelected()){
+        if (this.visitorCheckBox.isSelected()) {
             checkBoxField.setStyle(REMOVECSS);
             this.managerCheckBox.setSelected(false);
         }
@@ -318,6 +440,25 @@ public class ClientGUIController extends Application {
             checkBoxField.setStyle(REMOVECSS);
             this.visitorCheckBox.setSelected(false);
         }
+    }
+
+    private boolean checkIsEmpty() {
+
+        if (visitorCheckBox.isSelected() || managerCheckBox.isSelected()) return false;
+        if (!visitorCheckBox.isSelected() && !managerCheckBox.isSelected()) checkBoxField.setStyle(WARNINGCSS);
+
+        return true;
+    }
+
+    private boolean checkIsEmpty(TextField field) {
+
+        String input = field.getText();
+        field.setStyle(REMOVECSS);
+
+        if (!input.isEmpty()) return false;
+        if (input.isEmpty()) field.setStyle(WARNINGCSS);
+
+        return true;
     }
 
     private boolean checkIsEmpty(TextField field1, TextField field2) {
@@ -341,22 +482,14 @@ public class ClientGUIController extends Application {
         String input2 = field2.getText();
         String input3 = field3.getText();
 
-        signupUsernameField.setStyle(REMOVECSS);
-        signupPasswordField1.setStyle(REMOVECSS);
-        signupPasswordField2.setStyle(REMOVECSS);
+        field1.setStyle(REMOVECSS);
+        field2.setStyle(REMOVECSS);
+        field3.setStyle(REMOVECSS);
 
         if (!input1.isEmpty() && !input2.isEmpty() && !input3.isEmpty()) return false;
-        if (input1.isEmpty()) signupUsernameField.setStyle(WARNINGCSS);
-        if (input2.isEmpty()) signupPasswordField1.setStyle(WARNINGCSS);
-        if (input3.isEmpty()) signupPasswordField2.setStyle(WARNINGCSS);
-
-        return true;
-    }
-
-    private boolean checkIsEmpty(){
-
-        if (visitorCheckBox.isSelected() || managerCheckBox.isSelected()) return false;
-        if (!visitorCheckBox.isSelected() && !managerCheckBox.isSelected()) checkBoxField.setStyle(WARNINGCSS);
+        if (input1.isEmpty()) field1.setStyle(WARNINGCSS);
+        if (input2.isEmpty()) field2.setStyle(WARNINGCSS);
+        if (input3.isEmpty()) field3.setStyle(WARNINGCSS);
 
         return true;
     }

@@ -62,8 +62,35 @@ public enum FxmlView {
         String getFxmlFile() {
             return "../clientViews/WhiteBoard.fxml";
         }
+    }, MQTT {
+        @Override
+        String getTitle() {
+            return "MQTT Configuration";
+        }
+
+        @Override
+        String getFxmlFile() {
+            return "../clientViews/clientMqttConfig.fxml";
+        }
+    }, WB_LIST {
+        @Override
+        String getTitle() {
+            return "Available Whiteboards";
+        }
+
+        @Override
+        String getFxmlFile() { return "../clientViews/currentWhiteboards.fxml"; }
+    }, CREATE_WB {
+        @Override
+        String getTitle() {
+            return "Create Whiteboard";
+        }
+
+        @Override
+        String getFxmlFile() { return "../clientViews/createWhiteboard.fxml"; }
     };
 
     abstract String getTitle();
+
     abstract String getFxmlFile();
 }

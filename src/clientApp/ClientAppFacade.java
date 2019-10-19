@@ -1,7 +1,5 @@
 package clientApp;
 
-import org.apache.log4j.Logger;
-
 import java.io.IOException;
 
 /**
@@ -208,6 +206,8 @@ public class ClientAppFacade {
     public String getWbName() {
         return clientApp.getWbName();
     }
+
+    public  String getIp() { return clientApp.getIp(); }
 
     public void setManager(boolean isManager) {
         clientApp.setManager(isManager);
