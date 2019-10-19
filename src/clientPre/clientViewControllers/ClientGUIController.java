@@ -121,11 +121,6 @@ public class ClientGUIController extends Application {
     private void showChooseIdentityView() throws IOException {
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.IDENTITY.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.IDENTITY.getTitle());
-
-        String userName = ClientAppFacade.getInstance().getUsername();
-        String header = userName + ", Which role do you wanna play today?";
-
-//        identityHeader.setText(header);   // null pointer error, dont know why
         baseView();
     }
 
@@ -201,6 +196,11 @@ public class ClientGUIController extends Application {
                 header = "Sorry, subscribing " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to subscribe the whiteboard, please try again!" : msg;
                 break;
+            case "joinDenied":
+                title = "Join whiteboard Unsuccessful";
+                header = "Sorry, request to join " + wbName + " is unsuccessful";
+                text = isEmpty ? "Fail to join the whiteboard, please try again!" : msg;
+                break;
             default:
                 title = "Error";
                 header = "Sorry, something wrong happened.";
@@ -214,11 +214,12 @@ public class ClientGUIController extends Application {
         alert.showAndWait();
     }
 
-
     @FXML
     public void showJoinDeniedView(String msg) throws IOException {
         // TODO: Finish this function to notify user that the join request denied by manager
         System.out.println(msg);
+        String selectedWb = ClientAppFacade.getInstance().getWbName();
+        this.showErrorView("joinDenied", msg, selectedWb);
         this.showChooseIdentityView();
     }
 
@@ -346,18 +347,6 @@ public class ClientGUIController extends Application {
         String broker = this.brokerField.getText();
         String ip = clientApp.getIp().isEmpty() ? "localhost" : clientApp.getIp();  // make sure ip is not empty
 
-//<<<<<<< HEAD
-//        /** If not empty, pass it to next page  */
-//        if (!this.checkIsEmpty()) {
-//            if (visitorCheckBox.isSelected()) {
-//                // TODO: display existing whiteboard name list to client and get his choice
-//                // to get the whiteboard name name list:
-//                // String listRespond = ClientAppFacade.getInstance().getCreatedWb()
-//                // String[] list = ClientAppFacade.getInstance().getMsg(joinRespond).split(",");
-//                String wbName = "DS-board";
-//=======
-//>>>>>>> clientGUI
-
         if (!this.checkIsEmpty(brokerField)) {
 
             // TODO: 能不能把connectBroker返回类型改成String，然后通过getHeader返回boolean
@@ -392,14 +381,6 @@ public class ClientGUIController extends Application {
             }
         }
     }
-////<<<<<<< HEAD
-////            else if (managerCheckBox.isSelected()) {
-////                // TODO: get whiteboard name from input of manager
-////                String wbName = "DS-board";
-////=======
-////        }
-//    }
-//>>>>>>> clientGUI
 
     @FXML
     private void controlCreateWb() throws IOException {
@@ -418,7 +399,7 @@ public class ClientGUIController extends Application {
 
                 this.showWhiteBoardView();  // move to whiteboard page
             } else {
-                //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+                // Pop out window to indicate there is one whiteboard being created (or already has manager)
                 clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
                 this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
                 System.out.println(clientApp.getMsg(createRespond));
