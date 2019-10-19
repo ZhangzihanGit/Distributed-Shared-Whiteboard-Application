@@ -1,5 +1,6 @@
 package clientPre.clientViewControllers.whiteBoardController;
 
+import clientApp.ClientAppFacade;
 import clientPre.pop_ups.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -23,6 +24,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class whiteBoardController<list> {
@@ -71,6 +73,7 @@ public class whiteBoardController<list> {
     @FXML
     private Pane pane;
 
+
     private String clientType = "manager";
 
     private String mode = "draw";
@@ -103,12 +106,9 @@ public class whiteBoardController<list> {
             sendMessage.clear();
         });
     }
-    public void updateWhiteBoard(){
-        pane.getChildren().remove(canvas);
-        pane.getChildren().add(canvas);
-    }
 
-    private void initDrawMethods(){
+    private void initLeftButtons(){
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
         text.setOnMousePressed(e->{
             mode = "text";
@@ -138,8 +138,6 @@ public class whiteBoardController<list> {
 
         label.setText("1.0");
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
         colorPicker.setValue(Color.BLACK);
         colorPicker.setOnAction(e->{
             gc.setStroke(colorPicker.getValue());
@@ -153,6 +151,10 @@ public class whiteBoardController<list> {
             label.setText(str);
             gc.setLineWidth(value);
         });
+    }
+
+    private void initDrawMethods(){
+        GraphicsContext gc = canvas.getGraphicsContext2D();
 
         canvas.setOnMousePressed(e->{
             double x = e.getX();
@@ -184,6 +186,8 @@ public class whiteBoardController<list> {
             double upLeftX = (originX - x > 0) ? x : originX;
             double upLeftY = (originY - y > 0) ? y : originY;
             double distance = Math.sqrt(Math.pow(x - originX, 2) + Math.pow(y - originY, 2));
+            double middleX = (originX + x)/2;
+            double middleY = (originY + y)/2;
 
             if(mode.equals("line")){
                 gc.lineTo(e.getX(), e.getY());
@@ -191,9 +195,10 @@ public class whiteBoardController<list> {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
+                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
             }
             else if(mode.equals("circle")){
-                gc.strokeOval(originX - distance , originY - distance , distance*2, distance*2);
+                gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
             }
             else if(mode.equals("oval")){
                 gc.strokeOval(upLeftX , upLeftY , width, height);
@@ -228,6 +233,14 @@ public class whiteBoardController<list> {
     }
 
     public void initialize(){
+        initLeftButtons();
+        boolean isManager = ClientAppFacade.getInstance().isManager();
+        if(isManager){
+            clientType = "manager";
+        }
+        else{
+            clientType = "client";
+        }
         if(!clientType.equals("manager")){
             menuBar.setVisible(false);
         }
@@ -319,5 +332,17 @@ public class whiteBoardController<list> {
     public void close(){
         System.exit(0);
     }
+
+    public void updateUserList(String msg) {
+        StringAndButtonList.list.setAll(Arrays.asList(msg.split(",")));
+    }
+
+    public void updateWhiteBoard(String msg){
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        ArrayList<String> inst = new ArrayList<>();
+        inst.addAll(Arrays.asList(msg.split(",")));
+    }
+
+
 }
 

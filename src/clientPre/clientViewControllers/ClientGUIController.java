@@ -392,17 +392,23 @@ public class ClientGUIController extends Application {
             System.out.println("manager selected");
             String createRespond = clientApp.createWb(wbName);
 
-            // if create whiteboard successfully
-//            if (clientApp.getHeader(createRespond)) {
-            if (true) {
+            if (clientApp.getHeader(createRespond)) {
                 clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
                 clientApp.setWbName(wbName);
+                clientApp.setManager(true);
 
-                this.showWhiteBoardView();  // move to whiteboard page
-            } else {
-                //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
-                this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
-                System.out.println(clientApp.getMsg(createRespond));
+                // if create whiteboard successfully
+//            if (clientApp.getHeader(createRespond)) {
+                if (true) {
+                    clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
+                    clientApp.setWbName(wbName);
+
+                    this.showWhiteBoardView();  // move to whiteboard page
+                } else {
+                    //TODO: Pop out window to indicate there is one whiteboard being created (or already has manager)
+                    this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
+                    System.out.println(clientApp.getMsg(createRespond));
+                }
             }
         }
     }

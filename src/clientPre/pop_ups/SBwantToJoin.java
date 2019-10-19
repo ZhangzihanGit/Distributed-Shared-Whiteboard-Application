@@ -11,14 +11,19 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-public class DoYouWantToSave {
+public class SBwantToJoin {
+    public String userName;
+    public SBwantToJoin(String userName){
+        this.userName = userName;
+    }
+
     public Boolean display(){
         final Boolean[] choose = {true};
 
         Stage window = new Stage();
         window.setTitle("");
 
-        Label l = new Label("Do you want to save the previous graph?");
+        Label l = new Label(userName + "want to join your white board. Would you like he or she to enter?");
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinWidth(350);
         window.setMinHeight(250);
@@ -35,7 +40,7 @@ public class DoYouWantToSave {
             choose[0] = false;
             window.close();
         });
-        
+
         FlowPane choosePane = new FlowPane();
         choosePane.setPadding(new Insets(11, 12, 13, 30));
 

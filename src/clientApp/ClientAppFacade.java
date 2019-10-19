@@ -57,7 +57,7 @@ public class ClientAppFacade {
     }
 
     /**
-     * Let this client subscribe to a specific topic
+     * Let this client subscribe to a set specific topics
      * @param wbName Name of whiteboard
      * @param subtopics Subtopics that this client will subscribe
      * @param qos Quality of services tags for each topic
@@ -65,6 +65,16 @@ public class ClientAppFacade {
      */
     public boolean subscribeTopic(String wbName, String[] subtopics, int[] qos) {
         return clientApp.subscribeTopic(wbName, subtopics, qos);
+    }
+
+    /**
+     * Let this client unsubscribe a set of specific topics
+     * @param wbName Name of whiteboard
+     * @param subtopics Subtopics that this client will unsubscribe
+     * @return True if unsubscribe successfully
+     */
+    public boolean unsubscribeTopic(String wbName, String[] subtopics) {
+        return clientApp.unsubscribeTopic(wbName, subtopics);
     }
 
     /**
@@ -198,4 +208,12 @@ public class ClientAppFacade {
     }
 
     public  String getIp() { return clientApp.getIp(); }
+
+    public void setManager(boolean isManager) {
+        clientApp.setManager(isManager);
+    }
+
+    public boolean isManager() {
+        return clientApp.isManager();
+    }
 }
