@@ -177,10 +177,11 @@ public class whiteBoardController {
             else if(mode.equals("text")){
                 InputText inputText = new InputText();
                 String content = inputText.display();
-                gc.fillText(content, x, y);
-
-                msg = gc.getStroke() + ","+gc.getLineWidth()+","+mode+","+x+","+y+","+content;
-                ClientAppFacade.getInstance().updateWb(msg);
+                if (content!=null){
+                    gc.fillText(content, x, y);
+                    msg = gc.getStroke() + ","+gc.getLineWidth()+","+mode+","+x+","+y+","+content;
+                    ClientAppFacade.getInstance().updateWb(msg);
+                }
             }
         });
 
@@ -214,7 +215,6 @@ public class whiteBoardController {
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
-                gc.strokeRect(upLeftX, upLeftY, width, height);
                 ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + (middleX - distance/2)
                         + "," + (middleY - distance/2) + "," + distance + "," + distance;
@@ -236,7 +236,6 @@ public class whiteBoardController {
 
                 gc.lineTo(x, y);
                 gc.stroke();
-
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
                         + "," + y+ "," + 1;
                 ClientAppFacade.getInstance().updateWb(msg);
@@ -416,12 +415,12 @@ public class whiteBoardController {
             else if(inst.get(2).equals("draw")){
                 double x = Double.parseDouble(inst.get(3));
                 double y = Double.parseDouble(inst.get(4));
-                if(inst.get(6).equals("0")){
+                if(inst.get(5).equals("0")){
                     gc.beginPath();
                     gc.lineTo(x, y);
                     gc.stroke();
                 }
-                if(inst.get(6).equals("1")){
+                if(inst.get(5).equals("1")){
                     gc.lineTo(x, y);
                     gc.stroke();
                 }
@@ -435,17 +434,17 @@ public class whiteBoardController {
             else if(inst.get(2).equals("line")){
                 double x = Double.parseDouble(inst.get(3));
                 double y = Double.parseDouble(inst.get(4));
-                if(inst.get(6).equals("0")){
+                if(inst.get(5).equals("0")){
                     gc.beginPath();
                     gc.lineTo(x, y);
                     gc.stroke();
                 }
-                if(inst.get(6).equals("1")){
+                if(inst.get(5).equals("1")){
                     gc.lineTo(x,y);
                     gc.stroke();
                 }
             }
-            else if(inst.get(2).equals("eraser")){
+            else if(inst.get(2).equals("erase")){
                 double x = Double.parseDouble(inst.get(3));
                 double y = Double.parseDouble(inst.get(4));
                 gc.clearRect(x,y,Double.parseDouble(inst.get(5)),Double.parseDouble(inst.get(5)));
