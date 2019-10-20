@@ -38,8 +38,6 @@ public class whiteBoardController {
         return instance;
     }
 
-
-
     private static Canvas canvas = new Canvas(903, 511);
     @FXML
     private ColorPicker colorPicker;
@@ -73,6 +71,9 @@ public class whiteBoardController {
     private MenuBar menuBar;
     @FXML
     private Pane pane;
+    @FXML private TextField msgField;
+    @FXML private TextArea msgArea;
+    @FXML private Button sendBtn;
 
 
     private String clientType = "manager";
@@ -83,30 +84,30 @@ public class whiteBoardController {
 
     private double[] beginCoordinate = {0,0};
 
-    private void initSendMessage(){
-
-        messageRecord.setEditable(false);
-        ArrayList<String> messages = new ArrayList<>();
-        send.setOnAction(e->{
-            messages.add(sendMessage.getText());
-            String content[] = messages.toString().
-                    replace("[", "").replace("]", "").split(",");
-            String text = "";
-            int i = 0;
-            for(String s: content){
-                i ++;
-                if(i == content.length){
-                    text += s;
-                }
-                else{
-                    text += (s + "\n");
-                }
-
-            }
-            messageRecord.setText(text);
-            sendMessage.clear();
-        });
-    }
+//    private void initSendMessage(){
+//
+//        messageRecord.setEditable(false);
+//        ArrayList<String> messages = new ArrayList<>();
+//        send.setOnAction(e->{
+//            messages.add(sendMessage.getText());
+//            String content[] = messages.toString().
+//                    replace("[", "").replace("]", "").split(",");
+//            String text = "";
+//            int i = 0;
+//            for(String s: content){
+//                i ++;
+//                if(i == content.length){
+//                    text += s;
+//                }
+//                else{
+//                    text += (s + "\n");
+//                }
+//
+//            }
+//            messageRecord.setText(text);
+//            sendMessage.clear();
+//        });
+//    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -274,7 +275,7 @@ public class whiteBoardController {
         if(!clientType.equals("manager")){
             menuBar.setVisible(false);
         }
-        initSendMessage();
+//        initSendMessage();
         StringAndButtonList.list = list;
         initListView(StringAndButtonList.list);
         StringAndButtonList.list.addListener(new ListChangeListener<String>() {
@@ -453,10 +454,25 @@ public class whiteBoardController {
             gc.setStroke(originalColor);
             gc.setLineWidth(originLineWidth);
         }
-
-
     }
 
+    /**
+     * For a single user, he press btn to send the msg to his own text area
+     */
+    public void controlSendMsg() {
+
+        String msg = this.msgField.getText();
+        boolean isEmpty = msg == null || msg.isEmpty();
+
+        ClientAppFacade clientApp = ClientAppFacade.getInstance();
+        String userName = clientApp.getUsername();
+
+        if (!isEmpty) {
+            this.msgArea.appendText(userName + ": " + msg + "\n");
+            clientApp.sendMsg(msg);
+            this.msgField.clear();
+        }
+    }
 
 }
 

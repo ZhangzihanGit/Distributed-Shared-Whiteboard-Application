@@ -20,13 +20,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1199.0" styleClass="container" stylesheets="@../../assets/css/canvas.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
             <MenuBar fx:id="menuBar" prefHeight="20.0" prefWidth="598.0">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" styleClass="menu-button" text="File">
                   <items>
                     <MenuItem mnemonicParsing="false" onAction="#newCanvas" text="new" />
                         <MenuItem mnemonicParsing="false" onAction="#open" text="open" />
@@ -43,18 +43,18 @@
    <right>
       <VBox prefHeight="707.0" prefWidth="193.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView fx:id="listView" fixedCellSize="0.0" prefHeight="707.0" prefWidth="182.0" />
+            <ListView fx:id="listView" fixedCellSize="0.0" prefHeight="707.0" prefWidth="182.0" styleClass="user-list" />
          </children>
       </VBox>
    </right>
    <left>
-      <VBox prefHeight="707.0" prefWidth="102.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="707.0" prefWidth="102.0" styleClass="user-list" BorderPane.alignment="CENTER">
          <children>
-            <ColorPicker fx:id="colorPicker" />
+            <ColorPicker fx:id="colorPicker" styleClass="draw-btn" />
             <Slider fx:id="slider" />
-            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="102.0" text="Label" textAlignment="CENTER" />
+            <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="102.0" styleClass="draw-btn" text="Label" textAlignment="CENTER" />
             <Accordion />
-            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Pencil">
+            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Pencil">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -63,7 +63,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Eraser">
+            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Eraser">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -71,7 +71,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="rectangle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Rectan">
+            <Button fx:id="rectangle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Rectan">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -80,7 +80,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="line" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Line">
+            <Button fx:id="line" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Line">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -89,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Circle">
+            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Circle">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -98,7 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Oval">
+            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Oval">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -107,7 +107,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="text" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Text">
+            <Button fx:id="text" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Text">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -122,13 +122,13 @@
    <bottom>
       <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
          <children>
-            <TextArea fx:id="messageRecord" prefHeight="272.0" prefWidth="1199.0" />
+            <TextArea fx:id="msgArea" prefHeight="272.0" prefWidth="1199.0" />
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <left>
-                  <TextField fx:id="sendMessage" prefHeight="31.0" prefWidth="1103.0" promptText="Type something here..." BorderPane.alignment="CENTER" />
+                  <TextField fx:id="msgField" prefHeight="31.0" prefWidth="1103.0" promptText="Type something here..." BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="send" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" text="Send" BorderPane.alignment="CENTER">
+                  <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#controlSendMsg" prefHeight="37.0" prefWidth="91.0" styleClass="send-btn" text="Send" BorderPane.alignment="CENTER">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
