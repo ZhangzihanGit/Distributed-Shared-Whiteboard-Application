@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
@@ -16,7 +20,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1199.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientPre.clientViewControllers.whiteBoardController.whiteBoardController">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -49,27 +53,92 @@
             <ColorPicker fx:id="colorPicker" />
             <Slider fx:id="slider" />
             <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="102.0" text="Label" textAlignment="CENTER" />
-            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Pencil" />
-            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Eraser" />
-            <Button fx:id="rectangle" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Rectangle" />
-            <Button fx:id="line" layoutX="10.0" layoutY="63.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Line" />
-            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Circle" />
-            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Oval" />
-            <Button fx:id="text" layoutX="10.0" layoutY="179.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Insert text" />
             <Accordion />
+            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Pencil">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/pencil.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Eraser">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/eraser.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="rectangle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Rectan">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/rectangle.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="line" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Line">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/line.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Circle">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/circle.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Oval">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/oval.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="text" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" text="Text">
+               <graphic>
+                  <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../assets/imgs/text.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </VBox>
    </left>
    <bottom>
       <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
          <children>
-            <TextArea fx:id="messageRecord" prefHeight="118.0" prefWidth="1199.0" />
-            <Pane prefHeight="36.0" prefWidth="1199.0">
-               <children>
-                  <Button fx:id="send" layoutX="1129.0" layoutY="4.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="62.0" text="Send" />
-                  <TextField fx:id="sendMessage" layoutX="5.0" layoutY="2.0" prefHeight="23.0" prefWidth="1116.0" />
-               </children>
-            </Pane>
+            <TextArea fx:id="messageRecord" prefHeight="272.0" prefWidth="1199.0" />
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <left>
+                  <TextField fx:id="sendMessage" prefHeight="31.0" prefWidth="1103.0" promptText="Type something here..." BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button fx:id="send" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" text="Send" BorderPane.alignment="CENTER">
+                     <graphic>
+                        <ImageView fitHeight="23.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../assets/imgs/upload.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </right>
+            </BorderPane>
          </children>
       </VBox>
    </bottom>
