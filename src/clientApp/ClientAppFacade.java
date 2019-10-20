@@ -203,11 +203,11 @@ public class ClientAppFacade {
         clientApp.setWbName(wbName);
     }
 
-    public String getWbName() {
-        return clientApp.getWbName();
-    }
+    public String getWbName() { return clientApp.getWbName(); }
 
     public  String getIp() { return clientApp.getIp(); }
+
+    public void setIP(String ip) { clientApp.setIp(ip); }
 
     public void setManager(boolean isManager) {
         clientApp.setManager(isManager);

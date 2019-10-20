@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class ClientGUIController extends Application {
     private final static Logger logger = Logger.getLogger(ClientGUIController.class);
@@ -167,7 +168,7 @@ public class ClientGUIController extends Application {
                 text = isEmpty ? "Incorrect username or password, please try again!" : msg;
                 break;
             case "signup":
-                title = "Sign up Unsuccessful";
+                title = "Sign Up Unsuccessful";
                 header = "Sorry, Sign up is unsuccessful";
                 text = isEmpty ? "Fail to create a new account, please try again!" : msg;
                 break;
@@ -182,24 +183,29 @@ public class ClientGUIController extends Application {
                 text = isEmpty ? "Fail to connect to the broker, please try again!" : msg;
                 break;
             case "visitorJoin":
-                title = "Join whiteboard Unsuccessful";
+                title = "Join Whiteboard Unsuccessful";
                 header = "Sorry, joining " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to join the whiteboard, please try again!" : msg;
                 break;
             case "managerCreate":
-                title = "Create whiteboard Unsuccessful";
+                title = "Create Whiteboard Unsuccessful";
                 header = "Sorry, creating " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to create the whiteboard, please try again!" : msg;
                 break;
             case "visitorSubscribe":
-                title = "Subscribe whiteboard Unsuccessful";
+                title = "Subscribe Whiteboard Unsuccessful";
                 header = "Sorry, subscribing " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to subscribe the whiteboard, please try again!" : msg;
                 break;
             case "joinDenied":
-                title = "Join whiteboard Unsuccessful";
+                title = "Join Whiteboard Unsuccessful";
                 header = "Sorry, request to join " + wbName + " is unsuccessful";
                 text = isEmpty ? "Fail to join the whiteboard, please try again!" : msg;
+                break;
+            case "closed":
+                title = "Closing Whiteboard";
+                header = "Sorry, " + wbName + " will close";
+                text = isEmpty ? "The whiteboard is closing, please try again!" : msg;
                 break;
             default:
                 title = "Error";
@@ -216,24 +222,41 @@ public class ClientGUIController extends Application {
 
     @FXML
     public void showJoinDeniedView(String msg) throws IOException {
-        // TODO: Finish this function to notify user that the join request denied by manager
+        // TODO: Bug need to fix: selectedWb is empty, cannot show the wb name
         System.out.println(msg);
         String selectedWb = ClientAppFacade.getInstance().getWbName();
+        System.out.println("===: " + selectedWb);
         this.showErrorView("joinDenied", msg, selectedWb);
         this.showChooseIdentityView();
     }
 
     @FXML
     public void showJoinRequestView(String username) {
-        // TODO: Finish this function to notify manager that there is a new user request join, and obtain manager's respond (agree / disagree)
+        // TODO: Bug need to fix: if agree, visitor cannot move to whiteboard page
         System.out.println("User: " + username + " request join the whiteboard");
 
-        boolean agreeJoin = true;
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        ButtonType agreeBtn = new ButtonType("agree");
+        ButtonType refuseBtn = new ButtonType("refuse");
+        String title, header, text;
 
-        if (agreeJoin) {
+        title = "New Join Request";
+        header = username + " request to join the whiteboard";
+        text = "Would you agree it?";
+        /* add customized buttons */
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().add(agreeBtn);
+        alert.getButtonTypes().add(refuseBtn);
+
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
+        Optional<ButtonType> btnClicked = alert.showAndWait();
+
+        if (btnClicked.get() == agreeBtn) {
             logger.info("Manager agreed the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, true);
-        } else {
+        } else if (btnClicked.get() == refuseBtn) {
             logger.info("Manager refused the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, false);
         }
@@ -244,6 +267,7 @@ public class ClientGUIController extends Application {
         // TODO: Finish this function to notify user that the whiteboard will closed for him for reason described in msg
         System.out.println(msg);
         ClientAppFacade.getInstance().setWbName("");
+        this.showErrorView("closed", msg, "");
         this.showChooseIdentityView();
     }
 
@@ -306,7 +330,7 @@ public class ClientGUIController extends Application {
                 } else {
                     logger.info("New user " + signupUsername + " sign up failed");
                     showErrorView("signup", clientApp.getMsg(respond), "");
-                    //                    usernameLabel.setStyle(LABELCSS);
+                    // usernameLabel.setStyle(LABELCSS);
                 }
             } else {
                 logger.info("Entered two passwords do not match ");
@@ -322,22 +346,18 @@ public class ClientGUIController extends Application {
         String port = this.portField.getText();
 
         if (!this.checkIsEmpty(IPField, portField)) {
-            ClientAppFacade clientApp = ClientAppFacade.getInstance();
             // if connect to server successfully, go to login page, else report error message
-            // TODO: 能不能把connectWbServer返回类型改成String，然后通过getHeader返回boolean
-//            String respond = clientApp.connectWbServer(ip, port);
-//            Boolean isSuccess = clientApp.getHeader(respond);
-            String respond = clientApp.connectWbServer(ip,port);
+            ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            String respond = clientApp.connectWbServer(ip, port);
+            clientApp.setIP(ip);
+
             Boolean isSuccess = clientApp.getHeader(respond);
-//            if (isSuccess) {
             if (isSuccess) {
-                // TODO: display mqtt ip/port configuration, then in the controlMqttConfig function, showLoginView
+                // display mqtt ip/port configuration
                 this.showMqttConfigView();
             } else {
-                //TODO: display error message if can't connect to server
-                // TODO: 这样可以把具体的错误信息显示出来，比如IP非数字还是port非数字，或者是server没开？
-//                this.showErrorView("config" , clientApp.getMsg(respond));
-                this.showErrorView("config", "Fail to connect to the server: IP/Port number is wrong", "");
+                // display error message if can't connect to server
+                this.showErrorView("config", clientApp.getMsg(respond), "");
             }
         }
     }
@@ -349,22 +369,15 @@ public class ClientGUIController extends Application {
         String ip = clientApp.getIp().isEmpty() ? "localhost" : clientApp.getIp();  // make sure ip is not empty
 
         if (!this.checkIsEmpty(brokerField)) {
-
-            // TODO: 能不能把connectBroker返回类型改成String，然后通过getHeader返回boolean
-            //                clientApp.connectBroker(ip, "1883");
             String respond = clientApp.connectBroker(ip, broker);
             Boolean isSuccess = clientApp.getHeader(respond);
-//            Boolean isSuccess = true;
-//            clientApp.connectBroker(ip, broker);
-//            if (isSuccess) {
+
             if (isSuccess) {
                 // move to LoginView
                 this.showLoginView();
             } else {
-                // TODO: display error message if can't connect to server
-                // TODO: 这样可以把具体的错误信息显示出来，比如IP非数字还是port非数字，或者是server没开？
-//                this.showErrorView("mqttConfig" , clientApp.getMsg(respond));
-                this.showErrorView("mqttConfig", "Fail to connect to the Broker: IP/Port number is wrong", "");
+                // display error message if can't connect to server
+                this.showErrorView("mqttConfig", clientApp.getMsg(respond), "");
             }
         }
     }

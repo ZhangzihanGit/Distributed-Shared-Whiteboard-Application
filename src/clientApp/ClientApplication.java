@@ -53,7 +53,6 @@ public class ClientApplication {
         try {
             //Connect to the rmiregistry that is running on localhost
             Registry registry = LocateRegistry.getRegistry(ipAddr, portNum);
-            this.ip = ipAddr;
 
             //Retrieve the stub/proxy for the remote math object from the registry
             remoteWb = (IRemoteWb) registry.lookup("Whiteboard");
@@ -359,11 +358,11 @@ public class ClientApplication {
         this.wbName = wbName;
     }
 
-    public String getWbName() {
-        return this.wbName;
-    }
+    public String getWbName() { return this.wbName; }
 
     public String getIp() { return this.ip; }
+
+    public void setIp(String ip) { this.ip = ip; }
 
     public boolean isManager() {
         return this.isManager;

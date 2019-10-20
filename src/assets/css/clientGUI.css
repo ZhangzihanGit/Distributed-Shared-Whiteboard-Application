@@ -119,3 +119,17 @@
     -fx-font-size: 30px;
     -fx-text-fill: #F59A83;
 }
+
+.user-label {
+     -fx-font-family: NunitoSans;
+     -fx-font-weight: 700;
+     -fx-font-size: 20px;
+     -fx-text-fill: #F59A83;
+ }
+
+.username-label {
+    -fx-font-family: NunitoSans;
+    -fx-font-weight: 700;
+    -fx-font-size: 20px;
+    -fx-text-fill: #537d91;
+}
