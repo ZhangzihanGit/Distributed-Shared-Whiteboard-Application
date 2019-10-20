@@ -469,9 +469,14 @@ public class whiteBoardController {
 
         if (!isEmpty) {
             this.msgArea.appendText(userName + ": " + msg + "\n");
-            clientApp.sendMsg(msg);
+            clientApp.sendMsg(userName+": "+msg+"\n");
             this.msgField.clear();
         }
+    }
+    public void updateMessage(String message){
+        System.out.println(message);
+        this.msgArea.appendText(message);
+        this.msgArea.clear();
     }
 
 }
