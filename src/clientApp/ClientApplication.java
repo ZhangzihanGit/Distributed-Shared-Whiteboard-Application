@@ -63,7 +63,7 @@ public class ClientApplication {
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Obtain remote service from whiteboard server(" + ipAddr + ", " + portNum + ") failed");
-            return parser.packRespond(false, "Fail to connect to the web server at "+ ip+ "port: "+port,
+            return parser.packRespond(false, "Fail to connect to the web server at "+ ip+ " port: "+port,
             "Webser Connection", this.username);
         }
     }
@@ -101,13 +101,13 @@ public class ClientApplication {
             logger.info("Connected to broker successfully");
 
             this.mqttSubscriber.setCallback(new ClientMqttCallBack());
-            return parser.packRespond(true, "Successfully connect to the broker at port: "+port,"" +
+            return parser.packRespond(true, "Successfully connect to the broker at port: "+port +" ip: "+ip,"" +
                     "Broker connection",this.username);
 //            return true;
         } catch(Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Connect to remote broker failed");
-            return parser.packRespond(false, "Fail to connect to the broker at port: "+port, "Broker connection" +
+            return parser.packRespond(false, "Fail to connect to the broker at port: "+port+" ip: "+ip, "Broker connection" +
                     "",this.username);
         }
     }
