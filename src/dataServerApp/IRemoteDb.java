@@ -44,5 +44,4 @@ public interface IRemoteDb extends Remote {
      */
     public String loadAllWb(String username) throws RemoteException;
 
-    public UserInformation transferInformation(String username, String password) throws RemoteException;
 }

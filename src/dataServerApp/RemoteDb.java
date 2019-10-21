@@ -80,9 +80,4 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     public String loadAllWb(String managerName) throws RemoteException {
         return facade.loadAllWb(managerName);
     }
-    // This is for testing purpose. Not known the communication protocol between the web server.
-    @Override
-    public UserInformation transferInformation(String username, String password) throws RemoteException{
-        return new UserInformation(username,password, false);
-    }
 }

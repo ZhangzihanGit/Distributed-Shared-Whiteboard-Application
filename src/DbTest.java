@@ -1,5 +1,4 @@
 import dataServerApp.IRemoteDb;
-import dataServerApp.UserInformation;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -57,9 +56,6 @@ public class DbTest {
         }
 
         // Test the use of UserInformation Class.
-        UserInformation userInformation = null;
-        userInformation = test.transferInformation(username, password);
-        System.out.println(userInformation.toString());
 
         // Test if RemoteDB.checkUser (Authenticator.authenticate) works.
         String mockUsername = "hello";
