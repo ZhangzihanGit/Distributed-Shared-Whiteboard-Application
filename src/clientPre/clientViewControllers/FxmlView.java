@@ -5,7 +5,7 @@ public enum FxmlView {
     WELCOME {
         @Override
         String getTitle() {
-            return "My WhiteBoard";
+            return "My WhiteBoard - Client";
         }
 
         @Override
