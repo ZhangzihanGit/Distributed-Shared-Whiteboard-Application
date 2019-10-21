@@ -1,6 +1,8 @@
+import dataServerApp.Cypher;
 import dataServerApp.IRemoteDb;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.apache.log4j.Logger;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,6 +24,7 @@ public class DbTest {
            testAuthentication(test);
            testSaveCanvas(test);
            testRetrieveCanvas(test);
+           testCypher();
 
        }catch (RemoteException e){
            e.printStackTrace();
@@ -81,5 +84,8 @@ public class DbTest {
         String manager = "world";
         String password = "world";
         test.loadAllWb(manager);
+    }
+    private static void testCypher(){
+        Cypher cypher = new Cypher("hello");
     }
 }
