@@ -346,6 +346,7 @@ public class whiteBoardController {
                 }
             }
 
+        saveFilePath = filePath;
         }
     }
 
