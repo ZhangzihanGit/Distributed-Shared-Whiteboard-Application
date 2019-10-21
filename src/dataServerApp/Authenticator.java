@@ -30,12 +30,10 @@ class Authenticator {
 
     // private Singleton instance.
     private static Authenticator authenticator = null;
-    private final String encrypPassword;
     private Cypher cypher;
     // Authenticator should be a singleton, since passbook should be kept unique.
     private Authenticator(){
         this.passbook = new HashMap<String, String>();
-        this.encrypPassword = readPassword();
         this.cypher = Cypher.getInstance();
         logger.info("Cypher created: "+this.cypher);
     }
@@ -48,22 +46,22 @@ class Authenticator {
     public void syncStorage(HashMap<String, String> locaStorage){
         this.passbook = locaStorage;
     }
-    private String readPassword(){
-        try{
-            BufferedReader br = new BufferedReader(new FileReader("password.txt"));
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
-            // Ignore the line separator.
-            while(line!=null){
-                sb.append(line);
-                line = br.readLine();
-            }
-            return sb.toString();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    private String readPassword(){
+//        try{
+//            BufferedReader br = new BufferedReader(new FileReader("password.txt"));
+//            StringBuilder sb = new StringBuilder();
+//            String line = br.readLine();
+//            // Ignore the line separator.
+//            while(line!=null){
+//                sb.append(line);
+//                line = br.readLine();
+//            }
+//            return sb.toString();
+//        }catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
     private String encryptPassword(String password){
         return cypher.encrypt(password);
     }
