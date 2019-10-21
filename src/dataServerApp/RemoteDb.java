@@ -64,10 +64,10 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
      * @throws RemoteException
      */
     // TODO: 输出值根据Web Server决定。
-    @Override
-    public String saveWb(String managerName, String wbContent) throws RemoteException {
-        return facade.saveWb(managerName, wbContent);
-    }
+//    @Override
+//    public String saveWb(String managerName, String wbContent) throws RemoteException {
+//        return facade.saveWb(managerName, wbContent);
+//    }
 
     /**
      * Load canvas with specified manager name. This manager could possibly hold several canvas(maybe?)
@@ -76,8 +76,8 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
      * @throws RemoteException
      */
     // TODO: 输出值根据Web Server决定。 需要看能否存入Canva的东西。
-    @Override
-    public String loadAllWb(String managerName) throws RemoteException {
-        return facade.loadAllWb(managerName);
-    }
+//    @Override
+//    public String loadAllWb(String managerName) throws RemoteException {
+//        return facade.loadAllWb(managerName);
+//    }
 }

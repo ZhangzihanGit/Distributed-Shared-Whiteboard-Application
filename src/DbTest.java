@@ -1,4 +1,6 @@
 import dataServerApp.Cypher;
+import dataServerApp.DataServerApplication;
+import dataServerApp.DataWareHouse;
 import dataServerApp.IRemoteDb;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,10 +23,12 @@ public class DbTest {
             // Test the connection with DB server.
            registry = LocateRegistry.getRegistry("localhost");
            test = (IRemoteDb) registry.lookup("DB");
-           testAuthentication(test);
-           testSaveCanvas(test);
-           testRetrieveCanvas(test);
-           testCypher();
+//           testAuthentication(test);
+//           testSaveCanvas(test);
+//           testRetrieveCanvas(test);
+//           testCypher();
+           testCreateDirectory();
+           testSavetoDB();
 
        }catch (RemoteException e){
            e.printStackTrace();
@@ -78,14 +82,25 @@ public class DbTest {
     private static void testSaveCanvas(IRemoteDb test) throws RemoteException{
         String username = "world";
         String password = "world";
-        test.saveWb(username,password);
+//        test.saveWb(username,password);
     }
-    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
-        String manager = "world";
-        String password = "world";
-        test.loadAllWb(manager);
-    }
+//    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
+//        String manager = "world";
+//        String password = "world";
+//        test.loadAllWb(manager);
+//    }
     private static void testCypher(){
         Cypher cypher = new Cypher("hello");
+    }
+    private static void testCreateDirectory(){
+    }
+    private static void testSavetoDB(){
+        DataServerApplication server = new DataServerApplication();
+//        server.addUser("hello4", "132123");
+        server.checkUser("hello4","132124");
+
+//        dataWareHouse.createDirectory();
+
+
     }
 }

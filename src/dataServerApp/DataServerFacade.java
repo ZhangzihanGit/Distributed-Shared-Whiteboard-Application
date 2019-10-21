@@ -78,16 +78,16 @@ public class DataServerFacade {
 
 
 
-    String saveWb(String managerName, String wbContent){
-        JSONObject message = new JSONObject();
-        message.put("hello", 123);
-        return dataServer.saveCanvas(message, "world");
-    }
+//    String saveWb(String managerName, String wbContent){
+//        JSONObject message = new JSONObject();
+//        message.put("hello", 123);
+//        return dataServer.saveCanvas(message, "world");
+//    }
 
 
-    String loadAllWb(String managerName){
-       return dataServer.retrieveCanvas(managerName);
-    }
+//    String loadAllWb(String managerName){
+//       return dataServer.retrieveCanvas(managerName);
+//    }
 
     void iteratePassBook(){
         dataServer.iteratePassBook();

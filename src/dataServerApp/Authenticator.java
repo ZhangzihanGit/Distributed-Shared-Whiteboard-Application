@@ -3,6 +3,9 @@ package dataServerApp;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,9 +30,13 @@ class Authenticator {
 
     // private Singleton instance.
     private static Authenticator authenticator = null;
+    private final String encrypPassword;
+    private Cypher cypher;
     // Authenticator should be a singleton, since passbook should be kept unique.
     private Authenticator(){
         this.passbook = new HashMap<String, String>();
+        this.encrypPassword = readPassword();
+        this.cypher = new Cypher(this.encrypPassword);
     }
     public static Authenticator getInstance(){
         if (authenticator == null){
@@ -37,7 +44,31 @@ class Authenticator {
         }
         return authenticator;
     }
-
+    public void syncStorage(HashMap<String, String> locaStorage){
+        this.passbook = locaStorage;
+    }
+    private String readPassword(){
+        try{
+            BufferedReader br = new BufferedReader(new FileReader("password.txt"));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+            // Ignore the line separator.
+            while(line!=null){
+                sb.append(line);
+                line = br.readLine();
+            }
+            return sb.toString();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private String encryptPassword(String password){
+        return cypher.encrypt(password);
+    }
+    private String decryptPassword(String encodedText){
+        return cypher.decrypt(encodedText);
+    }
 
     /**
      * Register new user. Check if the username or password null first.
@@ -48,19 +79,21 @@ class Authenticator {
     public JSONObject registerUser(String username, String password){
         if (username == null){
             logger.info("The user has not provided the username. ");
-            return jsonParse(FAIL_HEADER, USER_NULL);
+            return jsonParse(FAIL_HEADER, USER_NULL,"");
         }
         if (password == null) {
             logger.info("The user has not provided the password.");
-            return jsonParse(FAIL_HEADER, PASSWORD_NULLL);
+            return jsonParse(FAIL_HEADER, PASSWORD_NULLL,"");
         }
         if (passbook.containsKey(username)){
             logger.info("The username entered has already been used by others. Fail to register the username!!");
-            return jsonParse(FAIL_HEADER, USER_REGISTER_DUPLICATION);
+            return jsonParse(FAIL_HEADER, USER_REGISTER_DUPLICATION,"");
         }
         else {
-            passbook.put(username, password);
-            return jsonParse(SUCCESS_HEADER, USER_REGISTER_SUCCESS);
+            // Put encrypted password.
+            passbook.put(username,encryptPassword(password));
+            logger.info("Successfully registered. Password has been encoded. ");
+            return jsonParse(SUCCESS_HEADER, USER_REGISTER_SUCCESS,encryptPassword(password));
         }
     }
 
@@ -75,24 +108,29 @@ class Authenticator {
         // If passbook not contain the user name
         if (!passbook.containsKey(username)){
             logger.info("There is no such user exist in our database. ");
-            return  jsonParse(FAIL_HEADER, USER_NOT_FOUND);
+            return  jsonParse(FAIL_HEADER, USER_NOT_FOUND,"");
         }
         // If the password under the user name is not the same as that in passbook
-        else if(!passbook.get(username).equals(password)){
+        else if(!decryptPassword(passbook.get(username)).equals(password)){
             logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
-            return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED);
+            return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED,"");
         }
+//        else if(!passbook.get(username).equals(password)){
+//            logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
+//            return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED);
+//        }
         // Successfully authenticated
         else {
-            return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS);
+            return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"");
         }
     }
 
     @SuppressWarnings("unchecked")
-    private JSONObject jsonParse(String header, String message){
+    private JSONObject jsonParse(String header, String message,String encodedPassword){
         JSONObject object = new JSONObject();
         object.put("header", header);
         object.put("message", message);
+        object.put("encoded_password",encodedPassword);
         return object;
     }
     // This method is for testing purpose.
