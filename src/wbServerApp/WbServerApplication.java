@@ -353,10 +353,11 @@ public class WbServerApplication {
      * @param wbName Whiteboard name, String
      * @param username Username, String
      * @param msg Message, String
+     * @param time
      */
-    public synchronized void sendMsg(String wbName, String username, String msg) {
+    public synchronized void sendMsg(String wbName, String username, String msg, String time) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/message", username+" : "+msg, true);
+                wbName + "/message", time+ " : "+ "From: "+username+" : "+msg, false);
     }
 
     /**

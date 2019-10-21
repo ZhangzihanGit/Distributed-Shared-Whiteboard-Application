@@ -162,8 +162,8 @@ public class ClientAppFacade {
      * Send message
      * @param msg Message, String
      */
-    public void sendMsg(String msg) {
-        clientApp.sendMsg(msg);
+    public void sendMsg(String time, String msg) {
+        clientApp.sendMsg(time, msg);
     }
 
     /**

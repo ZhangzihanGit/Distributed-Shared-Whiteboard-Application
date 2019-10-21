@@ -1,7 +1,5 @@
 package wbServerApp;
 
-import org.apache.log4j.Logger;
-
 public class WbServerFacade {
     /** private singleton instance */
     private static WbServerFacade instance = null;
@@ -130,7 +128,7 @@ public class WbServerFacade {
      * Render all the whiteboards
      * @param wbName Whiteboard name, String
      * @param username Username, String
-     * @param wb Whiteboard, String
+     * @param wb Whiteboard, Stringee
      * @param receiver receiver
      */
     public void updateWb(String wbName, String username, String wb, String receiver) {
@@ -143,8 +141,8 @@ public class WbServerFacade {
      * @param username Username, String
      * @param msg Message, String
      */
-    public void sendMsg(String wbName, String username, String msg) {
-        wbServer.sendMsg(wbName, username, msg);
+    public void sendMsg(String wbName, String username, String msg, String time) {
+        wbServer.sendMsg(wbName, username, msg, time);
     }
 
     /**
