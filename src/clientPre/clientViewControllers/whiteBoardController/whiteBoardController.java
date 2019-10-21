@@ -55,34 +55,15 @@ public class whiteBoardController {
     @FXML
     private Label label;
     @FXML
-    private Button eraser;
-    @FXML
-    private Button line;
-    @FXML
-    private Button circle;
-    @FXML
-    private Button oval;
-    @FXML
-    private Button rectangle;
-    @FXML
-    private Button pencil;
-    @FXML
-    private Button text;
-    @FXML
-    private TextArea messageRecord;
-    @FXML
-    private TextField sendMessage;
-    @FXML
-    private Button send;
-    @FXML
     private ListView listView;
     @FXML
     private MenuBar menuBar;
     @FXML
     private Pane pane;
     @FXML private TextField msgField;
-    @FXML private TextArea msgArea;
-    @FXML private Button sendBtn;
+    @FXML private Pane msgPane;
+
+    static private TextArea msgArea = new TextArea();
     private ImageCursor cursor;
 
 
@@ -129,47 +110,7 @@ public class whiteBoardController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
 
-//        text.setOnMousePressed(e->{
-//            mode = "text";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm()));
-////            cursor.set(new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm())));
-//            canvas.setCursor(cursor);
-//        });
-//        pencil.setOnMousePressed(e->{
-//            mode = "draw";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-//
-//        eraser.setOnMousePressed(e->{
-//            mode = "erase";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/eraser.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-//
-//        line.setOnMousePressed(e->{
-//            mode = "line";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/line.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-//
-//        circle.setOnMousePressed(e->{
-//            mode = "circle";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/circle.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-//
-//        oval.setOnMousePressed(e->{
-//            mode = "oval";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/oval.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-//        rectangle.setOnMousePressed(e->{
-//            mode = "rectangle";
-//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/rectangle.png").toExternalForm()));
-//            canvas.setCursor(cursor);
-//        });
-
+        
         label.setText("1.0");
 
         colorPicker.setValue(Color.BLACK);
@@ -246,9 +187,9 @@ public class whiteBoardController {
             double y = e.getY();
             String msg = "";
             if(mode.equals("draw") || mode.equals("line") ){
-                gc.beginPath();
-                gc.lineTo(x, y);
-                gc.stroke();
+//                gc.beginPath();
+//                gc.lineTo(x, y);
+//                gc.stroke();
                 // 5 components.
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
                         + "," + y+ "," + 0;
@@ -292,14 +233,12 @@ public class whiteBoardController {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + upLeftX
                         + "," + upLeftY + "," + width + "," + height;
                 sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + (middleX - distance/2)
                         + "," + (middleY - distance/2) + "," + distance + "," + distance;
                 sendMsgAndRecordIt(msg);
@@ -318,8 +257,8 @@ public class whiteBoardController {
             String msg = "";
             if(mode.equals("draw")){
 
-                gc.lineTo(x, y);
-                gc.stroke();
+//                gc.lineTo(x, y);
+//                gc.stroke();
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
                         + "," + y+ "," + 1;
                 sendMsgAndRecordIt(msg);
@@ -346,7 +285,10 @@ public class whiteBoardController {
     }
 
     public void initialize(){
+        msgArea.setPrefSize(1199,272);
+        msgPane.getChildren().add(msgArea);
         pane.getChildren().add(canvas);
+
         initLeftButtons();
         boolean isManager = ClientAppFacade.getInstance().isManager();
         if(isManager){
@@ -477,7 +419,6 @@ public class whiteBoardController {
     }
 
     public void open() throws IOException {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
         System.out.println(canvas);
         OpenFrom openFrom= new OpenFrom();
         String filePath =  openFrom.display();
@@ -604,11 +545,20 @@ public class whiteBoardController {
         String userName = clientApp.getUsername();
 
         if (!isEmpty) {
-            this.msgArea.appendText(userName + ": " + msg + "\n");
             clientApp.sendMsg(msg);
             this.msgField.clear();
         }
     }
 
+    public void updateNewUserWB(String username) {
+        for(String s: actionRecord.split("#")){
+            ClientAppFacade.getInstance().updateWb(s);
+        }
+    }
+
+    public void updateMessage(String msg){
+        msgArea.appendText(msg + "\n");
+        msgArea.appendText("");
+    }
 }
 

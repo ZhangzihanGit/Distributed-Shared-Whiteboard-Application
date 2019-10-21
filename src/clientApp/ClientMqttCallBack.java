@@ -55,14 +55,14 @@ public class ClientMqttCallBack implements MqttCallback {
         if (s.contains(MSG_PANEL)) {
             // TODO call message update function in clientGUI
             // msg contains the string version of updated texts communication
-            /* Platform.runLater(()-> {
+            Platform.runLater(()-> {
                 try {
-                    whiteBoardController.getInstance().methodName(msg);
-                } catch (IOException e) {
+                    whiteBoardController.getInstance().updateMessage(msg);
+                } catch (Exception e) {
                     logger.error(e.getMessage());
                     logger.error("Update message box failed");
                 }
-            }); */
+            });
         }
 
         if (s.contains(USER_PANEL)) {
