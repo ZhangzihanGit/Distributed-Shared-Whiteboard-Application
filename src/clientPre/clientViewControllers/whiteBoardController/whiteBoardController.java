@@ -591,7 +591,9 @@ public class whiteBoardController {
 
     public void updateNewUserWB(String username) {
         for(String s: actionRecord.split("#")){
-            ClientAppFacade.getInstance().updateWb(s, username);
+            if(s!=""){
+                ClientAppFacade.getInstance().updateWb(s, username);
+            }
         }
     }
 
