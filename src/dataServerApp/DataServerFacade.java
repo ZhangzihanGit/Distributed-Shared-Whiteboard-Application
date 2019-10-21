@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import java.rmi.RemoteException;
-// TODO: 问题找到了， static class在compile 的时候就已经fix了，runtime无法改变他本身的状态了。
 public class DataServerFacade {
     private final static Logger logger = Logger.getLogger(DataServerFacade.class);
 
