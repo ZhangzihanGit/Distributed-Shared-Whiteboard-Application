@@ -81,36 +81,12 @@ public class whiteBoardController {
         }
         ClientAppFacade.getInstance().updateWb(msg);
     }
-//    private void initSendMessage(){
-//
-//        messageRecord.setEditable(false);
-//        ArrayList<String> messages = new ArrayList<>();
-//        send.setOnAction(e->{
-//            messages.add(sendMessage.getText());
-//            String content[] = messages.toString().
-//                    replace("[", "").replace("]", "").split(",");
-//            String text = "";
-//            int i = 0;
-//            for(String s: content){
-//                i ++;
-//                if(i == content.length){
-//                    text += s;
-//                }
-//                else{
-//                    text += (s + "\n");
-//                }
-//
-//            }
-//            messageRecord.setText(text);
-//            sendMessage.clear();
-//        });
-//    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
 
-        
+
         label.setText("1.0");
 
         colorPicker.setValue(Color.BLACK);
