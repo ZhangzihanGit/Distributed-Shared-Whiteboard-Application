@@ -106,20 +106,6 @@ public class DataServerApplication {
         return authenticator.authenticate(username, password).toJSONString();
     }
 
-//    String saveCanvas(JSONObject canvas, String managerName){
-//        JSONObject returnMessage = new JSONObject();
-//        if(!dataWareHouse.save(managerName,canvas)){
-//            returnMessage.put("header", "Fail");
-//            returnMessage.put("message", "Fail to store the canva");
-//            return returnMessage.toJSONString();
-//        }
-//        returnMessage.put("header", "Success");
-//        returnMessage.put("message", "Successfully save the data");
-//        return returnMessage.toJSONString();
-//    }
-//    String retrieveCanvas(String targetManager){
-//        return dataWareHouse.retrieveData(targetManager);
-//    }
 
     void iteratePassBook(){
         authenticator.iteratePassbook();

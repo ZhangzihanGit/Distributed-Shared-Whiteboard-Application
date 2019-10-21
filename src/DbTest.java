@@ -27,7 +27,7 @@ public class DbTest {
 //           testSaveCanvas(test);
 //           testRetrieveCanvas(test);
 //           testCypher();
-           testCreateDirectory();
+//           testCreateDirectory();
            testSavetoDB();
 
        }catch (RemoteException e){
@@ -89,15 +89,16 @@ public class DbTest {
 //        String password = "world";
 //        test.loadAllWb(manager);
 //    }
-    private static void testCypher(){
-        Cypher cypher = new Cypher("hello");
-    }
+//    private static void testCypher(){
+//        Cypher cypher = new Cypher("hello");
+//    }
     private static void testCreateDirectory(){
     }
     private static void testSavetoDB(){
         DataServerApplication server = new DataServerApplication();
-//        server.addUser("hello4", "132123");
-        server.checkUser("hello4","132124");
+//        server.addUser("hello7", "hello");
+//        server.checkUser("hello4","NInygbToaAiN/gKaJtqzbg==");
+        server.checkUser("hello7", "hello");
 
 //        dataWareHouse.createDirectory();
 

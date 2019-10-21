@@ -36,7 +36,8 @@ class Authenticator {
     private Authenticator(){
         this.passbook = new HashMap<String, String>();
         this.encrypPassword = readPassword();
-        this.cypher = new Cypher(this.encrypPassword);
+        this.cypher = Cypher.getInstance();
+        logger.info("Cypher created: "+this.cypher);
     }
     public static Authenticator getInstance(){
         if (authenticator == null){
@@ -111,14 +112,14 @@ class Authenticator {
             return  jsonParse(FAIL_HEADER, USER_NOT_FOUND,"");
         }
         // If the password under the user name is not the same as that in passbook
-        else if(!decryptPassword(passbook.get(username)).equals(password)){
+        else if(!decryptPassword(passbook
+                .get(username)).
+                equals
+                        (
+                        password)){
             logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
             return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED,"");
         }
-//        else if(!passbook.get(username).equals(password)){
-//            logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
-//            return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED);
-//        }
         // Successfully authenticated
         else {
             return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"");
@@ -142,4 +143,7 @@ class Authenticator {
             System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue());
         }
     }
+//    public HashMap<String, String> getPassbook(){
+//        return passbook;
+//    }
 }

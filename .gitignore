@@ -89,3 +89,4 @@ nb-configuration.xml
 ##############################
 ## ignore encryption code.
 password.txt
+key.txt
