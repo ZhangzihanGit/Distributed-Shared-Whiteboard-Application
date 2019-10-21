@@ -422,7 +422,7 @@ public class whiteBoardController {
     }
 
     public void close(){
-        System.exit(0);
+        ClientAppFacade.getInstance().closeWb();
     }
 
     public void updateUserList(String msg) {

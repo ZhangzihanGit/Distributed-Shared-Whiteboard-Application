@@ -1,5 +1,6 @@
 package clientPre.clientViewControllers.whiteBoardController;
 
+import clientApp.ClientAppFacade;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,7 +29,8 @@ public class StringAndButtonList extends ListCell<String> {
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                list.remove(lastItem);
+                ClientAppFacade.getInstance().kickUser(lastItem);
+//                list.remove(lastItem);
 
             }
         });
