@@ -29,6 +29,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -326,6 +328,7 @@ public class whiteBoardController {
 
     public void initialize(){
         msgArea.setPrefSize(1199, 272);
+        msgArea.setEditable(false);
         msgPane.getChildren().add(msgArea);
         pane.getChildren().add(canvas);
         initLeftButtons();
@@ -580,11 +583,15 @@ public class whiteBoardController {
         String msg = this.msgField.getText();
         boolean isEmpty = msg == null || msg.isEmpty();
 
+
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         String userName = clientApp.getUsername();
 
+        String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        logger.info(time);
+
         if (!isEmpty) {
-            clientApp.sendMsg(msg);
+            clientApp.sendMsg(time, msg);
             this.msgField.clear();
         }
     }

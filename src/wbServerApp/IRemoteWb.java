@@ -89,5 +89,5 @@ public interface IRemoteWb extends Remote {
      * @param msg Message, String
      * @throws RemoteException
      */
-    public void sendMsg(String wbName, String username, String msg) throws RemoteException;
+    public void sendMsg(String wbName, String username, String msg, String time) throws RemoteException;
 }

@@ -302,9 +302,9 @@ public class ClientApplication {
      * Send message
      * @param msg Message, String
      */
-    public void sendMsg(String msg) {
+    public void sendMsg(String time, String msg) {
         try {
-            remoteWb.sendMsg(this.wbName, this.username, msg);
+            remoteWb.sendMsg(this.wbName, this.username, msg, time);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");
