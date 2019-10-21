@@ -131,9 +131,10 @@ public class WbServerFacade {
      * @param wbName Whiteboard name, String
      * @param username Username, String
      * @param wb Whiteboard, String
+     * @param receiver receiver
      */
-    public void updateWb(String wbName, String username, String wb) {
-        wbServer.updateWb(wbName, username, wb);
+    public void updateWb(String wbName, String username, String wb, String receiver) {
+        wbServer.updateWb(wbName, username, wb, receiver);
     }
 
     /**

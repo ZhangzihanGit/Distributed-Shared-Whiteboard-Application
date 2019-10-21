@@ -287,10 +287,11 @@ public class ClientApplication {
     /**
      * Render all the whiteboards
      * @param wb Whiteboard, String
+     * @param receiver User, String
      */
-    public void updateWb(String wb) {
+    public void updateWb(String wb, String receiver) {
         try {
-            remoteWb.updateWb(this.wbName, this.username, wb);
+            remoteWb.updateWb(this.wbName, this.username, wb, receiver);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");

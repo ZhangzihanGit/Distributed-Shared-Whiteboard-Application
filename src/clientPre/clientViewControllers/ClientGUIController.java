@@ -1,6 +1,7 @@
 package clientPre.clientViewControllers;
 
 import clientApp.ClientAppFacade;
+import clientPre.clientViewControllers.whiteBoardController.whiteBoardController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -256,6 +257,7 @@ public class ClientGUIController extends Application {
         if (btnClicked.get() == agreeBtn) {
             logger.info("Manager agreed the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, true);
+            whiteBoardController.getInstance().updateNewUserWB(username);
         } else if (btnClicked.get() == refuseBtn) {
             logger.info("Manager refused the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, false);

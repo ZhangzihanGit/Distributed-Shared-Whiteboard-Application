@@ -79,13 +79,77 @@ public class whiteBoardController {
         if(clientType.equals("manager")){
             actionRecord += (msg + "#");
         }
-        ClientAppFacade.getInstance().updateWb(msg);
+        ClientAppFacade.getInstance().updateWb(msg, "");
     }
+//    private void initSendMessage(){
+//
+//        messageRecord.setEditable(false);
+//        ArrayList<String> messages = new ArrayList<>();
+//        send.setOnAction(e->{
+//            messages.add(sendMessage.getText());
+//            String content[] = messages.toString().
+//                    replace("[", "").replace("]", "").split(",");
+//            String text = "";
+//            int i = 0;
+//            for(String s: content){
+//                i ++;
+//                if(i == content.length){
+//                    text += s;
+//                }
+//                else{
+//                    text += (s + "\n");
+//                }
+//
+//            }
+//            messageRecord.setText(text);
+//            sendMessage.clear();
+//        });
+//    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
 
+//        text.setOnMousePressed(e->{
+//            mode = "text";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm()));
+////            cursor.set(new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm())));
+//            canvas.setCursor(cursor);
+//        });
+//        pencil.setOnMousePressed(e->{
+//            mode = "draw";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        eraser.setOnMousePressed(e->{
+//            mode = "erase";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/eraser.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        line.setOnMousePressed(e->{
+//            mode = "line";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/line.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        circle.setOnMousePressed(e->{
+//            mode = "circle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/circle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        oval.setOnMousePressed(e->{
+//            mode = "oval";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/oval.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//        rectangle.setOnMousePressed(e->{
+//            mode = "rectangle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/rectangle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
 
         label.setText("1.0");
 
@@ -261,10 +325,9 @@ public class whiteBoardController {
     }
 
     public void initialize(){
-        msgArea.setPrefSize(1199,272);
+        msgArea.setPrefSize(1199, 272);
         msgPane.getChildren().add(msgArea);
         pane.getChildren().add(canvas);
-
         initLeftButtons();
         boolean isManager = ClientAppFacade.getInstance().isManager();
         if(isManager){
@@ -402,7 +465,7 @@ public class whiteBoardController {
             String data = new String(Files.readAllBytes(Paths.get(filePath)));
             newCanvas();
             for(String msg :data.split("#")){
-                ClientAppFacade.getInstance().updateWb(msg);
+                ClientAppFacade.getInstance().updateWb(msg, "");
             }
             saveFilePath = filePath;
         }
@@ -528,13 +591,14 @@ public class whiteBoardController {
 
     public void updateNewUserWB(String username) {
         for(String s: actionRecord.split("#")){
-            ClientAppFacade.getInstance().updateWb(s);
+            if(s!=""){
+                ClientAppFacade.getInstance().updateWb(s, username);
+            }
         }
     }
 
     public void updateMessage(String msg){
         msgArea.appendText(msg + "\n");
-        msgArea.appendText("");
     }
 }
 

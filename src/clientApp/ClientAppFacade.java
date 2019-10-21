@@ -152,9 +152,10 @@ public class ClientAppFacade {
     /**
      * Render all the whiteboards
      * @param wb Whiteboard, String
+     * @param receiver receiver, String
      */
-    public void updateWb(String wb) {
-        clientApp.updateWb(wb);
+    public void updateWb(String wb, String receiver) {
+        clientApp.updateWb(wb, receiver);
     }
 
     /**
