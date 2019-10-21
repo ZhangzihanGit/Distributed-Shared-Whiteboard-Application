@@ -122,7 +122,7 @@
    <bottom>
       <VBox prefHeight="154.0" prefWidth="1199.0" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="msgPane" prefHeight="272.0" prefWidth="1199.0" />
+            <ScrollPane fx:id="msgPane" prefHeight="272.0" prefWidth="1199.0" />
             <BorderPane prefHeight="200.0" prefWidth="200.0">
                <left>
                   <TextField fx:id="msgField" prefHeight="31.0" prefWidth="1103.0" promptText="Type something here..." BorderPane.alignment="CENTER" />

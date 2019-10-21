@@ -21,10 +21,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,7 +32,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.apache.log4j.Logger;
 
 public class whiteBoardController {
     private final static Logger logger= Logger.getLogger(whiteBoardController.class);
@@ -61,7 +60,7 @@ public class whiteBoardController {
     @FXML
     private Pane pane;
     @FXML private TextField msgField;
-    @FXML private Pane msgPane;
+    @FXML private ScrollPane msgPane;
 
     static private TextArea msgArea = new TextArea();
     private ImageCursor cursor;
@@ -326,7 +325,9 @@ public class whiteBoardController {
 
     public void initialize(){
         msgArea.setPrefSize(1199, 272);
-        msgPane.getChildren().add(msgArea);
+        msgArea.setWrapText(true);
+        msgPane.setContent(msgArea);
+        msgPane.setFitToWidth(true);
         pane.getChildren().add(canvas);
         initLeftButtons();
         boolean isManager = ClientAppFacade.getInstance().isManager();
