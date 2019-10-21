@@ -176,9 +176,9 @@ public class whiteBoardController {
             double y = e.getY();
             String msg = "";
             if(mode.equals("draw") || mode.equals("line") ){
-                gc.beginPath();
-                gc.lineTo(x, y);
-                gc.stroke();
+//                gc.beginPath();
+//                gc.lineTo(x, y);
+//                gc.stroke();
                 // 5 components.
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
                         + "," + y+ "," + 0;
@@ -222,14 +222,12 @@ public class whiteBoardController {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke(), "");
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + upLeftX
                         + "," + upLeftY + "," + width + "," + height;
                 sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke(), "");
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + (middleX - distance/2)
                         + "," + (middleY - distance/2) + "," + distance + "," + distance;
                 sendMsgAndRecordIt(msg);
@@ -248,8 +246,8 @@ public class whiteBoardController {
             String msg = "";
             if(mode.equals("draw")){
 
-                gc.lineTo(x, y);
-                gc.stroke();
+//                gc.lineTo(x, y);
+//                gc.stroke();
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
                         + "," + y+ "," + 1;
                 sendMsgAndRecordIt(msg);
