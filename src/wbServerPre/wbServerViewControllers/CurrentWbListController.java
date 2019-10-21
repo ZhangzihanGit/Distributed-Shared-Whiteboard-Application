@@ -1,5 +1,6 @@
 package wbServerPre.wbServerViewControllers;
 
+import clientData.ClientDataStrategyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -39,7 +40,9 @@ public class CurrentWbListController {
 
     private void renderAvailableWb() {
         String listRespond = WbServerFacade.getInstance().getCreatedWb();
-        String[] list = listRespond.split(",");
+        String availableWbs = ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(listRespond);
+
+        String[] list = availableWbs.split(",");
         ObservableList<String> listContainer = FXCollections.observableArrayList(Arrays.asList(list));
 //        ObservableList<String> listContainer = FXCollections.observableArrayList("apple", "orange", "lemon");
         this.listView.setItems(listContainer);
