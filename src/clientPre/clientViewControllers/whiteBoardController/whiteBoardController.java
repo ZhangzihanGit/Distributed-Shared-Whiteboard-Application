@@ -42,6 +42,8 @@ public class whiteBoardController {
         return instance;
     }
 
+
+
     private static Canvas canvas = new Canvas(903, 511);
     private TextArea msgArea = new TextArea();
     @FXML
@@ -510,6 +512,7 @@ public class whiteBoardController {
 //        logger.info(msgArea.getText());
 //        msgArea.clear();
     }
+
 
 }
 
