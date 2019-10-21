@@ -356,7 +356,7 @@ public class WbServerApplication {
      */
     public synchronized void sendMsg(String wbName, String username, String msg) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/message", msg, true);
+                wbName + "/message", username+" : "+msg, true);
     }
 
     /**
