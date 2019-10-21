@@ -128,7 +128,7 @@
                   <TextField fx:id="msgField" prefHeight="31.0" prefWidth="1103.0" promptText="Type something here..." BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Button fx:id="sendBtn" mnemonicParsing="false" onAction="#controlSendMsg" prefHeight="37.0" prefWidth="91.0" styleClass="send-btn" text="Send" BorderPane.alignment="CENTER">
+                  <Button fx:id="sendBtn" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="send-btn" text="Send" BorderPane.alignment="CENTER">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="58.0" pickOnBounds="true" preserveRatio="true">
                            <image>
