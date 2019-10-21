@@ -26,6 +26,7 @@ public class SaveAs {
         window.setTitle("");
 
         Label l = new Label("Please input the information below:");
+        Label l1 = new Label("(wb is the only editable file type)");
         window.initModality(Modality.APPLICATION_MODAL);
         window.setMinWidth(350);
         window.setMinHeight(350);
@@ -33,6 +34,7 @@ public class SaveAs {
         Label label = new Label("save to:      ");
 
         TextField fileLocation = new TextField();
+        fileLocation.setEditable(false);
         fileLocation.setPrefWidth(180);
 
         Button selectFolder = new Button("select");
@@ -71,6 +73,7 @@ public class SaveAs {
         List<String> typeItem = new ArrayList<String>();
         typeItem.add("gif");
         typeItem.add("png");
+        typeItem.add("wb");
         fileType.getItems().addAll(typeItem);
 
         FlowPane fileTypePane = new FlowPane();
@@ -103,7 +106,7 @@ public class SaveAs {
         });
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll( pane1, l, fileNamePane, savePlacePane, fileTypePane, button);
+        layout.getChildren().addAll( l, l1, fileNamePane, savePlacePane, fileTypePane, button);
         layout.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(layout);
