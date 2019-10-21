@@ -18,14 +18,15 @@ public class WbServerMqttPublish {
      * @param publisher The publisher
      * @param topic Topic that this content is related
      * @param content Content
+     * @param retained Whehter retained the message
      * @return True if publish successfully
      */
-    public boolean publish(MqttClient publisher, String topic, String content) {
+    public boolean publish(MqttClient publisher, String topic, String content, boolean retained) {
         try {
             MqttMessage message = new MqttMessage();
             message.setQos(QOS);
             message.setPayload(content.getBytes());
-            message.setRetained(true);
+            message.setRetained(retained);
 
             publisher.publish(topic, message);
             logger.info("Message " + content + " published successfully on topic: " + topic);
