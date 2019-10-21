@@ -27,9 +27,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class whiteBoardController {
-
+    private final static Logger logger= Logger.getLogger(whiteBoardController.class);
     private static whiteBoardController instance;
     public static whiteBoardController getInstance(){
         if(instance == null){
