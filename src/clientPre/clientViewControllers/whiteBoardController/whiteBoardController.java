@@ -5,6 +5,7 @@ import clientPre.pop_ups.AlertBox;
 import clientPre.pop_ups.InputText;
 import clientPre.pop_ups.OpenFrom;
 import clientPre.pop_ups.SaveAs;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -27,9 +29,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.apache.log4j.Logger;
+
 
 public class whiteBoardController {
-
+    private final static Logger logger = Logger.getLogger(whiteBoardController.class);
     private static whiteBoardController instance;
     public static whiteBoardController getInstance(){
         if(instance == null){
@@ -39,6 +43,7 @@ public class whiteBoardController {
     }
 
     private static Canvas canvas = new Canvas(903, 511);
+    private TextArea msgArea = new TextArea();
     @FXML
     private ColorPicker colorPicker;
     @FXML
@@ -66,13 +71,15 @@ public class whiteBoardController {
     @FXML
     private Button send;
     @FXML
+    private Pane msgPane;
+    @FXML
     private ListView listView;
     @FXML
     private MenuBar menuBar;
     @FXML
     private Pane pane;
     @FXML private TextField msgField;
-    @FXML private TextArea msgArea;
+//    @FXML private TextArea msgArea;
     @FXML private Button sendBtn;
 
 
@@ -102,7 +109,6 @@ public class whiteBoardController {
 //                else{
 //                    text += (s + "\n");
 //                }
-//
 //            }
 //            messageRecord.setText(text);
 //            sendMessage.clear();
@@ -263,6 +269,10 @@ public class whiteBoardController {
     }
 
     public void initialize(){
+        msgArea.setPrefHeight(272.0);
+        msgArea.setPrefWidth(1199.0);
+        msgArea.setText("111111111");
+        msgPane.getChildren().add(msgArea);
         pane.getChildren().add(canvas);
         initLeftButtons();
         boolean isManager = ClientAppFacade.getInstance().isManager();
@@ -275,7 +285,9 @@ public class whiteBoardController {
         if(!clientType.equals("manager")){
             menuBar.setVisible(false);
         }
+
 //        initSendMessage();
+
         StringAndButtonList.list = list;
         initListView(StringAndButtonList.list);
         StringAndButtonList.list.addListener(new ListChangeListener<String>() {
@@ -460,23 +472,46 @@ public class whiteBoardController {
      * For a single user, he press btn to send the msg to his own text area
      */
     public void controlSendMsg() {
-
+        msgArea.setEditable(false);
+        logger.info("WB Controller ID: "+instance);
         String msg = this.msgField.getText();
         boolean isEmpty = msg == null || msg.isEmpty();
 
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         String userName = clientApp.getUsername();
-
+        logger.info("Message entered: "+msg);
         if (!isEmpty) {
-            this.msgArea.appendText(userName + ": " + msg + "\n");
+            logger.info("Message you type: "+msg);
+
+            msgArea.appendText(userName + ": " + msg + "\n");
+
+            logger.info("MEssage area.get: "+msgArea.getText());
+
+
             clientApp.sendMsg(userName+": "+msg+"\n");
+            logger.info("ID of Message Area: "+msgArea);
             this.msgField.clear();
         }
     }
     public void updateMessage(String message){
-        System.out.println(message);
-        this.msgArea.appendText(message);
-        this.msgArea.clear();
+        logger.info("WB Controller ID: "+instance);
+        logger.info("message pane is: "+msgPane);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                msgPane.getChildren().remove(msgArea);
+
+                System.out.println(message);
+                logger.info("Message area ID in update Message:"+msgArea);
+                msgArea.appendText(message);
+
+                msgPane.getChildren().add(msgArea);
+
+            }
+        });
+//        logger.info(msgArea.getText());
+//        msgArea.clear();
     }
 
 }
