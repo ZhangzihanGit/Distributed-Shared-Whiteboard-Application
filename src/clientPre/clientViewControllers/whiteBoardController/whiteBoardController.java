@@ -91,19 +91,21 @@ public class whiteBoardController {
 
     private double[] beginCoordinate = {0,0};
 
+    private ObservableList<String> messages = FXCollections.observableArrayList(
+            "test1 !!!!!","test2");;
     private void sendMsgAndRecordIt(String msg){
         if(clientType.equals("manager")){
             actionRecord += (msg + "#");
         }
         ClientAppFacade.getInstance().updateWb(msg);
     }
-//    private void initSendMessage(){
-//
-//        messageRecord.setEditable(false);
-//        ArrayList<String> messages = new ArrayList<>();
-//        send.setOnAction(e->{
-//            messages.add(sendMessage.getText());
-//            String content[] = messages.toString().
+
+    private void initSendMessage(){
+        messageRecord.setEditable(false);
+
+        send.setOnAction(e->{
+            messages.add(sendMessage.getText());
+//            String[] content = messages.toString().
 //                    replace("[", "").replace("]", "").split(",");
 //            String text = "";
 //            int i = 0;
@@ -115,12 +117,12 @@ public class whiteBoardController {
 //                else{
 //                    text += (s + "\n");
 //                }
-//
 //            }
+            ClientAppFacade.getInstance().sendMsg(sendMessage.getText());
 //            messageRecord.setText(text);
-//            sendMessage.clear();
-//        });
-//    }
+            sendMessage.clear();
+        });
+    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -288,13 +290,19 @@ public class whiteBoardController {
         if(!clientType.equals("manager")){
             menuBar.setVisible(false);
         }
-//        initSendMessage();
+        initSendMessage();
         StringAndButtonList.list = list;
         initListView(StringAndButtonList.list);
         StringAndButtonList.list.addListener(new ListChangeListener<String>() {
             @Override
             public void onChanged(Change<? extends String> c) {
                 initListView(StringAndButtonList.list);
+            }
+        });
+        this.messages.addListener(new ListChangeListener<String>(){
+            @Override
+            public void onChanged(Change<? extends String> c) {
+                messageRecord.appendText("/n"+messages.get(messages.size()-1));
             }
         });
         initDrawMethods();
@@ -522,23 +530,10 @@ public class whiteBoardController {
 
     }
 
-    /**
-     * For a single user, he press btn to send the msg to his own text area
-     */
-    public void controlSendMsg() {
-
-        String msg = this.msgField.getText();
-        boolean isEmpty = msg == null || msg.isEmpty();
-
-        ClientAppFacade clientApp = ClientAppFacade.getInstance();
-        String userName = clientApp.getUsername();
-
-        if (!isEmpty) {
-            this.msgArea.appendText(userName + ": " + msg + "\n");
-            clientApp.sendMsg(msg);
-            this.msgField.clear();
-        }
+    public void updateMessage(String msg){
+        messages.add(msg);
     }
+
 
 }
 
