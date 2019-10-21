@@ -15,13 +15,14 @@
     <children>
         <AnchorPane layoutX="44.0" layoutY="11.0" prefHeight="379.0" prefWidth="612.0" styleClass="login-panel">
             <children>
-                <Button layoutX="147.0" layoutY="289.0" mnemonicParsing="false" onAction="#controlJoinWb" prefHeight="31.0" prefWidth="324.0" styleClass="login-btn" text="next" />
+                <Button layoutX="347.0" layoutY="289.0" mnemonicParsing="false" onAction="#controlJoinWb" prefHeight="31.0" prefWidth="124.0" styleClass="login-btn" text="next" />
                 <Label layoutX="31.0" layoutY="37.0" styleClass="config-header" text="Which whiteboard do you want to join?" textFill="#1b1a1a">
                     <effect>
                         <Blend />
                     </effect>
                 </Label>
             <ListView fx:id="listView" layoutX="150.0" layoutY="98.0" prefHeight="169.0" prefWidth="318.0" />
+            <Button layoutX="150.0" layoutY="289.0" mnemonicParsing="false" onAction="#controlGoBack" prefHeight="31.0" prefWidth="124.0" styleClass="login-btn" text="back" />
             </children>
         </AnchorPane>
           <BorderPane layoutX="-134.0" layoutY="329.0" prefHeight="84.0" prefWidth="324.0" />

@@ -10,6 +10,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.ImageCursor;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -112,15 +113,20 @@ public class whiteBoardController {
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
+
         text.setOnMousePressed(e->{
             mode = "text";
         });
         pencil.setOnMousePressed(e->{
             mode = "draw";
+            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+            canvas.setCursor(cursor);
         });
 
         eraser.setOnMousePressed(e->{
             mode = "erase";
+            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+            canvas.setCursor(cursor);
         });
 
         line.setOnMousePressed(e->{
