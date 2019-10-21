@@ -494,22 +494,19 @@ public class whiteBoardController {
         }
     }
     public void updateMessage(String message){
+        logger.info("Client Thread info:"+Thread.currentThread().getName());
+
         logger.info("WB Controller ID: "+instance);
         logger.info("message pane is: "+msgPane);
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                msgPane.getChildren().remove(msgArea);
+        msgPane.getChildren().remove(msgArea);
 
-                System.out.println(message);
-                logger.info("Message area ID in update Message:"+msgArea);
-                msgArea.appendText(message);
+        System.out.println(message);
+        logger.info("Message area ID in update Message:"+msgArea);
+        msgArea.appendText(message);
 
-                msgPane.getChildren().add(msgArea);
+        msgPane.getChildren().add(msgArea);
 
-            }
-        });
 //        logger.info(msgArea.getText());
 //        msgArea.clear();
     }
