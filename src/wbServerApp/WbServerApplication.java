@@ -192,7 +192,7 @@ public class WbServerApplication {
         }
 
         whiteboards.add(new Whiteboard(wbName, username));
-        factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", username);
+        factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", username, true);
 
         return json.packRespond(true, "", "", "");
     }
@@ -213,7 +213,7 @@ public class WbServerApplication {
 
                 String manager = wb.getManager();
                 String respond = json.packRespond(true, username, "joinRequest", manager);
-                factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/general", respond);
+                factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/general", respond, true);
 
                 return json.packRespond(true, "", "", "");
             }
@@ -247,11 +247,11 @@ public class WbServerApplication {
             }
         }
 
-        factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/join", respond);
+        factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/join", respond, false);
         waitLists.remove(username);
 
         if (users != null) {
-            factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users);
+            factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users, true);
         }
     }
 
@@ -288,13 +288,13 @@ public class WbServerApplication {
                     String respond = factory.getJsonStrategy().packRespond(true, "Manager close the whiteboard",
                             "close", "");
 
-                    factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond);
+                    factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond, true);
                 }
                 // visitor close the whiteboard, update the user list
                 else {
                     wb.removeUser(username);
                     String users = wb.getAllUsers();
-                    factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users);
+                    factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users, true);
                 }
                 break;
             }
@@ -323,14 +323,14 @@ public class WbServerApplication {
                 String respond = factory.getJsonStrategy().packRespond(true, "Manager remove you from the group",
                         "close", visitor);
 
-                factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond);
+                factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond, true);
                 break;
             }
         }
 
         // update users list
         if (users != null) {
-            factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users);
+            factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users, true);
         }
     }
 
@@ -342,7 +342,7 @@ public class WbServerApplication {
      */
     public synchronized void updateWb(String wbName, String username, String wb) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/whiteboard", wb);
+                wbName + "/whiteboard", wb, true);
     }
 
     /**
@@ -353,7 +353,7 @@ public class WbServerApplication {
      */
     public synchronized void sendMsg(String wbName, String username, String msg) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/message", msg);
+                wbName + "/message", msg, true);
     }
 
     /**

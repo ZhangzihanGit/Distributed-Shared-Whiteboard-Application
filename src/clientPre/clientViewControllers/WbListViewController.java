@@ -21,7 +21,7 @@ public class WbListViewController {
     }
 
     @FXML
-    private void controlJoinWb() throws IOException {
+    private void controlJoinWb() {
 
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         ClientGUIController clientGUI = ClientGUIController.getInstance();
@@ -33,8 +33,6 @@ public class WbListViewController {
 
         if (!isEmpty) {
             String joinRespond = clientApp.joinWb(selectedWbName);
-            clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
-
 
             // receive msg from server to know if join successfully
             if (clientApp.getHeader(joinRespond)) {
@@ -57,6 +55,11 @@ public class WbListViewController {
         } else {
             listView.setStyle(WARNINGCSS);
         }
+    }
+
+    @FXML
+    private void controlGoBack() throws IOException {
+        ClientGUIController.getInstance().showChooseIdentityView();
     }
 
     private void renderAvailableWb() {
