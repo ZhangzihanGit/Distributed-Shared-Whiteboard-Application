@@ -44,12 +44,17 @@ public class ClientMqttCallBack implements MqttCallback {
 
         if (s.contains(WB_PANEL)) {
             // TODO call whiteboard update function in clientGUI
-            // msg contains the string version of updated whiteboard
-             Platform.runLater(()-> {
-                    System.out.println(msg);
+            String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
+            String content = ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(msg);
+
+            if (user.equals("") || user.equals(ClientAppFacade.getInstance().getUsername())) {
+                // msg contains the string version of updated whiteboard
+                Platform.runLater(() -> {
+                    System.out.println(content);
                     whiteBoardController.getInstance().
-                            updateWhiteBoard(msg);
-            });
+                            updateWhiteBoard(content);
+                });
+            }
         }
 
         if (s.contains(MSG_PANEL)) {

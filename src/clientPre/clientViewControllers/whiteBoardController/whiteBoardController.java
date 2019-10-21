@@ -95,7 +95,7 @@ public class whiteBoardController {
         if(clientType.equals("manager")){
             actionRecord += (msg + "#");
         }
-        ClientAppFacade.getInstance().updateWb(msg);
+        ClientAppFacade.getInstance().updateWb(msg, "");
     }
 //    private void initSendMessage(){
 //
@@ -222,14 +222,14 @@ public class whiteBoardController {
             }
             else if(mode.equals("rectangle")){
                 gc.strokeRect(upLeftX, upLeftY, width, height);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
+                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke(), "");
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + upLeftX
                         + "," + upLeftY + "," + width + "," + height;
                 sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("circle")){
                 gc.strokeOval(middleX - distance/2, middleY - distance/2, distance, distance);
-                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke());
+                ClientAppFacade.getInstance().updateWb("r," + gc.getStroke(), "");
                 msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + (middleX - distance/2)
                         + "," + (middleY - distance/2) + "," + distance + "," + distance;
                 sendMsgAndRecordIt(msg);
@@ -415,7 +415,7 @@ public class whiteBoardController {
             String data = new String(Files.readAllBytes(Paths.get(filePath)));
             newCanvas();
             for(String msg :data.split("#")){
-                ClientAppFacade.getInstance().updateWb(msg);
+                ClientAppFacade.getInstance().updateWb(msg, "");
             }
             saveFilePath = filePath;
         }
@@ -540,5 +540,10 @@ public class whiteBoardController {
         }
     }
 
+    public void updateNewUserWB(String username) {
+        for(String s: actionRecord.split("#")){
+            ClientAppFacade.getInstance().updateWb(s, username);
+        }
+    }
 }
 

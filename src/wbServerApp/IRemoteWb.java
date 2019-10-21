@@ -77,9 +77,10 @@ public interface IRemoteWb extends Remote {
      * @param wbName Whiteboard name, String
      * @param username Username, String
      * @param wb Whiteboard, String
+     * @param receiver receiver, String
      * @throws RemoteException
      */
-    public void updateWb(String wbName, String username, String wb) throws RemoteException;
+    public void updateWb(String wbName, String username, String wb, String receiver) throws RemoteException;
 
     /**
      * Send message

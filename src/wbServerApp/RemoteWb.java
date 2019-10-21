@@ -49,7 +49,7 @@ public class RemoteWb extends UnicastRemoteObject implements IRemoteWb {
     }
 
     @Override
-    public void updateWb(String wbName, String username, String wb) {
+    public void updateWb(String wbName, String username, String wb, String receiver) {
         WbServerFacade.getInstance().updateWb(wbName, username, wb);
     }
 
