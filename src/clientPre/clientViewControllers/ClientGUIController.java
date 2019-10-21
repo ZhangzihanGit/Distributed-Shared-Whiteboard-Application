@@ -120,7 +120,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void showChooseIdentityView() throws IOException {
+    public void showChooseIdentityView() throws IOException {
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.IDENTITY.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.IDENTITY.getTitle());
         baseView();
