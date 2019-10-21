@@ -55,34 +55,15 @@ public class whiteBoardController {
     @FXML
     private Label label;
     @FXML
-    private Button eraser;
-    @FXML
-    private Button line;
-    @FXML
-    private Button circle;
-    @FXML
-    private Button oval;
-    @FXML
-    private Button rectangle;
-    @FXML
-    private Button pencil;
-    @FXML
-    private Button text;
-    @FXML
-    private TextArea messageRecord;
-    @FXML
-    private TextField sendMessage;
-    @FXML
-    private Button send;
-    @FXML
     private ListView listView;
     @FXML
     private MenuBar menuBar;
     @FXML
     private Pane pane;
     @FXML private TextField msgField;
-    @FXML private TextArea msgArea;
-    @FXML private Button sendBtn;
+    @FXML private Pane msgPane;
+
+    static private TextArea msgArea = new TextArea();
     private ImageCursor cursor;
 
 
@@ -344,6 +325,8 @@ public class whiteBoardController {
     }
 
     public void initialize(){
+        msgArea.setPrefSize(1199, 272);
+        msgPane.getChildren().add(msgArea);
         pane.getChildren().add(canvas);
         initLeftButtons();
         boolean isManager = ClientAppFacade.getInstance().isManager();
@@ -475,7 +458,6 @@ public class whiteBoardController {
     }
 
     public void open() throws IOException {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
         System.out.println(canvas);
         OpenFrom openFrom= new OpenFrom();
         String filePath =  openFrom.display();
@@ -602,7 +584,6 @@ public class whiteBoardController {
         String userName = clientApp.getUsername();
 
         if (!isEmpty) {
-            this.msgArea.appendText(userName + ": " + msg + "\n");
             clientApp.sendMsg(msg);
             this.msgField.clear();
         }
@@ -612,6 +593,10 @@ public class whiteBoardController {
         for(String s: actionRecord.split("#")){
             ClientAppFacade.getInstance().updateWb(s, username);
         }
+    }
+
+    public void updateMessage(String msg){
+        msgArea.appendText(msg + "\n");
     }
 }
 

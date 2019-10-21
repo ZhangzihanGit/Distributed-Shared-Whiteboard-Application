@@ -42,7 +42,6 @@ public class StringAndButtonList extends ListCell<String> {
             @Override
             public void handle(ActionEvent event) {
                 ClientAppFacade.getInstance().kickUser(lastItem);
-//                list.remove(lastItem);
 
             }
         });
