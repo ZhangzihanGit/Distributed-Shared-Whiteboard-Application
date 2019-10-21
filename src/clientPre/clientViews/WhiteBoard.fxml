@@ -54,7 +54,7 @@
             <Slider fx:id="slider" />
             <Label fx:id="label" alignment="CENTER" contentDisplay="CENTER" prefHeight="15.0" prefWidth="102.0" styleClass="draw-btn" text="Label" textAlignment="CENTER" />
             <Accordion />
-            <Button fx:id="pencil" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Pencil">
+            <Button fx:id="pencil" mnemonicParsing="false" onAction="#onClickPencil" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Pencil">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -63,7 +63,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="eraser" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Eraser">
+            <Button fx:id="eraser" mnemonicParsing="false" onAction="#onClickEraser" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Eraser">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -71,7 +71,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="rectangle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Rectan">
+            <Button fx:id="rectangle" mnemonicParsing="false" onAction="#onClickRectan" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Rectan">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -80,7 +80,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="line" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Line">
+            <Button fx:id="line" mnemonicParsing="false" onAction="#onClickLine" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Line">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -89,7 +89,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="circle" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Circle">
+            <Button fx:id="circle" mnemonicParsing="false" onAction="#onClickCircle" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Circle">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -98,7 +98,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="oval" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Oval">
+            <Button fx:id="oval" mnemonicParsing="false" onAction="#onClickOval" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Oval">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -107,7 +107,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="text" mnemonicParsing="false" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Text">
+            <Button fx:id="text" mnemonicParsing="false" onAction="#onClickText" prefHeight="23.0" prefWidth="101.0" styleClass="draw-btn" text="Text">
                <graphic>
                   <ImageView fitHeight="27.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -138,6 +138,7 @@ public class ClientAppFacade {
      */
     public void closeWb() {
         clientApp.closeWb();
+        exit();
     }
 
     /**
