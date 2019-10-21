@@ -75,6 +75,7 @@ public class whiteBoardController {
     @FXML private TextField msgField;
     @FXML private TextArea msgArea;
     @FXML private Button sendBtn;
+    private ImageCursor cursor;
 
 
     private String clientType = "manager";
@@ -114,35 +115,46 @@ public class whiteBoardController {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
 
-        text.setOnMousePressed(e->{
-            mode = "text";
-        });
-        pencil.setOnMousePressed(e->{
-            mode = "draw";
-            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
-            canvas.setCursor(cursor);
-        });
-
-        eraser.setOnMousePressed(e->{
-            mode = "erase";
-            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
-            canvas.setCursor(cursor);
-        });
-
-        line.setOnMousePressed(e->{
-            mode = "line";
-        });
-
-        circle.setOnMousePressed(e->{
-            mode = "circle";
-        });
-
-        oval.setOnMousePressed(e->{
-            mode = "oval";
-        });
-        rectangle.setOnMousePressed(e->{
-            mode = "rectangle";
-        });
+//        text.setOnMousePressed(e->{
+//            mode = "text";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm()));
+////            cursor.set(new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm())));
+//            canvas.setCursor(cursor);
+//        });
+//        pencil.setOnMousePressed(e->{
+//            mode = "draw";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        eraser.setOnMousePressed(e->{
+//            mode = "erase";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/eraser.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        line.setOnMousePressed(e->{
+//            mode = "line";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/line.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        circle.setOnMousePressed(e->{
+//            mode = "circle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/circle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        oval.setOnMousePressed(e->{
+//            mode = "oval";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/oval.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//        rectangle.setOnMousePressed(e->{
+//            mode = "rectangle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/rectangle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
 
         label.setText("1.0");
 
@@ -160,6 +172,57 @@ public class whiteBoardController {
             gc.setLineWidth(value);
         });
     }
+
+    @FXML
+    private void onClickPencil() {
+        System.out.println("pencil click");
+        mode = "draw";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickEraser() {
+        System.out.println("eraser click");
+        mode = "erase";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/eraser.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickRectan() {
+        System.out.println("rectan click");
+        mode = "rectangle";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/rectangle.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickLine() {
+        System.out.println("line click");
+        mode = "line";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/line.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickCircle() {
+        System.out.println("circle click");
+        mode = "circle";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/circle.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickOval() {
+        System.out.println("oval click");
+        mode = "oval";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/oval.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+    @FXML
+    private void onClickText() {
+        System.out.println("text click");
+        mode = "text";
+        this.cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm()));
+        canvas.setCursor(cursor);
+    }
+
 
     private void initDrawMethods(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
