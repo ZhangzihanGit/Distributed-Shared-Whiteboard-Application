@@ -18,7 +18,7 @@ public class CurrentWbListController {
     private ListView<String> listView;
 
     public void initialize() {
-        this.renderAvailableWb();
+        this.renderInitWb();
     }
 
     @FXML
@@ -38,7 +38,7 @@ public class CurrentWbListController {
 
     }
 
-    private void renderAvailableWb() {
+    private void renderInitWb() {
         String listRespond = WbServerFacade.getInstance().getCreatedWb();
         String availableWbs = ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(listRespond);
 
@@ -46,5 +46,9 @@ public class CurrentWbListController {
         ObservableList<String> listContainer = FXCollections.observableArrayList(Arrays.asList(list));
 //        ObservableList<String> listContainer = FXCollections.observableArrayList("apple", "orange", "lemon");
         this.listView.setItems(listContainer);
+    }
+
+    public void updateWbList(String wbName) {
+        this.listView.getItems().add(wbName);
     }
 }
