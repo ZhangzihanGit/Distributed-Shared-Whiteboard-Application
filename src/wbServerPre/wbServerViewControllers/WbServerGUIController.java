@@ -164,8 +164,8 @@ public class WbServerGUIController extends Application {
         this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MONITOR.getFxmlFile()));
         this.primaryStage.setTitle(WbServerFxmlView.MONITOR.getTitle());
 
-        this.loggerArea.setWrapText(true);
-        this.scrollPane.setFitToWidth(true);
+//        this.loggerArea.setWrapText(true);
+//        this.scrollPane.setFitToWidth(true);
 //        this.scrollPane.setFitToWidth(true);
 //        this.wbName.setText(wbName);
         baseView();
