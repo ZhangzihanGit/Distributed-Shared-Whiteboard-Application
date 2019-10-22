@@ -88,10 +88,12 @@ public class DataServerApplication {
 
     public String addUser(String username, String password){
         JSONObject message = authenticator.registerUser(username, password);
+        iteratePassBook();
         if(message.get("header").equals("Success")){
-            String encryptedPassword = message.get("encoded_password").toString();
+            String encryptedPassword = message.get("encodedhash").toString();
+            String salt = message.get("salt").toString();
             logger.info("Now write to the server:");
-            dataWareHouse.writeDb(username,encryptedPassword);
+            dataWareHouse.writeDb(username,encryptedPassword,salt);
         }
         return message.toJSONString();
     }
