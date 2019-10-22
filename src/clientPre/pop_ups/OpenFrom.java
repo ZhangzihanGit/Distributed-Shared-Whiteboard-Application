@@ -35,7 +35,7 @@ public class OpenFrom {
         selectFolder.setOnAction(e->{
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("WB","*.wb")
+                    new FileChooser.ExtensionFilter("GIF","*.gif", "*.png", "PNG")
             );
             File file = fileChooser.showOpenDialog(window);
             fileLocation.setText(file.getPath());
