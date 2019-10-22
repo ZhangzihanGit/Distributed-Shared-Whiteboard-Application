@@ -339,13 +339,10 @@ public class WbServerApplication {
      * @param wbName Whiteboard name, String
      * @param username Username, String
      * @param wb Whiteboard, String
-     * @param receiver receiver
      */
-    public synchronized void updateWb(String wbName, String username, String wb, String receiver) {
-        String msg = WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, wb, "", receiver);
-
+    public synchronized void updateWb(String wbName, String username, String wb) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/whiteboard", msg, true);
+                wbName + "/whiteboard", wb, true);
     }
 
     /**
@@ -353,11 +350,10 @@ public class WbServerApplication {
      * @param wbName Whiteboard name, String
      * @param username Username, String
      * @param msg Message, String
-     * @param time
      */
-    public synchronized void sendMsg(String wbName, String username, String msg, String time) {
+    public synchronized void sendMsg(String wbName, String username, String msg) {
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
-                wbName + "/message", time+ " : "+ "From: "+username+" : "+msg, false);
+                wbName + "/message", msg, true);
     }
 
     /**

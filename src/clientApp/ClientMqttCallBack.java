@@ -1,3 +1,4 @@
+
 package clientApp;
 
 import clientData.ClientDataStrategyFactory;
@@ -44,34 +45,32 @@ public class ClientMqttCallBack implements MqttCallback {
 
         if (s.contains(WB_PANEL)) {
             // TODO call whiteboard update function in clientGUI
-            String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
-            String content = ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(msg);
-
-            if (user.equals("") || user.equals(ClientAppFacade.getInstance().getUsername())) {
-                // msg contains the string version of updated whiteboard
-                Platform.runLater(() -> {
-                    System.out.println(content);
-                    whiteBoardController.getInstance().
-                            updateWhiteBoard(content);
-                });
-            }
+            // msg contains the string version of updated whiteboard
+            Platform.runLater(()-> {
+                System.out.println(msg);
+                whiteBoardController.getInstance().
+                        updateWhiteBoard(msg);
+            });
         }
 
         if (s.contains(MSG_PANEL)) {
             // TODO call message update function in clientGUI
             // msg contains the string version of updated texts communication
-
-             Platform.runLater(()-> {
-                 whiteBoardController.getInstance().updateMessage(msg);
-
-            });
+            /* Platform.runLater(()-> {
+                try {
+                    whiteBoardController.getInstance().methodName(msg);
+                } catch (IOException e) {
+                    logger.error(e.getMessage());
+                    logger.error("Update message box failed");
+                }
+            }); */
         }
 
         if (s.contains(USER_PANEL)) {
             // TODO call user list update function in clientGUI
             // msg contains the list of users: manager,user1,user2,user3
-             Platform.runLater(()-> {
-                 whiteBoardController.getInstance().updateUserList(msg);
+            Platform.runLater(()-> {
+                whiteBoardController.getInstance().updateUserList(msg);
             });
         }
 

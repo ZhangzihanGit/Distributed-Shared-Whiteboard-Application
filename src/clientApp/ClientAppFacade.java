@@ -138,7 +138,6 @@ public class ClientAppFacade {
      */
     public void closeWb() {
         clientApp.closeWb();
-        exit();
     }
 
     /**
@@ -152,18 +151,17 @@ public class ClientAppFacade {
     /**
      * Render all the whiteboards
      * @param wb Whiteboard, String
-     * @param receiver receiver, String
      */
-    public void updateWb(String wb, String receiver) {
-        clientApp.updateWb(wb, receiver);
+    public void updateWb(String wb) {
+        clientApp.updateWb(wb);
     }
 
     /**
      * Send message
      * @param msg Message, String
      */
-    public void sendMsg(String time, String msg) {
-        clientApp.sendMsg(time, msg);
+    public void sendMsg(String msg) {
+        clientApp.sendMsg(msg);
     }
 
     /**

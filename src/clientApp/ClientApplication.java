@@ -64,7 +64,7 @@ public class ClientApplication {
             logger.fatal(e.toString());
             logger.fatal("Obtain remote service from whiteboard server(" + ipAddr + ", " + portNum + ") failed");
             return parser.packRespond(false, "Fail to connect to the web server at "+ ip+ " port: "+port,
-            "Webser Connection", this.username);
+                    "Webser Connection", this.username);
         }
     }
 
@@ -287,11 +287,10 @@ public class ClientApplication {
     /**
      * Render all the whiteboards
      * @param wb Whiteboard, String
-     * @param receiver User, String
      */
-    public void updateWb(String wb, String receiver) {
+    public void updateWb(String wb) {
         try {
-            remoteWb.updateWb(this.wbName, this.username, wb, receiver);
+            remoteWb.updateWb(this.wbName, this.username, wb);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");
@@ -302,9 +301,9 @@ public class ClientApplication {
      * Send message
      * @param msg Message, String
      */
-    public void sendMsg(String time, String msg) {
+    public void sendMsg(String msg) {
         try {
-            remoteWb.sendMsg(this.wbName, this.username, msg, time);
+            remoteWb.sendMsg(this.wbName, this.username, msg);
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Close whiteboard service from whiteboard server fail to execute");
