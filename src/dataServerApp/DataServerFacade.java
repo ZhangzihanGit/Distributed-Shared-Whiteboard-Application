@@ -58,19 +58,9 @@ public class DataServerFacade {
         System.exit(1);
     }
 
-    /**
-     * Set up server address (ip, port)
-     * @param ip
-     * @return true if set successfully
-     */
-    public boolean setAddress(String ip) {
-        return dataServer.setAddress(ip);
-    }
-
     String addUser(String username, String password){
         return dataServer.addUser(username, password);
     }
-
 
     String checkUser(String username, String password){
         return dataServer.checkUser(username, password);
