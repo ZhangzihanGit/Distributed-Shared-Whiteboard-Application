@@ -22,7 +22,7 @@
                     </effect>
                 </Label>
                 <BorderPane layoutX="144.0" layoutY="176.0" prefHeight="84.0" prefWidth="324.0">
-               <top>
+               <bottom>
                         <BorderPane prefHeight="31.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                             <left>
                                 <ImageView fitHeight="27.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
@@ -35,6 +35,20 @@
                                 <TextField fx:id="portField" prefHeight="31.0" prefWidth="280.0" promptText="Port Number" BorderPane.alignment="CENTER" />
                             </right>
                         </BorderPane>
+               </bottom>
+               <top>
+                  <BorderPane prefHeight="31.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <left>
+                        <ImageView fitHeight="27.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                           <image>
+                              <Image url="@../../assets/imgs/IP.png" />
+                           </image>
+                        </ImageView>
+                     </left>
+                     <right>
+                        <TextField fx:id="networkField" prefHeight="31.0" prefWidth="280.0" promptText="Network IP Address" BorderPane.alignment="CENTER" />
+                     </right>
+                  </BorderPane>
                </top>
                 </BorderPane>
             </children>

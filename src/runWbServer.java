@@ -4,8 +4,6 @@ public class runWbServer {
     public static void main(String[] args) {
         // log setting
         System.setProperty("my.log", "resources/log/wbServer.log");
-        // rmi setting
-        System.setProperty("java.rmi.server.hostname","10.12.43.225");
         // security settings
         System.setProperty("java.security.policy","file:./security.policy");
         if (System.getSecurityManager() == null) {
