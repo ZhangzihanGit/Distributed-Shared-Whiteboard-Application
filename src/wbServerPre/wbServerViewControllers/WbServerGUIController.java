@@ -28,13 +28,21 @@ public class WbServerGUIController extends Application {
     private Scene scene;
     @FXML
     private TextField portField;
-    @FXML TextField brokerField;
-    @FXML private TextField IPField;
-    @FXML private TextField dbPortField;
-    @FXML private ScrollPane scrollPane;
-    @FXML private TextArea loggerArea;
-    @FXML private Label wbName;
-    @FXML private Label managerName;
+    @FXML
+    TextField brokerField;
+    @FXML TextField networkField;
+    @FXML
+    private TextField IPField;
+    @FXML
+    private TextField dbPortField;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private TextArea loggerArea;
+    @FXML
+    private Label wbName;
+    @FXML
+    private Label managerName;
 
     /**
      * get the singleton instance
@@ -157,6 +165,8 @@ public class WbServerGUIController extends Application {
         this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MONITOR.getFxmlFile()));
         this.primaryStage.setTitle(WbServerFxmlView.MONITOR.getTitle());
 
+//        this.loggerArea.setWrapText(true);
+//        this.scrollPane.setFitToWidth(true);
 //        this.scrollPane.setFitToWidth(true);
 //        this.wbName.setText(wbName);
         baseView();
@@ -186,9 +196,15 @@ public class WbServerGUIController extends Application {
 
     @FXML
     private void controlConfig() throws IOException {
+        String ip = this.networkField.getText();
         String port = this.portField.getText();
 
-        if (!this.checkIsEmpty(portField)) {
+
+
+        if (!this.checkIsEmpty(networkField, portField)) {
+            // rmi setting
+            System.setProperty("java.rmi.server.hostname", ip);
+
             WbServerFacade wbServer = WbServerFacade.getInstance();
             WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 

@@ -1,13 +1,7 @@
 package wbServerApp;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.HashMap;
-
 import dataServerApp.IRemoteDb;
+import javafx.application.Platform;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -15,6 +9,12 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerData.WbServerDataStrategy;
 import wbServerData.WbServerDataStrategyFactory;
 import wbServerPre.wbServerViewControllers.CurrentWbListController;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WbServerApplication {
     private final static Logger logger = Logger.getLogger(WbServerApplication.class);
@@ -212,6 +212,10 @@ public class WbServerApplication {
 
         whiteboards.add(new Whiteboard(wbName, username));
         factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", username, true);
+
+        Platform.runLater(() -> {
+            CurrentWbListController.getInstance().updateWbList(wbName);
+        });
 
         return json.packRespond(true, "", "", "");
     }
