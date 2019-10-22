@@ -29,7 +29,7 @@ public class DataWareHouse {
     // Duplication check is also done in the a
     private Path absolutePath = null;
     private Path storagePath = null;
-    private HashMap<String, String> localPassbook = null;
+    private HashMap<String, String[]> localPassbook = null;
 
     public DataWareHouse() {
         this.localPassbook = new HashMap<>();
@@ -44,14 +44,14 @@ public class DataWareHouse {
         }
         loadDb();
     }
-    public HashMap<String, String> getLocalPassbook(){
+    public HashMap<String, String[]> getLocalPassbook(){
         return this.localPassbook;
     }
-    void writeDb(String username, String password){
+    void writeDb(String username, String hashpass, String salt){
         try{
             Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream
                     (this.storagePath+"/"+STORAGE,true),"utf-8"));
-            writer.append("\n").append(username).append(":").append(password);
+            writer.append("\n").append(username).append(";").append(hashpass).append(";").append(salt);
             writer.flush();
             writer.close();
         }catch (IOException e){
@@ -66,13 +66,20 @@ public class DataWareHouse {
 
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
-            this.localPassbook.put(line.split(":")[0],line.split(":")[1]);
+            String[] hashAndSalt = new String[2];
+            hashAndSalt[0] = line.split(";")[1];
+            hashAndSalt[1] = line.split(";")[2];
+            this.localPassbook.put(line.split(";")[0],hashAndSalt);
             while(line!=null){
                 if(line.isEmpty()){
                     line=br.readLine();
                     continue;
                 }
-                this.localPassbook.put(line.split(":")[0],line.split(":")[1]);
+                // [0] is hashpass
+                hashAndSalt[0] = line.split(";")[1];
+                // [1] is salt
+                hashAndSalt[1] = line.split(";")[2];
+                this.localPassbook.put(line.split(";")[0],hashAndSalt);
                 line = br.readLine();
             }
         }catch (IOException e){
@@ -80,13 +87,13 @@ public class DataWareHouse {
             e.printStackTrace();
         }
     }
-//    public void iteratePassbook(){
-//        Iterator it = this.localPassbook.entrySet().iterator();
-//        while (it.hasNext()){
-//            Map.Entry pair= (Map.Entry)it.next();
-//            logger.info(pair.getKey().toString() + "  "+pair.getValue().toString());
-//        }
-//    }
+    public void iteratePassbook(){
+        Iterator it = this.localPassbook.entrySet().iterator();
+        while (it.hasNext()){
+            Map.Entry pair= (Map.Entry)it.next();
+            logger.info(pair.getKey().toString() + "  "+pair.getValue().toString());
+        }
+    }
 
 
     // Only used if the storage directory is not found.

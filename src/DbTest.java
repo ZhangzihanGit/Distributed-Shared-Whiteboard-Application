@@ -93,10 +93,11 @@ public class DbTest {
     }
     private static void testSavetoDB(){
         DataServerApplication server = new DataServerApplication();
-//        server.addUser("hello7", "hello");
+//        server.addUser("hello9", "hello");
 //        server.checkUser("hello4","NInygbToaAiN/gKaJtqzbg==");
-        server.checkUser("hello7", "hello");
-
+        server.checkUser("hello9", "hello");
+        server.addUser("hello","hello");
+        server.checkUser("hello","hell1");
 //        dataWareHouse.createDirectory();
 
 
