@@ -463,12 +463,13 @@ public class whiteBoardController {
     }
 
     public void open() throws IOException {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         System.out.println(canvas);
         OpenFrom openFrom= new OpenFrom();
         String filePath =  openFrom.display();
         if(!filePath.isEmpty()){
             String data = new String(Files.readAllBytes(Paths.get(filePath)));
-            newCanvas();
+            gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
             for(String msg :data.split("#")){
                 ClientAppFacade.getInstance().updateWb(msg, "");
             }
