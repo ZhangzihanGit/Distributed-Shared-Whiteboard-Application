@@ -1,12 +1,14 @@
 package wbServerApp;
 
 import dataServerApp.IRemoteDb;
+import javafx.application.Platform;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerData.WbServerDataStrategy;
 import wbServerData.WbServerDataStrategyFactory;
+import wbServerPre.wbServerViewControllers.CurrentWbListController;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -210,6 +212,10 @@ public class WbServerApplication {
 
         whiteboards.add(new Whiteboard(wbName, username));
         factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", username, true);
+
+        Platform.runLater(() -> {
+            CurrentWbListController.getInstance().updateWbList(wbName);
+        });
 
         return json.packRespond(true, "", "", "");
     }
