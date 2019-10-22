@@ -318,6 +318,7 @@ public class ClientApplication {
             if (this.mqttSubscriber != null) {
                 this.mqttSubscriber.disconnect();
             }
+            logger.info("Exit successfully");
         } catch (Exception e) {
             logger.error(e.toString());
             logger.error("Disconnect with remote broker failed");
