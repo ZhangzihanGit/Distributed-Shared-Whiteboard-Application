@@ -60,9 +60,7 @@ public class WbServerGUIController extends Application {
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
         primaryStage.setOnCloseRequest(event -> {
-            // TODO: closeWb() has 2 args defined in WbServerFacade
-//            WbServerFacade.getInstance().closeWb();
-            System.exit(0);
+            WbServerFacade.getInstance().exit();
             // Save file
         });
         showWelcomeView();

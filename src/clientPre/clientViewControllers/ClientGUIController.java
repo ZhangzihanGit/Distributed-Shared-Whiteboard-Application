@@ -97,7 +97,7 @@ public class ClientGUIController extends Application {
         this.primaryStage = stage;
         primaryStage.setOnCloseRequest(event -> {
             ClientAppFacade.getInstance().closeWb();
-            System.exit(0);
+            ClientAppFacade.getInstance().exit();
             // Save file
         });
         showWelcomeView();
