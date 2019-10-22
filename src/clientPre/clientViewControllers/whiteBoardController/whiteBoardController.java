@@ -609,5 +609,9 @@ public class whiteBoardController {
     public void updateMessage(String msg){
         msgArea.appendText(msg + "\n");
     }
+
+    public void clearTextArea() {
+        msgArea.clear();
+    }
 }
 

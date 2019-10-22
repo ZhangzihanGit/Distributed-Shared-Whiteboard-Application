@@ -277,6 +277,9 @@ public class ClientGUIController extends Application {
         System.out.println(msg);
         ClientAppFacade.getInstance().setWbName("");
         this.showErrorView("closed", msg, "");
+
+        whiteBoardController.getInstance().newCanvas();
+        whiteBoardController.getInstance().clearTextArea();
         this.showChooseIdentityView();
     }
 
