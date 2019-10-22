@@ -9,6 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import wbServerApp.WbServerFacade;
+import wbServerData.WbServerDataStrategy;
+import wbServerData.WbServerDataStrategyFactory;
 
 import java.io.IOException;
 
@@ -170,17 +172,15 @@ public class WbServerGUIController extends Application {
 
         if (!this.checkIsEmpty(IPField, dbPortField)) {
             WbServerFacade wbServer = WbServerFacade.getInstance();
-            // TODO: similar to clientView, return String to me
-            // String respond = wbServer.connectDbServer(ip, dbPort);
-            // Boolean isSuccess = wbServer.getHeader(respond);
+            WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 
-//            wbServer.connectDbServer(ip, dbPort);
-            Boolean isSuccess = true;
+            String respond = wbServer.connectDbServer(ip, dbPort);
+            Boolean isSuccess = jsonStrategy.getHeader(respond);
+
             if (isSuccess) {
                 this.showConfigView();
             } else {
-//                this.showErrorView("config", wbServer.getMsg(respond), "");
-                this.showErrorView("dbConfig", "", "");
+                this.showErrorView("config", jsonStrategy.getMsg(respond), "");
             }
         }
     }
@@ -191,17 +191,14 @@ public class WbServerGUIController extends Application {
 
         if (!this.checkIsEmpty(portField)) {
             WbServerFacade wbServer = WbServerFacade.getInstance();
-            // TODO: similar to clientView, return String to me
-            // String respond = wbServer.runWbServer(port);
-            // Boolean isSuccess = wbServer.getHeader(respond);
+            WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 
-            wbServer.runWbServer(port);
-            Boolean isSuccess = true;
+            String respond = wbServer.runWbServer(port);
+            Boolean isSuccess = jsonStrategy.getHeader(respond);
             if (isSuccess) {
                 this.showMqttConfigView();
             } else {
-//                this.showErrorView("config", wbServer.getMsg(respond), "");
-                this.showErrorView("config", "", "");
+                this.showErrorView("config", jsonStrategy.getMsg(respond), "");
             }
         }
     }
@@ -212,17 +209,15 @@ public class WbServerGUIController extends Application {
 
         if (!this.checkIsEmpty(brokerField)) {
             WbServerFacade wbServer = WbServerFacade.getInstance();
-            // TODO: similar to clientView, return String to me
-            // String respond = wbServer.startBroker(broker);
-            // Boolean isSuccess = wbServer.getHeader(respond);
+            WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 
-//            wbServer.startBroker(broker);
-            Boolean isSuccess = true;
+            String respond = wbServer.startBroker(broker);
+            Boolean isSuccess = jsonStrategy.getHeader(respond);
+
             if (isSuccess) {
                 this.showCurrentWbView();
             } else {
-//                this.showErrorView("mqttConfig", wbServer.getMsg(respond), "");
-                this.showErrorView("mqttConfig", "", "");
+                this.showErrorView("mqttConfig", jsonStrategy.getMsg(respond), "");
             }
         }
     }

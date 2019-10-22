@@ -1,5 +1,6 @@
 package clientApp;
 
+import clientData.ClientDataStrategy;
 import clientData.ClientDataStrategyFactory;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -35,14 +36,15 @@ public class ClientApplication {
      */
     public String connectWbServer(String ip, String port) {
         // parameter checking
-        WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
-        WbServerDataStrategy parser = factory.getJsonStrategy();
+        ClientDataStrategy parser = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
         int portNum = 1111;
         try {
             portNum = Integer.parseInt(port);
         } catch (Exception e) {
-            logger.warn(e.toString());
-            logger.warn("port number specified not valid, use default port number 1111");
+            logger.error(e.toString());
+            logger.error("port number specified not valid, use default port number 1111");
+            return parser.packRespond(false, "Invalid port number!", "", "");
         }
 
         String ipAddr = "localhost";
@@ -77,9 +79,7 @@ public class ClientApplication {
     public String connectBroker(String ip, String port) {
         String broker = "tcp://localhost:1883";
         MemoryPersistence persistence = new MemoryPersistence();
-        WbServerDataStrategyFactory factory = WbServerDataStrategyFactory.getInstance();
-        WbServerDataStrategy parser = factory.getJsonStrategy();
-
+        ClientDataStrategy parser = ClientDataStrategyFactory.getInstance().getJsonStrategy();
 
         if (ip != null && !ip.equals("")) {
             broker = "tcp://" + ip + ":1883";
@@ -94,7 +94,7 @@ public class ClientApplication {
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setAutomaticReconnect(true);
             connOpts.setCleanSession(true);
-            connOpts.setConnectionTimeout(10);
+            connOpts.setConnectionTimeout(1000);
 
             logger.info("Connecting to broker: " + broker);
             this.mqttSubscriber.connect(connOpts);
@@ -103,7 +103,6 @@ public class ClientApplication {
             this.mqttSubscriber.setCallback(new ClientMqttCallBack());
             return parser.packRespond(true, "Successfully connect to the broker at port: "+port +" ip: "+ip,"" +
                     "Broker connection",this.username);
-//            return true;
         } catch(Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Connect to remote broker failed");
@@ -325,25 +324,6 @@ public class ClientApplication {
         }
 
         System.exit(1);
-    }
-
-    // services provided from data layer
-    /**
-     * Resolve the header of JSON respond from server
-     * @param respond JSON respond from server, String
-     * @return True if the header stores success, Boolean
-     */
-    public Boolean getHeader(String respond) {
-        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getHeader(respond);
-    }
-
-    /**
-     * Resolve the message appended in the JSON respond from server
-     * @param respond JSON respond from server, String
-     * @return Message appended in the respond, String
-     */
-    public String getMsg(String respond) {
-        return ClientDataStrategyFactory.getInstance().getJsonStrategy().getMsg(respond);
     }
 
     // getter and setter

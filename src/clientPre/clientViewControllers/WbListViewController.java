@@ -1,6 +1,8 @@
 package clientPre.clientViewControllers;
 
 import clientApp.ClientAppFacade;
+import clientData.ClientDataStrategy;
+import clientData.ClientDataStrategyFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -22,9 +24,10 @@ public class WbListViewController {
 
     @FXML
     private void controlJoinWb() {
-
+        ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         ClientGUIController clientGUI = ClientGUIController.getInstance();
+
         String selectedWbName = this.listView.getSelectionModel().getSelectedItem();
         boolean isEmpty = selectedWbName == null || selectedWbName.isEmpty();
 
@@ -35,13 +38,13 @@ public class WbListViewController {
             String joinRespond = clientApp.joinWb(selectedWbName);
 
             // receive msg from server to know if join successfully
-            if (clientApp.getHeader(joinRespond)) {
+            if (jsonStrategy.getHeader(joinRespond)) {
                 System.out.println("join success");
                 clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
             } else {
                 // Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
-                clientGUI.showErrorView("visitorJoin", clientApp.getMsg(joinRespond), selectedWbName);
-                System.out.println(clientApp.getMsg(joinRespond));
+                clientGUI.showErrorView("visitorJoin", jsonStrategy.getMsg(joinRespond), selectedWbName);
+                System.out.println(jsonStrategy.getMsg(joinRespond));
             }
         } else {
             listView.setStyle(WARNINGCSS);
@@ -54,8 +57,10 @@ public class WbListViewController {
     }
 
     private void renderAvailableWb() {
+        ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
         String listRespond = ClientAppFacade.getInstance().getCreatedWb();
-        String[] list = ClientAppFacade.getInstance().getMsg(listRespond).split(",");
+        String[] list = jsonStrategy.getMsg(listRespond).split(",");
         ObservableList<String> listContainer = FXCollections.observableArrayList(Arrays.asList(list));
 //        ObservableList<String> listContainer = FXCollections.observableArrayList("apple", "orange", "lemon");
         this.listView.setItems(listContainer);

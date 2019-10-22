@@ -27,26 +27,29 @@ public class WbServerFacade {
     /**
      * start run server at localhost
      * @param port Port number, String
+     * @return JSON String respond
      */
-    public void runWbServer(String port) {
-        wbServer.runWbServer(port);
+    public String runWbServer(String port) {
+        return wbServer.runWbServer(port);
     }
 
     /**
      * connect to database server
      * @param ip IP address, String
      * @param port port, String
+     * @return JSON String respond
      */
-    public void connectDbServer(String ip, String port) {
-        wbServer.connectDbServer(ip, port);
+    public String connectDbServer(String ip, String port) {
+        return wbServer.connectDbServer(ip, port);
     }
 
     /**
      * Create new subprocess to start mosquitto broker
      * @param port Port
+     * @return JSON String respond
      */
-    public void startBroker(String port) {
-        wbServer.startBroker(port);
+    public String startBroker(String port) {
+        return wbServer.startBroker(port);
     }
 
     /**

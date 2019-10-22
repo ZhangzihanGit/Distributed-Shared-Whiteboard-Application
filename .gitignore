@@ -86,4 +86,7 @@ nb-configuration.xml
 ##############################
 ## ignore storage(database)
 /storage
-
+##############################
+## ignore encryption code.
+password.txt
+key.txt
