@@ -30,6 +30,7 @@ public class WbServerGUIController extends Application {
     private TextField portField;
     @FXML
     TextField brokerField;
+    @FXML TextField networkField;
     @FXML
     private TextField IPField;
     @FXML
@@ -195,9 +196,15 @@ public class WbServerGUIController extends Application {
 
     @FXML
     private void controlConfig() throws IOException {
+        String ip = this.networkField.getText();
         String port = this.portField.getText();
 
-        if (!this.checkIsEmpty(portField)) {
+
+
+        if (!this.checkIsEmpty(networkField, portField)) {
+            // rmi setting
+            System.setProperty("java.rmi.server.hostname", ip);
+
             WbServerFacade wbServer = WbServerFacade.getInstance();
             WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 
