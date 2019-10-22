@@ -1,6 +1,7 @@
 
 package clientApp;
 
+import clientData.ClientDataStrategy;
 import clientData.ClientDataStrategyFactory;
 import clientPre.clientViewControllers.ClientGUIController;
 import clientPre.clientViewControllers.whiteBoardController.whiteBoardController;
@@ -90,6 +91,8 @@ public class ClientMqttCallBack implements MqttCallback {
      */
     private void joinPanelHandle(String s, String msg) throws IOException {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
+        ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
         String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
 
         clientApp.setWbName(s.split("/")[0]);
@@ -97,7 +100,7 @@ public class ClientMqttCallBack implements MqttCallback {
         clientApp.unsubscribeTopic(wbName, ClientAppFacade.nonUserTopics);
 
         if (user.equals("") || user.equals(clientApp.getUsername())) {
-            if (clientApp.getHeader(msg)) {
+            if (jsonStrategy.getHeader(msg)) {
                 logger.info("join request approved");
                 clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
 
@@ -116,7 +119,7 @@ public class ClientMqttCallBack implements MqttCallback {
 
                 Platform.runLater(()-> {
                     try {
-                        ClientGUIController.getInstance().showJoinDeniedView(ClientAppFacade.getInstance().getMsg(msg));
+                        ClientGUIController.getInstance().showJoinDeniedView(jsonStrategy.getMsg(msg));
                     } catch (IOException e) {
                         logger.error(e.getMessage());
                         logger.error("Show join denied view failed");
@@ -132,11 +135,13 @@ public class ClientMqttCallBack implements MqttCallback {
      */
     private void generalPanelHandle(String msg) throws IOException {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
+        ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
         String user = ClientDataStrategyFactory.getInstance().getJsonStrategy().getUser(msg);
 
         if (user.equals("") || user.equals(ClientAppFacade.getInstance().getUsername())) {
             String category = ClientDataStrategyFactory.getInstance().getJsonStrategy().getCategory(msg);
-            String message = clientApp.getMsg(msg);
+            String message = jsonStrategy.getMsg(msg);
 
             if (category.equals("joinRequest")) {
                 Platform.runLater(()-> {

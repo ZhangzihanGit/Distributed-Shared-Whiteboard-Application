@@ -171,25 +171,6 @@ public class ClientAppFacade {
         clientApp.exit();
     }
 
-    // services provided from data layer
-    /**
-     * Resolve the header of JSON respond from server
-     * @param respond JSON respond from server, String
-     * @return True if the header stores success, Boolean
-     */
-    public Boolean getHeader(String respond) {
-        return clientApp.getHeader(respond);
-    }
-
-    /**
-     * Resolve the message appended in the JSON respond from server
-     * @param respond JSON respond from server, String
-     * @return Message appended in the respond, String
-     */
-    public String getMsg(String respond) {
-        return clientApp.getMsg(respond);
-    }
-
     // getter and setter
     public void setUsername(String username) {
         clientApp.setUsername(username);

@@ -1,6 +1,9 @@
 package clientPre.clientViewControllers;
 
 import clientApp.ClientAppFacade;
+import clientData.ClientDataStrategy;
+import clientData.ClientDataStrategyFactory;
+import clientPre.clientViewControllers.whiteBoardController.whiteBoardController;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,6 +97,11 @@ public class ClientGUIController extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
+        primaryStage.setOnCloseRequest(event -> {
+            ClientAppFacade app = ClientAppFacade.getInstance();
+            app.closeWb();
+            app.exit();
+        });
         showWelcomeView();
     }
 
@@ -256,6 +264,7 @@ public class ClientGUIController extends Application {
         if (btnClicked.get() == agreeBtn) {
             logger.info("Manager agreed the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, true);
+            whiteBoardController.getInstance().updateNewUserWB(username);
         } else if (btnClicked.get() == refuseBtn) {
             logger.info("Manager refused the join request from " + username);
             ClientAppFacade.getInstance().allowJoin(username, false);
@@ -291,7 +300,8 @@ public class ClientGUIController extends Application {
         if (!this.checkIsEmpty(loginUsernameField, loginPasswordField)) {
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
             String respond = clientApp.login(loginUsername, loginPassword);
-            Boolean isMatch = clientApp.getHeader(respond);
+            ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+            Boolean isMatch = jsonStrategy.getHeader(respond);
 
             if (isMatch) {
                 // switch to next page
@@ -301,7 +311,7 @@ public class ClientGUIController extends Application {
             } else {
                 // prompt window
                 logger.info("User " + loginUsername + " log in failed");
-                this.showErrorView("login", clientApp.getMsg(respond), "");
+                this.showErrorView("login", jsonStrategy.getMsg(respond), "");
             }
         }
     }
@@ -318,9 +328,10 @@ public class ClientGUIController extends Application {
             if (signupPassword1.equals(signupPassword2)) {
                 passwordLabel.setStyle(LABELREMOVECSS);
                 ClientAppFacade clientApp = ClientAppFacade.getInstance();
+                ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
 
                 String respond = clientApp.register(signupUsername, signupPassword1);
-                boolean addSuccess = clientApp.getHeader(respond);
+                boolean addSuccess = jsonStrategy.getHeader(respond);
 
                 if (addSuccess) {
                     // sign up successfully
@@ -329,7 +340,7 @@ public class ClientGUIController extends Application {
                     this.showChooseIdentityView();
                 } else {
                     logger.info("New user " + signupUsername + " sign up failed");
-                    showErrorView("signup", clientApp.getMsg(respond), "");
+                    showErrorView("signup", jsonStrategy.getMsg(respond), "");
                     // usernameLabel.setStyle(LABELCSS);
                 }
             } else {
@@ -348,16 +359,18 @@ public class ClientGUIController extends Application {
         if (!this.checkIsEmpty(IPField, portField)) {
             // if connect to server successfully, go to login page, else report error message
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
             String respond = clientApp.connectWbServer(ip, port);
             clientApp.setIP(ip);
 
-            Boolean isSuccess = clientApp.getHeader(respond);
+            Boolean isSuccess = jsonStrategy.getHeader(respond);
             if (isSuccess) {
                 // display mqtt ip/port configuration
                 this.showMqttConfigView();
             } else {
                 // display error message if can't connect to server
-                this.showErrorView("config", clientApp.getMsg(respond), "");
+                this.showErrorView("config", jsonStrategy.getMsg(respond), "");
             }
         }
     }
@@ -365,19 +378,22 @@ public class ClientGUIController extends Application {
     @FXML
     private void controlMqttConfig() throws IOException {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
+
         String broker = this.brokerField.getText();
         String ip = clientApp.getIp().isEmpty() ? "localhost" : clientApp.getIp();  // make sure ip is not empty
 
         if (!this.checkIsEmpty(brokerField)) {
+            ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
             String respond = clientApp.connectBroker(ip, broker);
-            Boolean isSuccess = clientApp.getHeader(respond);
+            Boolean isSuccess = jsonStrategy.getHeader(respond);
 
             if (isSuccess) {
                 // move to LoginView
                 this.showLoginView();
             } else {
                 // display error message if can't connect to server
-                this.showErrorView("mqttConfig", clientApp.getMsg(respond), "");
+                this.showErrorView("mqttConfig", jsonStrategy.getMsg(respond), "");
             }
         }
     }
@@ -402,12 +418,14 @@ public class ClientGUIController extends Application {
 
         if (!this.checkIsEmpty(wbNameField)) {
             ClientAppFacade clientApp = ClientAppFacade.getInstance();
+            ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
+
             clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
             System.out.println("manager selected");
             String createRespond = clientApp.createWb(wbName);
 
             // if create whiteboard successfully
-            if (clientApp.getHeader(createRespond)) {
+            if (jsonStrategy.getHeader(createRespond)) {
                 clientApp.setWbName(wbName);
                 clientApp.setManager(true);
 
@@ -415,8 +433,8 @@ public class ClientGUIController extends Application {
             } else {
                 // Pop out window to indicate there is one whiteboard being created (or already has manager)
                 clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
-                this.showErrorView("managerCreate", clientApp.getMsg(createRespond), wbName);
-                System.out.println(clientApp.getMsg(createRespond));
+                this.showErrorView("managerCreate", jsonStrategy.getMsg(createRespond), wbName);
+                System.out.println(jsonStrategy.getMsg(createRespond));
             }
         }
     }
