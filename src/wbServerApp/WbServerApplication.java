@@ -393,6 +393,8 @@ public class WbServerApplication {
             if (this.mqttPublisher != null) {
                 mqttPublisher.disconnect();
             }
+
+            logger.info("Exit successfully");
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Whiteboard server remove remote object from rmi runtime failed");
