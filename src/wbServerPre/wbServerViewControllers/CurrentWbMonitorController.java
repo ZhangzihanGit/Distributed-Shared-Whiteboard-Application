@@ -26,6 +26,7 @@ public class CurrentWbMonitorController {
         this.scrollPane.setContent(loggerArea);
     }
 
+    // TODO: in WbServerApplication runlater call this function
     public void updateLogger(String logger) {
         loggerArea.appendText(logger + "\n");
     }

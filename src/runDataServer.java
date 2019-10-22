@@ -4,11 +4,11 @@ import dataServerApp.DataServerFacade;
 import java.net.SocketException;
 
 public class runDataServer {
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) {
         // log setting
         System.setProperty("my.log", "resources/log/dataServer.log");
         // rmi setting
-        // System.setProperty("java.rmi.server.hostname", "10.12.43.225");
+        System.setProperty("java.rmi.server.hostname", args[0]);
         // security settings
         System.setProperty("java.security.policy", "file:./security.policy");
         if (System.getSecurityManager() == null) {
@@ -21,7 +21,7 @@ public class runDataServer {
         DataServerApplication application = facade.getDataServer();
 
         try {
-            application.setAddress(args[0]);
+            application.setAddress(args[1]);
         } catch (Exception e) {
             System.err.println(e.toString());
             System.err.println("Invalid command line argument, Usage: ");
