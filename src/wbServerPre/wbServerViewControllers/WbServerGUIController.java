@@ -199,11 +199,9 @@ public class WbServerGUIController extends Application {
         String ip = this.networkField.getText();
         String port = this.portField.getText();
 
-
-
         if (!this.checkIsEmpty(networkField, portField)) {
             // rmi setting
-            System.setProperty("java.rmi.server.hostname", ip);
+            // System.setProperty("java.rmi.server.hostname", ip);
 
             WbServerFacade wbServer = WbServerFacade.getInstance();
             WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
