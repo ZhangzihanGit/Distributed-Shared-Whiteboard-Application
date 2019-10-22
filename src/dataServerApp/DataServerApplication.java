@@ -10,14 +10,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class DataServerApplication {
     private final static Logger logger = Logger.getLogger(DataServerApplication.class);
-    private static final int defaultPort = 1099;
-
-    /** Smallest available server port */
-    private static final int SMALLEST_PORT = 1025;
-    /** Largest available server port */
-    private static final int LARGEST_PORT = 65535;
-
-    private String serverIP = null;
+    private int defaultPort = 1099;
 
     private IRemoteDb remoteDb = null;
 
@@ -39,11 +32,6 @@ public class DataServerApplication {
      * start run server
      */
     public void runDataServer() {
-        if (serverIP == null) {
-            logger.fatal("Server address hasn't been specified");
-            return;
-        }
-
         try {
             // For testing purpose, IP address is not used(since it is for now only local machine)
             // Later the ip will be used for several machines testing purpose.
@@ -71,13 +59,17 @@ public class DataServerApplication {
     }
 
     /**
-     * Set up server address (ip, port)
-     * @param ip
+     * Set up server address (port)
+     * @param port, String
      * @return true if set successfully
      */
-    public boolean setAddress(String ip) {
-        this.serverIP = ip;
-        return true;
+    public void setAddress(String port) {
+        try {
+            this.defaultPort = Integer.parseInt(port);
+        } catch (Exception e) {
+            logger.fatal("Invalid port number: " + port);
+            System.exit(1);
+        }
     }
 
 
