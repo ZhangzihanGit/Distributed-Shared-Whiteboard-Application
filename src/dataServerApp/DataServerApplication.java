@@ -42,6 +42,7 @@ public class DataServerApplication {
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remote registry set up failed");
+            this.exit();
         }
     }
 
@@ -51,11 +52,12 @@ public class DataServerApplication {
     public void exit() {
         try {
             UnicastRemoteObject.unexportObject(remoteDb, false);
-            
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Data server remove remote object from rmi runtime failed");
         }
+
+        System.exit(1);
     }
 
     /**
@@ -68,7 +70,7 @@ public class DataServerApplication {
             this.defaultPort = Integer.parseInt(port);
         } catch (Exception e) {
             logger.fatal("Invalid port number: " + port);
-            System.exit(1);
+            this.exit();
         }
     }
 
@@ -80,7 +82,7 @@ public class DataServerApplication {
 
         }catch (Exception e){
             logger.fatal("Initialization database remote object failed");
-            e.printStackTrace();
+            this.exit();
         }
     }
 
