@@ -1,5 +1,5 @@
+import dataServerApp.DataServerApplication;
 import dataServerApp.IRemoteDb;
-import dataServerApp.UserInformation;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -20,9 +20,12 @@ public class DbTest {
             // Test the connection with DB server.
            registry = LocateRegistry.getRegistry("localhost");
            test = (IRemoteDb) registry.lookup("DB");
-           testAuthentication(test);
-           testSaveCanvas(test);
-           testRetrieveCanvas(test);
+//           testAuthentication(test);
+//           testSaveCanvas(test);
+//           testRetrieveCanvas(test);
+//           testCypher();
+//           testCreateDirectory();
+           testSavetoDB();
 
        }catch (RemoteException e){
            e.printStackTrace();
@@ -57,9 +60,6 @@ public class DbTest {
         }
 
         // Test the use of UserInformation Class.
-        UserInformation userInformation = null;
-        userInformation = test.transferInformation(username, password);
-        System.out.println(userInformation.toString());
 
         // Test if RemoteDB.checkUser (Authenticator.authenticate) works.
         String mockUsername = "hello";
@@ -79,11 +79,26 @@ public class DbTest {
     private static void testSaveCanvas(IRemoteDb test) throws RemoteException{
         String username = "world";
         String password = "world";
-        test.saveWb(username,password);
+//        test.saveWb(username,password);
     }
-    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
-        String manager = "world";
-        String password = "world";
-        test.loadAllWb(manager);
+//    private static void testRetrieveCanvas(IRemoteDb test) throws RemoteException{
+//        String manager = "world";
+//        String password = "world";
+//        test.loadAllWb(manager);
+//    }
+//    private static void testCypher(){
+//        Cipher cypher = new Cipher("hello");
+//    }
+    private static void testCreateDirectory(){
+    }
+    private static void testSavetoDB(){
+        DataServerApplication server = new DataServerApplication();
+//        server.addUser("hello7", "hello");
+//        server.checkUser("hello4","NInygbToaAiN/gKaJtqzbg==");
+        server.checkUser("hello7", "hello");
+
+//        dataWareHouse.createDirectory();
+
+
     }
 }

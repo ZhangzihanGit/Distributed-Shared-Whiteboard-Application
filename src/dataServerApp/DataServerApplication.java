@@ -32,6 +32,7 @@ public class DataServerApplication {
     public DataServerApplication() {
         this.authenticator = Authenticator.getInstance();
         this.dataWareHouse = new DataWareHouse();
+        authenticator.syncStorage(dataWareHouse.getLocalPassbook());
     }
 
     /**
@@ -82,7 +83,6 @@ public class DataServerApplication {
 
 
     void setRemoteDb(DataServerFacade facade){
-
         try{
             this.remoteDb = new RemoteDb(facade);
 
@@ -92,28 +92,20 @@ public class DataServerApplication {
         }
     }
 
-    String addUser(String username, String password){
-        return authenticator.registerUser(username, password).toJSONString();
+    public String addUser(String username, String password){
+        JSONObject message = authenticator.registerUser(username, password);
+        if(message.get("header").equals("Success")){
+            String encryptedPassword = message.get("encoded_password").toString();
+            logger.info("Now write to the server:");
+            dataWareHouse.writeDb(username,encryptedPassword);
+        }
+        return message.toJSONString();
     }
 
-    String checkUser(String username, String password){
+    public String checkUser(String username, String password){
         return authenticator.authenticate(username, password).toJSONString();
     }
 
-    String saveCanvas(JSONObject canvas, String managerName){
-        JSONObject returnMessage = new JSONObject();
-        if(!dataWareHouse.save(managerName,canvas)){
-            returnMessage.put("header", "Fail");
-            returnMessage.put("message", "Fail to store the canva");
-            return returnMessage.toJSONString();
-        }
-        returnMessage.put("header", "Success");
-        returnMessage.put("message", "Successfully save the data");
-        return returnMessage.toJSONString();
-    }
-    String retrieveCanvas(String targetManager){
-        return dataWareHouse.retrieveData(targetManager);
-    }
 
     void iteratePassBook(){
         authenticator.iteratePassbook();
