@@ -11,7 +11,7 @@
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wbServerPre.wbServerViewControllers.WbServerGUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="body" stylesheets="@../../assets/css/clientGUI.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wbServerPre.wbServerViewControllers.CurrentWbMonitorController">
     <children>
         <AnchorPane layoutX="44.0" layoutY="11.0" prefHeight="379.0" prefWidth="612.0" styleClass="login-panel">
             <children>
@@ -21,12 +21,7 @@
                     </effect>
                 </Label>
             <Button layoutX="163.0" layoutY="334.0" mnemonicParsing="false" onAction="#controlGoBack" prefHeight="31.0" prefWidth="293.0" styleClass="login-btn" text="back" />
-            <ScrollPane fx:id="scrollPane" layoutX="19.0" layoutY="69.0" prefHeight="253.0" prefWidth="579.0">
-               <content>
-                  <TextArea fx:id="loggerArea" editable="false" prefHeight="256.0" prefWidth="575.0" wrapText="true" />
-               </content>
-            </ScrollPane>
-            <Button layoutX="28.0" layoutY="342.0" mnemonicParsing="false" onAction="#controlScrollPane" prefHeight="20.0" prefWidth="59.0" styleClass="login-btn" text="Test" />
+            <ScrollPane fx:id="scrollPane" layoutX="19.0" layoutY="69.0" prefHeight="253.0" prefWidth="579.0" />
             </children>
         </AnchorPane>
     </children>
