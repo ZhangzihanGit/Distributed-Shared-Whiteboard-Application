@@ -1,16 +1,14 @@
 import dataServerApp.DataServerApplication;
 import dataServerApp.DataServerFacade;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 public class runDataServer {
-    public static void main(String[] args) throws SocketException {
+    public static void main(String[] args) {
         // log setting
         System.setProperty("my.log", "resources/log/dataServer.log");
+        // rmi setting
+        System.setProperty("java.rmi.server.hostname", args[0]);
         // security settings
         System.setProperty("java.security.policy", "file:./security.policy");
         if (System.getSecurityManager() == null) {
@@ -23,8 +21,6 @@ public class runDataServer {
         DataServerApplication application = facade.getDataServer();
 
         try {
-            // rmi setting
-            System.setProperty("java.rmi.server.hostname", args[0]);
             application.setAddress(args[1]);
         } catch (Exception e) {
             System.err.println(e.toString());

@@ -61,8 +61,11 @@ public class WbListViewController {
 
         String listRespond = ClientAppFacade.getInstance().getCreatedWb();
         String[] list = jsonStrategy.getMsg(listRespond).split(",");
+
         ObservableList<String> listContainer = FXCollections.observableArrayList(Arrays.asList(list));
 //        ObservableList<String> listContainer = FXCollections.observableArrayList("apple", "orange", "lemon");
         this.listView.setItems(listContainer);
+
+
     }
 }
