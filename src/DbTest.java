@@ -1,7 +1,10 @@
+import dataServerApp.Cypher;
 import dataServerApp.DataServerApplication;
+import dataServerApp.DataWareHouse;
 import dataServerApp.IRemoteDb;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.apache.log4j.Logger;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -87,7 +90,7 @@ public class DbTest {
 //        test.loadAllWb(manager);
 //    }
 //    private static void testCypher(){
-//        Cipher cypher = new Cipher("hello");
+//        Cypher cypher = new Cypher("hello");
 //    }
     private static void testCreateDirectory(){
     }

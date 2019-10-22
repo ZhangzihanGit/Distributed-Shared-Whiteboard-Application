@@ -3,42 +3,45 @@ package dataServerApp;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.InvalidKeyException;
 import java.util.Base64;
+import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.log4j.Logger;
 
-public class Cipher {
-    private final Logger logger = Logger.getLogger(Cipher.class);
+public class Cypher {
+    private final Logger logger = Logger.getLogger(Cypher.class);
     private String encryptPassword = null;   // EncryptPassword means to keep secret.
     private String salt;
     private KeyGenerator keyGenerator;
     private static SecretKey secretKey;
-    private static javax.crypto.Cipher cipher;
+    private static Cipher cipher;
 
     private String encodedPassword = null; // This can be exposed to outside and stored in file system.
-    private static Cipher instance =null;
-    private Cipher() {
+    private static Cypher instance =null;
+    private Cypher() {
         try {
 
             this.keyGenerator = KeyGenerator.getInstance("AES");
             this.keyGenerator.init(128); // block size is 128bits
             secretKey = keyGenerator.generateKey();
-            cipher = javax.crypto.Cipher.getInstance("AES");
+            cipher = Cipher.getInstance("AES");
 
             initialise();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public static Cipher getInstance(){
+    public static Cypher getInstance(){
         if(instance == null){
-            instance = new Cipher();
+            instance = new Cypher();
         }
-        Logger.getLogger(Cipher.class).info("KEYKEYKYE: "+secretKey);
+        Logger.getLogger(Cypher.class).info("KEYKEYKYE: "+secretKey);
         return instance;
     }
     private void initialise(){
@@ -52,7 +55,7 @@ public class Cipher {
     public String encrypt(String password){
         try{
             byte[] plainTextByte = password.getBytes();
-            cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, secretKey);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
             byte[] encryptedByte = cipher.doFinal(plainTextByte);
             Base64.Encoder encoder = Base64.getEncoder();
             String encryptedText = encoder.encodeToString(encryptedByte);
@@ -67,7 +70,7 @@ public class Cipher {
         try{
             Base64.Decoder decoder = Base64.getDecoder();
             byte[] encryptedTextByte = decoder.decode(encryptPassword);
-            cipher.init(javax.crypto.Cipher.DECRYPT_MODE, secretKey);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
             byte[] decryptedByte = cipher.doFinal(encryptedTextByte);
             String decryptedText = new String(decryptedByte);
             return decryptedText;

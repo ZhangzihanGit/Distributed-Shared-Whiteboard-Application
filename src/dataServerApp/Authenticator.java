@@ -3,6 +3,9 @@ package dataServerApp;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -27,12 +30,12 @@ class Authenticator {
 
     // private Singleton instance.
     private static Authenticator authenticator = null;
-    private Cipher cipher;
+    private Cypher cypher;
     // Authenticator should be a singleton, since passbook should be kept unique.
     private Authenticator(){
         this.passbook = new HashMap<String, String>();
-        this.cipher = Cipher.getInstance();
-        logger.info("Cipher created: "+this.cipher);
+        this.cypher = Cypher.getInstance();
+        logger.info("Cypher created: "+this.cypher);
     }
     public static Authenticator getInstance(){
         if (authenticator == null){
@@ -60,10 +63,10 @@ class Authenticator {
 //        return null;
 //    }
     private String encryptPassword(String password){
-        return cipher.encrypt(password);
+        return cypher.encrypt(password);
     }
     private String decryptPassword(String encodedText){
-        return cipher.decrypt(encodedText);
+        return cypher.decrypt(encodedText);
     }
 
     /**
