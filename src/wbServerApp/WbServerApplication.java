@@ -1,12 +1,5 @@
 package wbServerApp;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Currency;
-import java.util.HashMap;
-
 import dataServerApp.IRemoteDb;
 import org.apache.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -14,7 +7,12 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import wbServerData.WbServerDataStrategy;
 import wbServerData.WbServerDataStrategyFactory;
-import wbServerPre.wbServerViewControllers.CurrentWbListController;
+
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WbServerApplication {
     private final static Logger logger = Logger.getLogger(WbServerApplication.class);
@@ -393,6 +391,8 @@ public class WbServerApplication {
             if (this.mqttPublisher != null) {
                 mqttPublisher.disconnect();
             }
+
+            logger.info("Exit successfully");
         } catch (Exception e) {
             logger.fatal(e.toString());
             logger.fatal("Whiteboard server remove remote object from rmi runtime failed");

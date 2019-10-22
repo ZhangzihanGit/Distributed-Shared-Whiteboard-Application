@@ -21,7 +21,7 @@
                         <Blend />
                     </effect>
                 </Label>
-                <ListView fx:id="listView" layoutX="150.0" layoutY="98.0" prefHeight="169.0" prefWidth="318.0" />
+            <Pane fx:id="listViewContainer" layoutX="150.0" layoutY="105.0" prefHeight="169.0" prefWidth="318.0" />
             </children>
         </AnchorPane>
     </children>

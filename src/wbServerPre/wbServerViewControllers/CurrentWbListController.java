@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.Pane;
 import wbServerApp.WbServerFacade;
 
 import java.io.IOException;
@@ -12,13 +13,18 @@ import java.util.Arrays;
 
 public class CurrentWbListController {
 
+
     private final String WARNINGCSS = "-fx-border-color: red;";
     private final String REMOVECSS = "-fx-border-color: none;";
-    @FXML
-    private ListView<String> listView;
+//    @FXML
+//    private ListView<String> listView;
+    @FXML private Pane listViewContainer;
+    public ListView<String> listView;
 
     public void initialize() {
         this.renderInitWb();
+        this.listView = new ListView<>();
+        this.listViewContainer.getChildren().add(listView);
     }
 
     @FXML

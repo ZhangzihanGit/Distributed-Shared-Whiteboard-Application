@@ -28,13 +28,20 @@ public class WbServerGUIController extends Application {
     private Scene scene;
     @FXML
     private TextField portField;
-    @FXML TextField brokerField;
-    @FXML private TextField IPField;
-    @FXML private TextField dbPortField;
-    @FXML private ScrollPane scrollPane;
-    @FXML private TextArea loggerArea;
-    @FXML private Label wbName;
-    @FXML private Label managerName;
+    @FXML
+    TextField brokerField;
+    @FXML
+    private TextField IPField;
+    @FXML
+    private TextField dbPortField;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private TextArea loggerArea;
+    @FXML
+    private Label wbName;
+    @FXML
+    private Label managerName;
 
     /**
      * get the singleton instance
@@ -63,7 +70,6 @@ public class WbServerGUIController extends Application {
         this.primaryStage = stage;
         primaryStage.setOnCloseRequest(event -> {
             WbServerFacade.getInstance().exit();
-            // Save file
         });
         showWelcomeView();
     }
