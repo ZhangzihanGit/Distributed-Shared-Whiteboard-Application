@@ -30,7 +30,6 @@ public class WbServerGUIController extends Application {
     private TextField portField;
     @FXML
     TextField brokerField;
-    @FXML TextField networkField;
     @FXML
     private TextField IPField;
     @FXML
@@ -74,14 +73,6 @@ public class WbServerGUIController extends Application {
         });
         showWelcomeView();
     }
-
-//    public void initialize(){
-//        this.loggerArea = new TextArea();
-//        this.loggerArea.setPrefSize(575, 256);
-//        this.loggerArea.setWrapText(true);
-//        scrollPane.setContent(this.loggerArea);
-//        scrollPane.setFitToWidth(true);
-//    }
 
     @FXML
     public void showErrorView(String type, String msg, String wbName) {
@@ -131,7 +122,6 @@ public class WbServerGUIController extends Application {
         baseView();
     }
 
-
     @FXML
     private void showConfigView() throws IOException {
         this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.CONFIG.getFxmlFile()));
@@ -164,13 +154,9 @@ public class WbServerGUIController extends Application {
     public void showMonitorView() throws IOException {
         this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MONITOR.getFxmlFile()));
         this.primaryStage.setTitle(WbServerFxmlView.MONITOR.getTitle());
-
-//        this.loggerArea.setWrapText(true);
-//        this.scrollPane.setFitToWidth(true);
-//        this.scrollPane.setFitToWidth(true);
-//        this.wbName.setText(wbName);
         baseView();
-//        System.out.println(wbName);
+//
+//        CurrentWbListController.getInstance().initialize();
     }
 
 
@@ -196,13 +182,9 @@ public class WbServerGUIController extends Application {
 
     @FXML
     private void controlConfig() throws IOException {
-        String ip = this.networkField.getText();
         String port = this.portField.getText();
 
-        if (!this.checkIsEmpty(networkField, portField)) {
-            // rmi setting
-            // System.setProperty("java.rmi.server.hostname", ip);
-
+        if (!this.checkIsEmpty(portField)) {
             WbServerFacade wbServer = WbServerFacade.getInstance();
             WbServerDataStrategy jsonStrategy = WbServerDataStrategyFactory.getInstance().getJsonStrategy();
 
@@ -235,11 +217,6 @@ public class WbServerGUIController extends Application {
         }
     }
 
-    @FXML
-    private void controlGoBack() throws IOException {
-        this.showCurrentWbView();
-    }
-
     private boolean checkIsEmpty(TextField field) {
 
         String input = field.getText();
@@ -249,12 +226,6 @@ public class WbServerGUIController extends Application {
         if (input.isEmpty()) field.setStyle(WARNINGCSS);
 
         return true;
-    }
-
-    @FXML
-    private void controlScrollPane() {
-//        this.loggerArea.appendText(msg + "\n");
-        this.loggerArea.appendText("This is a test \n");
     }
 
     private boolean checkIsEmpty(TextField field1, TextField field2) {

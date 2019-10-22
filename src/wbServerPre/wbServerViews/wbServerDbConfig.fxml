@@ -32,7 +32,7 @@
                                 </ImageView>
                             </left>
                             <right>
-                                <TextField fx:id="IPField" prefHeight="31.0" prefWidth="280.0" promptText="IP Address" BorderPane.alignment="CENTER" />
+                                <TextField fx:id="IPField" prefHeight="31.0" prefWidth="280.0" promptText="Database IP Address" BorderPane.alignment="CENTER" />
                             </right>
                         </BorderPane>
                     </top>
@@ -46,7 +46,7 @@
                                 </ImageView>
                             </left>
                             <right>
-                                <TextField fx:id="dbPortField" prefHeight="31.0" prefWidth="280.0" promptText="Port Number" BorderPane.alignment="CENTER" />
+                                <TextField fx:id="dbPortField" prefHeight="31.0" prefWidth="280.0" promptText="Database Port Number" BorderPane.alignment="CENTER" />
                             </right>
                         </BorderPane>
                     </bottom>

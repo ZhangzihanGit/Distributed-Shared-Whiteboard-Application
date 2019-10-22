@@ -1,11 +1,7 @@
 import dataServerApp.DataServerApplication;
 import dataServerApp.DataServerFacade;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.Enumeration;
 
 public class runDataServer {
     public static void main(String[] args) {

@@ -443,6 +443,11 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
+    private void controlGoBack() throws IOException {
+        this.showLoginView();
+    }
+
+    @FXML
     private void handleVisitor() {
         if (this.visitorCheckBox.isSelected()) {
             checkBoxField.setStyle(REMOVECSS);

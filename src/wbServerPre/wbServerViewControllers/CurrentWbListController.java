@@ -16,8 +16,6 @@ public class CurrentWbListController {
     private static CurrentWbListController instance = null;
     private final String WARNINGCSS = "-fx-border-color: red;";
     private final String REMOVECSS = "-fx-border-color: none;";
-//    @FXML
-//    private ListView<String> listView;
     @FXML private Pane listViewContainer;
     public static ListView<String> listView;
 
@@ -32,7 +30,7 @@ public class CurrentWbListController {
 
         listView = new ListView<>();
         listView.setPrefSize(318, 169);
-        this.listViewContainer.getChildren().add(listView);
+        listViewContainer.getChildren().add(listView);
 
         this.renderInitWb();
     }
@@ -45,13 +43,10 @@ public class CurrentWbListController {
         listView.setStyle(REMOVECSS);
 
         if (!isEmpty) {
-//            this.showMonitorView(selectedWbName);
-//            WbServerMonitorController.getInstance().showMonitorView(selectedWbName);
             WbServerGUIController.getInstance().showMonitorView();
         } else {
             listView.setStyle(WARNINGCSS);
         }
-
     }
 
     private void renderInitWb() {
@@ -60,14 +55,8 @@ public class CurrentWbListController {
 
         String[] list = availableWbs.split(",");
 
-        System.out.println(Arrays.toString(list));
-        for(int i = 0; i < list.length; i++) {
-            System.out.println(list[i]);
-        }
-
-        if (list.length > 0) {
+        if (list.length > 1) {
             ObservableList<String> listContainer = FXCollections.observableArrayList(Arrays.asList(list));
-//        ObservableList<String> listContainer = FXCollections.observableArrayList("apple", "orange", "lemon");
             listView.setItems(listContainer);
         }
     }
