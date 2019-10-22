@@ -441,6 +441,7 @@ public class whiteBoardController {
                 try {
                     fw = new FileWriter(saveFilePath, false);
                     fw.write(actionRecord);
+                    logger.info("Action record: "+actionRecord);
                     fw.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -486,8 +487,9 @@ public class whiteBoardController {
     }
 
     public void updateWhiteBoard(String msg){
-        if(clientType.equals("manger")){
+        if(clientType.equals("manager")){
             actionRecord += msg + "#";
+            logger.info("Action record 222: "+actionRecord);
         }
 
             GraphicsContext gc = canvas.getGraphicsContext2D();
