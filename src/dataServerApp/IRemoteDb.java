@@ -34,7 +34,7 @@ public interface IRemoteDb extends Remote {
      * @return saving feedback
      * @throws RemoteException
      */
-    public String saveWb(String username, String wbContent) throws RemoteException;
+//    public String saveWb(String username, String wbContent) throws RemoteException;
 
     /**
      * load all whiteboard files saved by specific user
@@ -42,7 +42,6 @@ public interface IRemoteDb extends Remote {
      * @return all whiteboard files
      * @throws RemoteException
      */
-    public String loadAllWb(String username) throws RemoteException;
+//    public String loadAllWb(String username) throws RemoteException;
 
-    public UserInformation transferInformation(String username, String password) throws RemoteException;
 }
