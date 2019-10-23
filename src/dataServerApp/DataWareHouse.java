@@ -36,13 +36,14 @@ public class DataWareHouse {
         this.absolutePath = Paths.get(".").toAbsolutePath().normalize();
         this.storagePath = Paths.get(this.absolutePath.toString()+"/storage");
         initialiseStorage();
+        loadDb();
 //        iteratePassbook();
     }
     private void initialiseStorage(){
         if(!Files.exists(storagePath)){
             createDirectory();
         }
-        loadDb();
+//        loadDb();
     }
     public HashMap<String, String[]> getLocalPassbook(){
         return this.localPassbook;
@@ -69,29 +70,35 @@ public class DataWareHouse {
             String[] hashAndSalt = new String[2];
             hashAndSalt[0] = line.split(";")[1];
             hashAndSalt[1] = line.split(";")[2];
+//            logger.info("Username loaded is: "+line.split(";")[0]);
             this.localPassbook.put(line.split(";")[0],hashAndSalt);
+//            logger.info("First line read: "+hashAndSalt[0] + " "+hashAndSalt[1]);
             while(line!=null){
                 if(line.isEmpty()){
                     line=br.readLine();
                     continue;
                 }
                 // [0] is hashpass
-                hashAndSalt[0] = line.split(";")[1];
+                String[] temp = new String[2];
+                temp[0] = line.split(";")[1];
                 // [1] is salt
-                hashAndSalt[1] = line.split(";")[2];
-                this.localPassbook.put(line.split(";")[0],hashAndSalt);
+                temp[1] = line.split(";")[2];
+//                logger.info("Username loaded is: "+line.split(";")[0]);
+                this.localPassbook.put(line.split(";")[0],temp);
+//                logger.info("Iterate line read: "+line.split(";")[1] + " "+line.split(";")[2]);
                 line = br.readLine();
             }
+            iteratePassbook();
         }catch (IOException e){
             logger.fatal("Error loading the local storage file. ");
             e.printStackTrace();
         }
     }
     public void iteratePassbook(){
-        Iterator it = this.localPassbook.entrySet().iterator();
-        while (it.hasNext()){
-            Map.Entry pair= (Map.Entry)it.next();
-            logger.info(pair.getKey().toString() + "  "+pair.getValue().toString());
+        for (Map.Entry<String, String[]> entry:this.localPassbook.entrySet()){
+            String key = entry.getKey();
+            String[] values = entry.getValue();
+//            logger.info("This is the username: "+key +" This is the passsalt: "+values[0] + " This is the salt: "+ values[1]);
         }
     }
 
