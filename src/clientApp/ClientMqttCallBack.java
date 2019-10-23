@@ -52,8 +52,13 @@ public class ClientMqttCallBack implements MqttCallback {
                 // msg contains the string version of updated whiteboard
                 Platform.runLater(() -> {
                     System.out.println(content);
-                    whiteBoardController.getInstance().
-                            updateWhiteBoard(content);
+                    try {
+                        whiteBoardController.getInstance().
+                                updateWhiteBoard(content);
+                    } catch (IOException e) {
+                        logger.error(e.toString());
+                        logger.error("Unable to call whiteboard update function");
+                    }
                 });
             }
         }
