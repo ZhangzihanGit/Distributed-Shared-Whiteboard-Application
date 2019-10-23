@@ -533,12 +533,12 @@ public class whiteBoardController {
 
     }
 
-    public static String encodeToString(WritableImage image, String type) {
+    private static String encodeToString(WritableImage image, String type) {
         String imageString = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         try {
-            ImageIO.write((RenderedImage) image, type, bos);
+            ImageIO.write( SwingFXUtils.fromFXImage( image, null ), type, bos);
             byte[] imageBytes = bos.toByteArray();
 
             BASE64Encoder encoder = new BASE64Encoder();
