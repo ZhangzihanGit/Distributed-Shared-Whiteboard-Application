@@ -1,4 +1,5 @@
 import dataServerApp.DataServerApplication;
+import dataServerApp.DataServerCmdValue;
 import dataServerApp.DataServerFacade;
 
 import java.net.SocketException;
@@ -7,28 +8,24 @@ public class runDataServer {
     public static void main(String[] args) {
         // log setting
         System.setProperty("my.log", "resources/log/dataServer.log");
-        // rmi setting
-        System.setProperty("java.rmi.server.hostname", args[0]);
         // security settings
         System.setProperty("java.security.policy", "file:./security.policy");
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
         }
 
-        DataServerFacade facade = DataServerFacade.getInstance();
-        facade.setupRemoteApplication(); // Start DB server. Meanwhile remote object is created.
+        DataServerCmdValue cmdValidator = new DataServerCmdValue(args);
+        if (cmdValidator.isErrorFree()) {
+            // rmi setting
+            System.setProperty("java.rmi.server.hostname", cmdValidator.getServerIP());
 
-        DataServerApplication application = facade.getDataServer();
+            DataServerFacade facade = DataServerFacade.getInstance();
+            facade.setupRemoteApplication(); // Start DB server. Meanwhile remote object is created.
 
-        try {
-            application.setAddress(args[1]);
-        } catch (Exception e) {
-            System.err.println(e.toString());
-            System.err.println("Invalid command line argument, Usage: ");
-            System.err.println("java -jar dataServer <portNum>");
-            application.exit();
+            DataServerApplication application = facade.getDataServer();
+
+            application.setAddress(cmdValidator.getServerPort());
+            application.runDataServer();
         }
-
-        application.runDataServer();
     }
 }
