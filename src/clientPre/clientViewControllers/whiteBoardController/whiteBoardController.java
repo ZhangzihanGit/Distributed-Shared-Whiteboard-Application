@@ -402,7 +402,7 @@ public class whiteBoardController {
                 }
             }
 
-        saveFilePath = filePath;
+            saveFilePath = filePath;
         }
     }
 
@@ -492,91 +492,91 @@ public class whiteBoardController {
             logger.info("Action record 222: "+actionRecord);
         }
 
-            GraphicsContext gc = canvas.getGraphicsContext2D();
-            System.out.println("GC IS: "+gc +"  "+"Canvas is:  "+ canvas);
-            Paint originalColor = gc.getStroke();
-            double originLineWidth = gc.getLineWidth();
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        System.out.println("GC IS: "+gc +"  "+"Canvas is:  "+ canvas);
+        Paint originalColor = gc.getStroke();
+        double originLineWidth = gc.getLineWidth();
 
-            ArrayList<String> inst = new ArrayList<>(Arrays.asList(msg.split(",")));
-            System.out.println("Message@@@@@@ is :"+msg);
-            if(inst.get(0).equals("newWB")){
-                double h = canvas.getHeight();
-                double w = canvas.getWidth();
-                gc.clearRect(0, 0, w, h);
-                saveFilePath = "";
+        ArrayList<String> inst = new ArrayList<>(Arrays.asList(msg.split(",")));
+        System.out.println("Message@@@@@@ is :"+msg);
+        if(inst.get(0).equals("newWB")){
+            double h = canvas.getHeight();
+            double w = canvas.getWidth();
+            gc.clearRect(0, 0, w, h);
+            saveFilePath = "";
+        }
+        else{
+            Color c = Color.web(inst.get(0),1.0);
+            gc.setStroke(c);
+            gc.setLineWidth(Double.parseDouble(inst.get(1)));
+            if(inst.get(2).equals("oval")){
+
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                double width = Double.parseDouble(inst.get(5));
+                double height = Double.parseDouble(inst.get(6));
+                System.out.println("Enter oval drawing:  "+x +y+width+width);
+                gc.strokeOval(x,y,width,height);
             }
-            else{
-                Color c = Color.web(inst.get(0),1.0);
-                gc.setStroke(c);
-                gc.setLineWidth(Double.parseDouble(inst.get(1)));
-                if(inst.get(2).equals("oval")){
+            else if(inst.get(2).equals("rectangle")){
 
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    double width = Double.parseDouble(inst.get(5));
-                    double height = Double.parseDouble(inst.get(6));
-                    System.out.println("Enter oval drawing:  "+x +y+width+width);
-                    gc.strokeOval(x,y,width,height);
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                double width = Double.parseDouble(inst.get(5));
+                double height = Double.parseDouble(inst.get(6));
+                System.out.println("Enter oval drawing:  "+x +y+width+width);
+                gc.strokeRect(x,y,width,height);
+            }
+            else if (inst.get(2).equals("circle")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                double width = Double.parseDouble(inst.get(5));
+                double height = Double.parseDouble(inst.get(6));
+                System.out.println("Enter oval drawing:  "+x +y+width+width);
+                gc.strokeOval(x,y,width,height);
+            }
+            else if(inst.get(2).equals("draw")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                if(inst.get(5).equals("0")){
+                    gc.beginPath();
+                    gc.lineTo(x, y);
+                    gc.stroke();
                 }
-                else if(inst.get(2).equals("rectangle")){
-
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    double width = Double.parseDouble(inst.get(5));
-                    double height = Double.parseDouble(inst.get(6));
-                    System.out.println("Enter oval drawing:  "+x +y+width+width);
-                    gc.strokeRect(x,y,width,height);
-                }
-                else if (inst.get(2).equals("circle")){
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    double width = Double.parseDouble(inst.get(5));
-                    double height = Double.parseDouble(inst.get(6));
-                    System.out.println("Enter oval drawing:  "+x +y+width+width);
-                    gc.strokeOval(x,y,width,height);
-                }
-                else if(inst.get(2).equals("draw")){
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    if(inst.get(5).equals("0")){
-                        gc.beginPath();
-                        gc.lineTo(x, y);
-                        gc.stroke();
-                    }
-                    if(inst.get(5).equals("1")){
-                        gc.lineTo(x, y);
-                        gc.stroke();
-                    }
-                }
-                else if(inst.get(2).equals("text")){
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    String content = inst.get(5);
-                    gc.strokeText(content,x,y);
-                }
-                else if(inst.get(2).equals("line")){
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    if(inst.get(5).equals("0")){
-                        gc.beginPath();
-                        gc.lineTo(x, y);
-                        gc.stroke();
-                    }
-                    if(inst.get(5).equals("1")){
-                        gc.lineTo(x,y);
-                        gc.stroke();
-                    }
-                }
-                else if(inst.get(2).equals("erase")){
-                    double x = Double.parseDouble(inst.get(3));
-                    double y = Double.parseDouble(inst.get(4));
-                    gc.clearRect(x,y,Double.parseDouble(inst.get(5)),Double.parseDouble(inst.get(5)));
+                if(inst.get(5).equals("1")){
+                    gc.lineTo(x, y);
+                    gc.stroke();
                 }
             }
+            else if(inst.get(2).equals("text")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                String content = inst.get(5);
+                gc.strokeText(content,x,y);
+            }
+            else if(inst.get(2).equals("line")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                if(inst.get(5).equals("0")){
+                    gc.beginPath();
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
+                if(inst.get(5).equals("1")){
+                    gc.lineTo(x,y);
+                    gc.stroke();
+                }
+            }
+            else if(inst.get(2).equals("erase")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                gc.clearRect(x,y,Double.parseDouble(inst.get(5)),Double.parseDouble(inst.get(5)));
+            }
+        }
 
 
-            gc.setStroke(originalColor);
-            gc.setLineWidth(originLineWidth);
+        gc.setStroke(originalColor);
+        gc.setLineWidth(originLineWidth);
 
     }
 
