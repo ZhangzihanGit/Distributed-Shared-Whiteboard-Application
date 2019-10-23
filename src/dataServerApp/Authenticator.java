@@ -130,17 +130,13 @@ class Authenticator {
         object.put("salt",salt);
         return object;
     }
+
     // This method is for testing purpose.
     public void iteratePassbook(){
         Iterator it = passbook.entrySet().iterator();
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             logger.info(pair.getKey().toString()+pair.getValue().toString());
-//            String result = (String)pair.getValue();
-            System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue().toString());
         }
     }
-//    public HashMap<String, String> getPassbook(){
-//        return passbook;
-//    }
 }

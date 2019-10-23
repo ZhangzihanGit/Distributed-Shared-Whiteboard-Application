@@ -38,7 +38,7 @@ public class ClientMqttCallBack implements MqttCallback {
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String msg = new String(mqttMessage.getPayload());
         logger.info("Message received: " + s + ", " + msg);
-        System.out.println(msg);
+
         if (s.contains(JOIN_PANEL)) {
             this.joinPanelHandle(s, msg);
         }
@@ -51,7 +51,6 @@ public class ClientMqttCallBack implements MqttCallback {
             if (user.equals("") || user.equals(ClientAppFacade.getInstance().getUsername())) {
                 // msg contains the string version of updated whiteboard
                 Platform.runLater(() -> {
-                    System.out.println(content);
                     try {
                         whiteBoardController.getInstance().
                                 updateWhiteBoard(content);

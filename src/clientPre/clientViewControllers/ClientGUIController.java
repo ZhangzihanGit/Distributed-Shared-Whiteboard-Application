@@ -235,19 +235,14 @@ public class ClientGUIController extends Application {
 
     @FXML
     public void showJoinDeniedView(String msg) throws IOException {
-        // TODO: Bug need to fix: selectedWb is empty, cannot show the wb name
-        System.out.println(msg);
         String selectedWb = ClientAppFacade.getInstance().getWbName();
-        System.out.println("===: " + selectedWb);
+
         this.showErrorView("joinDenied", msg, selectedWb);
         this.showChooseIdentityView();
     }
 
     @FXML
     public void showJoinRequestView(String username) {
-        // TODO: Bug need to fix: if agree, visitor cannot move to whiteboard page
-        System.out.println("User: " + username + " request join the whiteboard");
-
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         ButtonType agreeBtn = new ButtonType("agree");
         ButtonType refuseBtn = new ButtonType("refuse");
@@ -278,8 +273,6 @@ public class ClientGUIController extends Application {
 
     @FXML
     public void showCloseView(String msg) throws IOException {
-        // TODO: Finish this function to notify user that the whiteboard will closed for him for reason described in msg
-        System.out.println(msg);
         this.showErrorView("closed", msg, ClientAppFacade.getInstance().getWbName());
         ClientAppFacade.getInstance().setWbName("");
 
@@ -290,7 +283,6 @@ public class ClientGUIController extends Application {
 
     @FXML
     public void showWhiteBoardView() throws IOException {
-        // TODO: Fix: When calling this function outside of this class, not working
         this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));
         this.primaryStage.setTitle(FxmlView.CANVAS.getTitle());
         baseView();
@@ -429,7 +421,6 @@ public class ClientGUIController extends Application {
             ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
 
             clientApp.subscribeTopic(wbName, ClientAppFacade.UserTopics, ClientAppFacade.UserQos);
-            System.out.println("manager selected");
             String createRespond = clientApp.createWb(wbName);
 
             // if create whiteboard successfully
@@ -442,7 +433,6 @@ public class ClientGUIController extends Application {
                 // Pop out window to indicate there is one whiteboard being created (or already has manager)
                 clientApp.unsubscribeTopic(wbName, ClientAppFacade.UserTopics);
                 this.showErrorView("managerCreate", jsonStrategy.getMsg(createRespond), wbName);
-                System.out.println(jsonStrategy.getMsg(createRespond));
             }
         }
     }

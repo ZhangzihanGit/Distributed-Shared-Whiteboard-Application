@@ -164,7 +164,7 @@ public class whiteBoardController {
 
     private void initDrawMethods() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        System.out.println("GC IS: " + gc + "  " + "Canvas is:  " + canvas);
+
         canvas.setOnMousePressed(e -> {
             double x = e.getX();
             double y = e.getY();
@@ -332,7 +332,6 @@ public class whiteBoardController {
                     } catch (IOException ex) {
                         AlertBox box = new AlertBox();
                         box.display("information", "Saving failed!");
-                        System.out.println("fail!" + ex.getMessage());
                     }
                 }
 
@@ -369,7 +368,6 @@ public class whiteBoardController {
                 } catch (IOException ex) {
                     AlertBox box = new AlertBox();
                     box.display("information", "Saving failed!");
-                    System.out.println("fail!" + ex.getMessage());
                 }
             }
 
@@ -418,7 +416,7 @@ public class whiteBoardController {
         Paint originalColor = gc.getStroke();
         double originLineWidth = gc.getLineWidth();
         ArrayList<String> inst = new ArrayList<>(Arrays.asList(msg.split(",")));
-        System.out.println("Message@@@@@@ is :" + msg);
+
         if (inst.get(0).equals("newWB")) {
             double h = canvas.getHeight();
             double w = canvas.getWidth();
@@ -444,17 +442,17 @@ public class whiteBoardController {
             if (inst.get(2).equals("oval")) {
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
-                System.out.println("Enter oval drawing:  " + x + y + width + width);
+
                 gc.strokeOval(x, y, width, height);
             } else if (inst.get(2).equals("rectangle")) {
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
-                System.out.println("Enter oval drawing:  " + x + y + width + width);
+
                 gc.strokeRect(x, y, width, height);
             } else if (inst.get(2).equals("circle")) {
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
-                System.out.println("Enter oval drawing:  " + x + y + width + width);
+
                 gc.strokeOval(x, y, width, height);
             } else if (inst.get(2).equals("draw")) {
                 double x2 = Double.parseDouble(inst.get(5));
