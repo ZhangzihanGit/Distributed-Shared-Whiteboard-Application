@@ -101,6 +101,7 @@ class Authenticator {
             // Successfully authenticated
             else {
                 if(!loggedInUser.contains(username)){
+                    loggedInUser.add(username);
                     return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
                 }
                 else {
