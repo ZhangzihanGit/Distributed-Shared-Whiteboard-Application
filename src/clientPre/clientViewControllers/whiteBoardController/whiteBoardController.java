@@ -50,9 +50,6 @@ public class whiteBoardController {
     }
 
     private static Canvas canvas = new Canvas(903, 511);
-    private static String actionRecord = "";
-
-
     @FXML
     private ColorPicker colorPicker;
     @FXML
@@ -85,9 +82,6 @@ public class whiteBoardController {
     private double[] lineCoordinate = {0,0};
 
     private void sendMsgAndRecordIt(String msg){
-        if(clientType.equals("manager")){
-            actionRecord += (msg + "#");
-        }
         ClientAppFacade.getInstance().updateWb(msg, "");
     }
 
@@ -340,7 +334,6 @@ public class whiteBoardController {
         saveFilePath = "";
         String msg = "newWB";
         sendMsgAndRecordIt(msg);
-        actionRecord = "";
     }
 
     public void save(){
@@ -362,25 +355,7 @@ public class whiteBoardController {
                     System.out.println("fail!" + ex.getMessage());
                 }
             }
-            else{
-                FileWriter fw = null;
-                try {
-                    fw = new FileWriter(saveFilePath, false);
-                    fw.write(actionRecord);
-                    fw.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (fw != null) {
-                        try {
-                            fw.close();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
+
 
         }
         else{
@@ -423,9 +398,6 @@ public class whiteBoardController {
     }
 
     public void updateWhiteBoard(String msg) throws IOException {
-        if(clientType.equals("manager")){
-            actionRecord += msg + "#";
-        }
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Paint originalColor = gc.getStroke();
         double originLineWidth = gc.getLineWidth();

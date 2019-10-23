@@ -3,6 +3,7 @@ package dataServerApp;
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -28,10 +29,12 @@ class Authenticator {
     // private Singleton instance.
     private static Authenticator authenticator = null;
     private Cipher cipher;
+    private ArrayList loggedInUser = null;
     // Authenticator should be a singleton, since passbook should be kept unique.
     private Authenticator(){
         this.passbook = new HashMap<String, String[]>();
         this.cipher = Cipher.getInstance();
+        this.loggedInUser = new ArrayList<String>();
         logger.info("Cipher created: "+this.cipher);
     }
     public static Authenticator getInstance(){
@@ -72,6 +75,7 @@ class Authenticator {
             String salt = saltAndPasssalt[1];
             String passhash = saltAndPasssalt[0];
             passbook.put(username,saltAndPasssalt);
+            loggedInUser.add(username);
             logger.info("Successfully registered. Password has been encoded. ");
             return jsonParse(SUCCESS_HEADER, USER_REGISTER_SUCCESS,passhash,salt);
         }
@@ -96,7 +100,12 @@ class Authenticator {
             }
             // Successfully authenticated
             else {
-                return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
+                if(!loggedInUser.contains(username)){
+                    return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
+                }
+                else {
+                    return jsonParse(FAIL_HEADER,AUTHENTICATION_FAILED,"","");
+                }
             }
         }
         else {
