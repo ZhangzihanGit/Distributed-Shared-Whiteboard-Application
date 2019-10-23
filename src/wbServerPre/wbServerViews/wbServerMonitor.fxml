@@ -20,7 +20,6 @@
                         <Blend />
                     </effect>
                 </Label>
-            <Button layoutX="163.0" layoutY="334.0" mnemonicParsing="false" onAction="#controlGoBack" prefHeight="31.0" prefWidth="293.0" styleClass="login-btn" text="back" />
             <ScrollPane fx:id="scrollPane" layoutX="19.0" layoutY="69.0" prefHeight="253.0" prefWidth="579.0" />
             </children>
         </AnchorPane>

@@ -4,8 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 
-import java.io.IOException;
-
 public class CurrentWbMonitorController {
 
     public static CurrentWbMonitorController instance = null;
@@ -23,6 +21,7 @@ public class CurrentWbMonitorController {
 
         loggerArea = new TextArea();
         loggerArea.setPrefSize(575, 256);
+        loggerArea.setEditable(false);
         this.scrollPane.setContent(loggerArea);
     }
 
@@ -31,8 +30,8 @@ public class CurrentWbMonitorController {
         loggerArea.appendText(logger + "\n");
     }
 
-    @FXML
-    private void controlGoBack() throws IOException {
-        WbServerGUIController.getInstance().showCurrentWbView();
-    }
+//    @FXML
+//    private void controlGoBack() throws IOException {
+//        WbServerGUIController.getInstance().showCurrentWbView();
+//    }
 }
