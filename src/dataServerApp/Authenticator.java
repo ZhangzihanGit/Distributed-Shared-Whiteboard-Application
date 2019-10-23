@@ -35,7 +35,6 @@ class Authenticator {
         this.passbook = new HashMap<String, String[]>();
         this.cipher = Cipher.getInstance();
         this.loggedInUser = new ArrayList<String>();
-        logger.info("Cipher created: "+this.cipher);
     }
     public static Authenticator getInstance(){
         if (authenticator == null){
@@ -48,9 +47,6 @@ class Authenticator {
         temp.keySet().removeAll(this.passbook.keySet());
         this.passbook.putAll(temp);
 //        this.passbook = localStorage;
-    }
-    private String encryptPassword(String password){
-        return cipher.encrypt(password);
     }
 
     /**
@@ -97,7 +93,6 @@ class Authenticator {
         if(passbook.containsKey(username)){
             String passsalt = (passbook.get(username))[0];
             String salt = (passbook.get(username))[1];
-            logger.info("PASSSALT is: "+passsalt+"SALT IS: "+salt);
             if(!cipher.isExpectedPassword(password,salt,passsalt)){
                 logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
                 return  jsonParse(FAIL_HEADER, AUTHENTICATION_FAILED,"","");
