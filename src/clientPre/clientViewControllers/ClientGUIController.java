@@ -275,8 +275,8 @@ public class ClientGUIController extends Application {
     public void showCloseView(String msg) throws IOException {
         // TODO: Finish this function to notify user that the whiteboard will closed for him for reason described in msg
         System.out.println(msg);
+        this.showErrorView("closed", msg, ClientAppFacade.getInstance().getWbName());
         ClientAppFacade.getInstance().setWbName("");
-        this.showErrorView("closed", msg, "");
 
         whiteBoardController.getInstance().newCanvas();
         whiteBoardController.getInstance().clearTextArea();
