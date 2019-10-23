@@ -114,7 +114,7 @@ public class Cipher {
         PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH*2);
         Arrays.fill(password.toCharArray(),Character.MIN_VALUE);
         try{
-            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             return skf.generateSecret(spec).getEncoded();
         }catch (Exception e){
             e.printStackTrace();
