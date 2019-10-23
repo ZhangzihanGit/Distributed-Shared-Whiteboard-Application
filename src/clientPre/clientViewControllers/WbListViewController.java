@@ -32,19 +32,16 @@ public class WbListViewController {
         boolean isEmpty = selectedWbName == null || selectedWbName.isEmpty();
 
         listView.setStyle(REMOVECSS);
-        System.out.println("selected: " + selectedWbName);
 
         if (!isEmpty) {
             String joinRespond = clientApp.joinWb(selectedWbName);
 
             // receive msg from server to know if join successfully
             if (jsonStrategy.getHeader(joinRespond)) {
-                System.out.println("join success");
                 clientApp.subscribeTopic(selectedWbName, ClientAppFacade.nonUserTopics, ClientAppFacade.nonUserQos);
             } else {
                 // Pop out window to indicate there is no whiteboard being created yet (therefore can not join)
                 clientGUI.showErrorView("visitorJoin", jsonStrategy.getMsg(joinRespond), selectedWbName);
-                System.out.println(jsonStrategy.getMsg(joinRespond));
             }
         } else {
             listView.setStyle(WARNINGCSS);
