@@ -111,7 +111,7 @@ public class Cipher {
     }
 
     private byte[] hash(String password, String salt){
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH);
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH*2);
         Arrays.fill(password.toCharArray(),Character.MIN_VALUE);
         try{
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
