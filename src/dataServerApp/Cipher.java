@@ -47,6 +47,7 @@ public class Cipher {
 
     private String decodeToString(byte[] input){
         Base64.Encoder encoder = Base64.getEncoder();
+        logger.info("New generated salt is: "+ encoder.encodeToString(input));
         return encoder.encodeToString(input);
     }
 
@@ -94,6 +95,7 @@ public class Cipher {
 
         String decodeString = decodeToString(pwdHash);
         if(!decodeString.equals(expectHash)){
+            logger.info("@@@@@@@@@@@ / "+decodeString + " @@@@@@@@/"+expectHash);
             return false;
         }
 //        if (pwdHash.length != expectHash.getBytes().length) {

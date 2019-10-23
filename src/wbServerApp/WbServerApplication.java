@@ -238,7 +238,9 @@ public class WbServerApplication {
                 String manager = wb.getManager();
 
                 logger.info(username + " request to join whiteboard: " + wbName);
-                CurrentWbMonitorController.getInstance().updateLogger(username + " request to join whiteboard: " + wbName);
+                Platform.runLater(() -> {
+                    CurrentWbMonitorController.getInstance().updateLogger(username + " request to join whiteboard: " + wbName);
+                });
 
                 String respond = json.packRespond(true, username, "joinRequest", manager);
                 factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/general", respond, false);
@@ -272,16 +274,21 @@ public class WbServerApplication {
                     respond = json.packRespond(true, "", "", username);
 
                     logger.info(wbName + " manager approve the join request from: " + username);
-                    CurrentWbMonitorController.getInstance().updateLogger(wbName + " manager approve the join request from: "
-                            + username);
+                    Platform.runLater(() -> {
+                        CurrentWbMonitorController.getInstance().updateLogger(wbName + " manager approve the join request from: "
+                                + username);
+                    });
+
                     break;
                 }
             }
         }
         else {
             logger.info(wbName + " manager refuse the join request from: " + username);
-            CurrentWbMonitorController.getInstance().updateLogger(wbName + " manager refuse the join request from: "
-                    + username);
+            Platform.runLater(() -> {
+                CurrentWbMonitorController.getInstance().updateLogger(wbName + " manager refuse the join request from: "
+                        + username);
+            });
         }
 
         factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/join", respond, false);
@@ -326,7 +333,9 @@ public class WbServerApplication {
                             "close", "");
 
                     logger.info("Manager close the whiteboard: " + wbName);
-                    CurrentWbMonitorController.getInstance().updateLogger("Manager close the whiteboard: " + wbName);
+                    Platform.runLater(() -> {
+                        CurrentWbMonitorController.getInstance().updateLogger("Manager close the whiteboard: " + wbName);
+                    });
 
                     factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond, false);
                     factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", "", true);
@@ -334,8 +343,10 @@ public class WbServerApplication {
                 // visitor close the whiteboard, update the user list
                 else {
                     logger.info("User: " + username + " quit from the whiteboard: " + wbName);
-                    CurrentWbMonitorController.getInstance().updateLogger("User: " + username
-                            + " quit from the whiteboard: " + wbName);
+                    Platform.runLater(() -> {
+                        CurrentWbMonitorController.getInstance().updateLogger("User: " + username
+                                + " quit from the whiteboard: " + wbName);
+                    });
 
                     wb.removeUser(username);
                     String users = wb.getAllUsers();
@@ -366,8 +377,10 @@ public class WbServerApplication {
                 users = wb.getAllUsers();
 
                 logger.info("Manager kick user " + visitor + " out of the whiteboard: " + wbName);
-                CurrentWbMonitorController.getInstance().updateLogger("Manager kick user " + visitor
-                        + " out of the whiteboard: " + wbName);
+                Platform.runLater(() -> {
+                    CurrentWbMonitorController.getInstance().updateLogger("Manager kick user " + visitor
+                            + " out of the whiteboard: " + wbName);
+                });
 
                 String respond = factory.getJsonStrategy().packRespond(true, "Manager remove you from the group",
                         "close", visitor);
@@ -392,7 +405,9 @@ public class WbServerApplication {
      */
     public synchronized void updateWb(String wbName, String username, String wb, String receiver) {
         logger.info(wbName + " whiteboard update of drawing: " + wb);
-        CurrentWbMonitorController.getInstance().updateLogger(wbName + " whiteboard update of drawing: " + wb);
+        Platform.runLater(() -> {
+            CurrentWbMonitorController.getInstance().updateLogger(wbName + " whiteboard update of drawing: " + wb);
+        });
 
         String msg = WbServerDataStrategyFactory.getInstance().getJsonStrategy().packRespond(true, wb, "", receiver);
 
@@ -409,7 +424,9 @@ public class WbServerApplication {
      */
     public synchronized void sendMsg(String wbName, String username, String msg, String time) {
         logger.info(wbName + " whiteboard update of message: " + msg);
-        CurrentWbMonitorController.getInstance().updateLogger(wbName + " whiteboard update of message: " + msg);
+        Platform.runLater(() -> {
+            CurrentWbMonitorController.getInstance().updateLogger(wbName + " whiteboard update of message: " + msg);
+        });
 
         WbServerDataStrategyFactory.getInstance().getMqttPublish().publish(this.mqttPublisher,
                 wbName + "/message", time+ " : "+ "From: "+username+" : "+msg, false);

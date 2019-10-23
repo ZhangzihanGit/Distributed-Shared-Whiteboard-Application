@@ -92,13 +92,19 @@ public class DataServerApplication {
         if(message.get("header").equals("Success")){
             String encryptedPassword = message.get("encodedhash").toString();
             String salt = message.get("salt").toString();
-            logger.info("Now write to the server:");
+//            logger.info("Now write to the server:");
             dataWareHouse.writeDb(username,encryptedPassword,salt);
         }
+        authenticator.syncStorage(dataWareHouse.getLocalPassbook());
         return message.toJSONString();
     }
 
     public String checkUser(String username, String password){
+        authenticator.syncStorage(dataWareHouse.getLocalPassbook());
+//        logger.info("ITERATE !!!!");
+        dataWareHouse.iteratePassbook();
+//        logger.info("USer name requested to login: "+username);
+        iteratePassBook();
         return authenticator.authenticate(username, password).toJSONString();
     }
 

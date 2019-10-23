@@ -44,7 +44,10 @@ class Authenticator {
         return authenticator;
     }
     public void syncStorage(HashMap<String, String[]> localStorage){
-        this.passbook = localStorage;
+        HashMap <String, String[]>temp = new HashMap(localStorage);
+        temp.keySet().removeAll(this.passbook.keySet());
+        this.passbook.putAll(temp);
+//        this.passbook = localStorage;
     }
     private String encryptPassword(String password){
         return cipher.encrypt(password);
@@ -90,9 +93,10 @@ class Authenticator {
      */
     public JSONObject authenticate(String username, String password){
         // If passbook not contain the user name
+
         if(passbook.containsKey(username)){
-            String passsalt = passbook.get(username)[0];
-            String salt = passbook.get(username)[1];
+            String passsalt = (passbook.get(username))[0];
+            String salt = (passbook.get(username))[1];
             logger.info("PASSSALT is: "+passsalt+"SALT IS: "+salt);
             if(!cipher.isExpectedPassword(password,salt,passsalt)){
                 logger.info("The password or the username entered are INCORRECT. Please check the username or password. ");
@@ -100,11 +104,13 @@ class Authenticator {
             }
             // Successfully authenticated
             else {
+                logger.info("Successfully : !!!!!");
                 if(!loggedInUser.contains(username)){
                     loggedInUser.add(username);
                     return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
                 }
                 else {
+                    logger.info("You shoudl not enter here. Duplicate user. ");
                     return jsonParse(FAIL_HEADER,AUTHENTICATION_FAILED,"","");
                 }
             }
@@ -130,8 +136,8 @@ class Authenticator {
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             logger.info(pair.getKey().toString()+pair.getValue().toString());
-
-            System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue() );
+//            String result = (String)pair.getValue();
+            System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue().toString());
         }
     }
 //    public HashMap<String, String> getPassbook(){
