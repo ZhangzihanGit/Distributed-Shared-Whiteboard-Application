@@ -22,20 +22,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
-import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
-
 
 public class whiteBoardController {
     private final static Logger logger= Logger.getLogger(whiteBoardController.class);
@@ -78,20 +76,82 @@ public class whiteBoardController {
 
     private double[] beginCoordinate = {0,0};
 
-    private double[] drawCoordinate = {0,0};
-
-    private double[] lineCoordinate = {0,0};
-
     private void sendMsgAndRecordIt(String msg){
         if(clientType.equals("manager")){
             actionRecord += (msg + "#");
         }
         ClientAppFacade.getInstance().updateWb(msg, "");
     }
+//    private void initSendMessage(){
+//
+//        messageRecord.setEditable(false);
+//        ArrayList<String> messages = new ArrayList<>();
+//        send.setOnAction(e->{
+//            messages.add(sendMessage.getText());
+//            String content[] = messages.toString().
+//                    replace("[", "").replace("]", "").split(",");
+//            String text = "";
+//            int i = 0;
+//            for(String s: content){
+//                i ++;
+//                if(i == content.length){
+//                    text += s;
+//                }
+//                else{
+//                    text += (s + "\n");
+//                }
+//
+//            }
+//            messageRecord.setText(text);
+//            sendMessage.clear();
+//        });
+//    }
 
     private void initLeftButtons(){
         GraphicsContext gc = canvas.getGraphicsContext2D();
         pane.setStyle("-fx-background-color: white");
+
+//        text.setOnMousePressed(e->{
+//            mode = "text";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm()));
+////            cursor.set(new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/text.png").toExternalForm())));
+//            canvas.setCursor(cursor);
+//        });
+//        pencil.setOnMousePressed(e->{
+//            mode = "draw";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/pencil.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        eraser.setOnMousePressed(e->{
+//            mode = "erase";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/eraser.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        line.setOnMousePressed(e->{
+//            mode = "line";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/line.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        circle.setOnMousePressed(e->{
+//            mode = "circle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/circle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//
+//        oval.setOnMousePressed(e->{
+//            mode = "oval";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/oval.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+//        rectangle.setOnMousePressed(e->{
+//            mode = "rectangle";
+//            ImageCursor cursor = new ImageCursor(new Image(getClass().getResource("../../../assets/imgs/rectangle.png").toExternalForm()));
+//            canvas.setCursor(cursor);
+//        });
+
         label.setText("1.0");
 
         colorPicker.setValue(Color.BLACK);
@@ -167,16 +227,14 @@ public class whiteBoardController {
             double x = e.getX();
             double y = e.getY();
             String msg = "";
-            if(mode.equals("draw")){
-                drawCoordinate[0] = x;
-                drawCoordinate[1] = y;
-            }
-            else if( mode.equals("line") ){
-                lineCoordinate[0] = x;
-                lineCoordinate[1] = y;
-//                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
-//                        + "," + y+ "," + 0;
-//                sendMsgAndRecordIt(msg);
+            if(mode.equals("draw") || mode.equals("line") ){
+//                gc.beginPath();
+//                gc.lineTo(x, y);
+//                gc.stroke();
+                // 5 components.
+                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
+                        + "," + y+ "," + 0;
+                sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("circle") || mode.equals("rectangle") || mode.equals("oval")){
                 beginCoordinate[0] = x;
@@ -207,10 +265,11 @@ public class whiteBoardController {
             double middleY = (originY + y)/2;
             String msg = "";
             if(mode.equals("line")){
-//                gc.lineTo(e.getX(), e.getY());
-//                gc.stroke();
-                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," + lineCoordinate[0] + ","
-                        + lineCoordinate[1] + "," +x + "," + y;
+                gc.lineTo(e.getX(), e.getY());
+                gc.stroke();
+
+                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
+                        + "," + y+ "," + 1;
                 sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("rectangle")){
@@ -238,14 +297,12 @@ public class whiteBoardController {
             double y = e.getY();
             String msg = "";
             if(mode.equals("draw")){
-                double x1 = drawCoordinate[0];
-                double y1 = drawCoordinate[1];
-                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x1
-                        + "," + y1+ "," + x + "," + y+ ",";
-                sendMsgAndRecordIt(msg);
 
-                drawCoordinate[0] = x;
-                drawCoordinate[0] = y;
+//                gc.lineTo(x, y);
+//                gc.stroke();
+                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
+                        + "," + y+ "," + 1;
+                sendMsgAndRecordIt(msg);
             }
             else if(mode.equals("erase")){
                 gc.clearRect(x, y, slider.getValue(), slider.getValue());
@@ -384,6 +441,7 @@ public class whiteBoardController {
                 try {
                     fw = new FileWriter(saveFilePath, false);
                     fw.write(actionRecord);
+                    logger.info("Action record: "+actionRecord);
                     fw.flush();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -405,32 +463,19 @@ public class whiteBoardController {
         }
     }
 
-    public void open() throws Exception {
+    public void open() throws IOException {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         System.out.println(canvas);
         OpenFrom openFrom= new OpenFrom();
         String filePath =  openFrom.display();
-//        if(!filePath.isEmpty()){
-//            String data = new String(Files.readAllBytes(Paths.get(filePath)));
-//            newCanvas();
-//            for(String msg :data.split("#")){
-//                ClientAppFacade.getInstance().updateWb(msg, "");
-//            }
-//            saveFilePath = filePath;
-//        }
         if(!filePath.isEmpty()){
-            String imagePath = "file:/" + filePath;
-            File f =  new File(imagePath);
-            String encodstring = encodeFileToBase64Binary(f);
-            ClientAppFacade.getInstance().updateWb("open"+","+encodstring,"");
+            String data = new String(Files.readAllBytes(Paths.get(filePath)));
+            gc.clearRect(0,0,canvas.getWidth(),canvas.getHeight());
+            for(String msg :data.split("#")){
+                ClientAppFacade.getInstance().updateWb(msg, "");
+            }
             saveFilePath = filePath;
         }
-    }
-
-    private static String encodeFileToBase64Binary(File file) throws Exception{
-        FileInputStream fileInputStreamReader = new FileInputStream(file);
-        byte[] bytes = new byte[(int)file.length()];
-        fileInputStreamReader.read(bytes);
-        return Base64.getEncoder().encodeToString(bytes);
     }
 
     public void close(){
@@ -441,13 +486,17 @@ public class whiteBoardController {
         StringAndButtonList.list.setAll(Arrays.asList(msg.split(",")));
     }
 
-    public void updateWhiteBoard(String msg) throws IOException {
+    public void updateWhiteBoard(String msg){
         if(clientType.equals("manager")){
             actionRecord += msg + "#";
+            logger.info("Action record 222: "+actionRecord);
         }
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        System.out.println("GC IS: "+gc +"  "+"Canvas is:  "+ canvas);
         Paint originalColor = gc.getStroke();
         double originLineWidth = gc.getLineWidth();
+
         ArrayList<String> inst = new ArrayList<>(Arrays.asList(msg.split(",")));
         System.out.println("Message@@@@@@ is :"+msg);
         if(inst.get(0).equals("newWB")){
@@ -456,57 +505,71 @@ public class whiteBoardController {
             gc.clearRect(0, 0, w, h);
             saveFilePath = "";
         }
-        else if(inst.get(0).equals("open")){
-            String imageString = inst.get(1);
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] imageByte = decoder.decodeBuffer(imageString);
-            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-            BufferedImage bufferedImage = ImageIO.read(bis);
-            double h = canvas.getHeight();
-            double w = canvas.getWidth();
-            gc.clearRect(0, 0, w, h);
-            Image image = SwingFXUtils.toFXImage(bufferedImage, null );
-            gc.drawImage(image, 0, 0, w, h);
-        }
         else{
             Color c = Color.web(inst.get(0),1.0);
             gc.setStroke(c);
             gc.setLineWidth(Double.parseDouble(inst.get(1)));
-            double x = Double.parseDouble(inst.get(3));
-            double y = Double.parseDouble(inst.get(4));
             if(inst.get(2).equals("oval")){
+
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
                 System.out.println("Enter oval drawing:  "+x +y+width+width);
                 gc.strokeOval(x,y,width,height);
             }
             else if(inst.get(2).equals("rectangle")){
+
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
                 System.out.println("Enter oval drawing:  "+x +y+width+width);
                 gc.strokeRect(x,y,width,height);
             }
             else if (inst.get(2).equals("circle")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
                 double width = Double.parseDouble(inst.get(5));
                 double height = Double.parseDouble(inst.get(6));
                 System.out.println("Enter oval drawing:  "+x +y+width+width);
                 gc.strokeOval(x,y,width,height);
             }
             else if(inst.get(2).equals("draw")){
-                double x2 = Double.parseDouble(inst.get(5));
-                double y2 = Double.parseDouble(inst.get(6));
-                gc.strokeLine(x,y,x2,y2);
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                if(inst.get(5).equals("0")){
+                    gc.beginPath();
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
+                if(inst.get(5).equals("1")){
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
             }
             else if(inst.get(2).equals("text")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
                 String content = inst.get(5);
                 gc.strokeText(content,x,y);
             }
             else if(inst.get(2).equals("line")){
-                double x2 = Double.parseDouble(inst.get(5));
-                double y2 = Double.parseDouble(inst.get(6));
-                gc.strokeLine(x,y,x2,y2);
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
+                if(inst.get(5).equals("0")){
+                    gc.beginPath();
+                    gc.lineTo(x, y);
+                    gc.stroke();
+                }
+                if(inst.get(5).equals("1")){
+                    gc.lineTo(x,y);
+                    gc.stroke();
+                }
             }
             else if(inst.get(2).equals("erase")){
+                double x = Double.parseDouble(inst.get(3));
+                double y = Double.parseDouble(inst.get(4));
                 gc.clearRect(x,y,Double.parseDouble(inst.get(5)),Double.parseDouble(inst.get(5)));
             }
         }
