@@ -215,6 +215,11 @@ public class ClientGUIController extends Application {
                 header = "Sorry, " + wbName + " will close";
                 text = isEmpty ? "The whiteboard is closing, please try again!" : msg;
                 break;
+            case "fileName":
+                title = "Save Whiteboard Unsuccessful";
+                header = "Sorry, fail to save whiteboard";
+                text = isEmpty ? "Fail to save whiteboard, please try again!" : msg;
+                break;
             default:
                 title = "Error";
                 header = "Sorry, something wrong happened.";
