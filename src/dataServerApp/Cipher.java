@@ -94,6 +94,7 @@ public class Cipher {
 
         String decodeString = decodeToString(pwdHash);
         if(!decodeString.equals(expectHash)){
+            logger.info("@@@@@@@@@@@ / "+decodeString + " @@@@@@@@/"+expectHash);
             return false;
         }
 //        if (pwdHash.length != expectHash.getBytes().length) {

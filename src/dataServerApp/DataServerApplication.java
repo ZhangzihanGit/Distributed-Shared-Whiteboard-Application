@@ -95,10 +95,12 @@ public class DataServerApplication {
             logger.info("Now write to the server:");
             dataWareHouse.writeDb(username,encryptedPassword,salt);
         }
+        authenticator.syncStorage(dataWareHouse.getLocalPassbook());
         return message.toJSONString();
     }
 
     public String checkUser(String username, String password){
+        authenticator.syncStorage(dataWareHouse.getLocalPassbook());
         return authenticator.authenticate(username, password).toJSONString();
     }
 

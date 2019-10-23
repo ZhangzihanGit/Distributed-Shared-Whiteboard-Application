@@ -100,11 +100,14 @@ class Authenticator {
             }
             // Successfully authenticated
             else {
+                logger.info("Successfully : !!!!!");
                 if(!loggedInUser.contains(username)){
                     loggedInUser.add(username);
+//                    iteratePassbook();
                     return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
                 }
                 else {
+                    logger.info("You shoudl not enter here. Duplicate user. ");
                     return jsonParse(FAIL_HEADER,AUTHENTICATION_FAILED,"","");
                 }
             }
@@ -130,7 +133,7 @@ class Authenticator {
         while(it.hasNext()){
             Map.Entry pair = (Map.Entry)it.next();
             logger.info(pair.getKey().toString()+pair.getValue().toString());
-
+//            String result = (String)pair.getValue();
             System.out.println("User name : "+ pair.getKey()+" User passowrd: "+pair.getValue() );
         }
     }
