@@ -13,6 +13,7 @@ import wbServerData.WbServerDataStrategy;
 import wbServerData.WbServerDataStrategyFactory;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,8 +27,7 @@ public class WbServerGUIController extends Application {
     private final String REMOVECSS = "-fx-border-color: none;";
     private final String LABELCSS = "-fx-font-family: NunitoSans;-fx-text-fill: red;visibility: true;";
     private final String LABELREMOVECSS = "visibility: false;";
-    private Path absolutePath = null;
-    private Path currentPath = null;
+    private URL entryURL = null;
     private static Stage primaryStage;
     @FXML
     private Parent root;
@@ -65,7 +65,7 @@ public class WbServerGUIController extends Application {
     /**
      * run whiteboard server GUI
      */
-    public void runWbServerGUI() {
+    public void runWbServerGUI() throws URISyntaxException {
         launch();
     }
 
@@ -75,7 +75,7 @@ public class WbServerGUIController extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
-        this.absolutePath = Paths.get(".").toAbsolutePath().normalize();
+
         primaryStage.setOnCloseRequest(event -> {
             WbServerFacade.getInstance().exit();
         });
@@ -125,56 +125,63 @@ public class WbServerGUIController extends Application {
 
     @FXML
     private void showWelcomeView() throws IOException, URISyntaxException {
-
-//        this.currentPath = Paths.get(this.absolutePath.toString()+"/resources/wbServerViews/wbServerWelcome.fxml");
-//        this.root = FXMLLoader.load(this.currentPath.toUri().toURL());
-//        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.WELCOME.getFxmlFile()));
         URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-        URL entryUrl = new URL("jar:" + uri.toString()+ "!/wbServerPre/wbServerViews/wbServerWelcome.fxml");
-        this.root = FXMLLoader.load(entryUrl);
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.WELCOME.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.WELCOME.getTitle());
         baseView();
     }
 
     @FXML
-    private void showConfigView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.CONFIG.getFxmlFile()));
+    private void showConfigView() throws IOException, URISyntaxException {
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.CONFIG.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.CONFIG.getTitle());
         baseView();
     }
 
     @FXML
-    private void showConfigDbView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.CONFIG_DB.getFxmlFile()));
+    private void showConfigDbView() throws IOException, URISyntaxException {
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        System.out.println(uri.toString());
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.CONFIG_DB.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.CONFIG_DB.getTitle());
         baseView();
     }
 
     @FXML
-    private void showMqttConfigView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MQTT.getFxmlFile()));
+    private void showMqttConfigView() throws IOException, URISyntaxException {
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.MQTT.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.MQTT.getTitle());
         baseView();
     }
 
     @FXML
-    public void showCurrentWbView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.WB_LIST.getFxmlFile()));
+    public void showCurrentWbView() throws IOException, URISyntaxException {
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.WB_LIST.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.WB_LIST.getTitle());
         baseView();
     }
 
     @FXML
-    public void showMonitorView() throws IOException {
+    public void showMonitorView() throws IOException, URISyntaxException {
         CurrentWbMonitorController.flag = true;
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MONITOR.getFxmlFile()));
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ WbServerFxmlView.MONITOR.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(WbServerFxmlView.MONITOR.getTitle());
         baseView();
     }
 
 
     @FXML
-    private void controlDbconfig() throws IOException {
+    private void controlDbconfig() throws IOException, URISyntaxException {
         String ip = this.IPField.getText();
         String dbPort = this.dbPortField.getText();
 
@@ -194,7 +201,7 @@ public class WbServerGUIController extends Application {
     }
 
     @FXML
-    private void controlConfig() throws IOException {
+    private void controlConfig() throws IOException, URISyntaxException {
         String port = this.portField.getText();
 
         if (!this.checkIsEmpty(portField)) {
@@ -212,7 +219,7 @@ public class WbServerGUIController extends Application {
     }
 
     @FXML
-    private void controlMqttConfig() throws IOException {
+    private void controlMqttConfig() throws IOException, URISyntaxException {
         String broker = this.brokerField.getText();
 
         if (!this.checkIsEmpty(brokerField)) {
@@ -256,10 +263,14 @@ public class WbServerGUIController extends Application {
         return true;
     }
 
-    private void baseView() {
+    private void baseView() throws MalformedURLException, URISyntaxException {
         this.scene = new Scene(this.root);
-        this.scene.getStylesheets().add(getClass().getResource("../../assets/css/clientGUI.css").toExternalForm());
-        this.primaryStage.getIcons().add(new Image(WbServerGUIController.class.getResourceAsStream("../../assets/imgs/whiteboard.png")));
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ "!/assets/css/clientGUI.css");
+        this.scene.getStylesheets().add(this.entryURL.toExternalForm());
+
+        String iconPath = new URL("jar:" + uri.toString()+ "!/assets/imgs/whiteboard.png").toString();
+        this.primaryStage.getIcons().add(new Image(iconPath));
         this.primaryStage.setScene(scene);
         this.primaryStage.setResizable(false);
         this.primaryStage.show();

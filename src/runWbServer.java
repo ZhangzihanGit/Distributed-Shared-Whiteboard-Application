@@ -1,8 +1,10 @@
 import wbServerApp.WbServerCmdValue;
 import wbServerPre.wbServerViewControllers.WbServerGUIController;
 
+import java.net.URISyntaxException;
+
 public class runWbServer {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
         // log setting
         System.setProperty("my.log", "resources/log/wbServer.log");
         // security settings

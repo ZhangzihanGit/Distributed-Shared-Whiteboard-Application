@@ -10,7 +10,7 @@ public enum WbServerFxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../wbServerViews/wbServerWelcome.fxml";
+            return "!/wbServerPre/wbServerViews/wbServerWelcome.fxml";
         }
     }, CONFIG {
         @Override
@@ -20,7 +20,7 @@ public enum WbServerFxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../wbServerViews/wbServerConfig.fxml";
+            return "!/wbServerPre/wbServerViews/wbServerConfig.fxml";
         }
     }, CONFIG_DB {
         @Override
@@ -30,7 +30,7 @@ public enum WbServerFxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../wbServerViews/wbServerDbConfig.fxml";
+            return "!/wbServerPre/wbServerViews/wbServerDbConfig.fxml";
         }
     }
     , MQTT {
@@ -41,7 +41,7 @@ public enum WbServerFxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../wbServerViews/wbServerMqttConfig.fxml";
+            return "!/wbServerPre/wbServerViews/wbServerMqttConfig.fxml";
         }
     }, WB_LIST {
         @Override
@@ -50,7 +50,7 @@ public enum WbServerFxmlView {
         }
 
         @Override
-        String getFxmlFile() { return "../wbServerViews/wbCurrentWbs.fxml"; }
+        String getFxmlFile() { return "!/wbServerPre/wbServerViews/wbCurrentWbs.fxml"; }
     }, MONITOR {
         @Override
         String getTitle() {
@@ -58,7 +58,7 @@ public enum WbServerFxmlView {
         }
 
         @Override
-        String getFxmlFile() { return "../wbServerViews/wbServerMonitor.fxml"; }
+        String getFxmlFile() { return "!/wbServerPre/wbServerViews/wbServerMonitor.fxml"; }
     };
 
     abstract String getTitle();

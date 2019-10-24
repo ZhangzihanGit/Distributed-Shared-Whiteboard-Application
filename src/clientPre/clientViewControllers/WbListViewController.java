@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 public class WbListViewController {
@@ -49,7 +50,7 @@ public class WbListViewController {
     }
 
     @FXML
-    private void controlGoBack() throws IOException {
+    private void controlGoBack() throws IOException, URISyntaxException {
         ClientGUIController.getInstance().showChooseIdentityView();
     }
 

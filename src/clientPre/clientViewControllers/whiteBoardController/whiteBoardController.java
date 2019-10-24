@@ -31,6 +31,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
@@ -255,7 +257,15 @@ public class whiteBoardController {
         listView.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
             @Override
             public ListCell<String> call(ListView<String> param) {
-                return new StringAndButtonList(clientType);
+                try {
+                    return new StringAndButtonList(clientType);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                    return null;
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
         });
     }

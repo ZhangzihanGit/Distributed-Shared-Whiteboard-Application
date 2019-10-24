@@ -13,6 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 
 public class StringAndButtonList extends ListCell<String> {
     static ObservableList<String> list;
@@ -25,13 +30,21 @@ public class StringAndButtonList extends ListCell<String> {
 
     private String clientType;
     private ImageView imageView = null;
-    private final Image MANAGER_IMAGE = new Image(getClass().getResource("../../../assets/imgs/manager2.png").toExternalForm());
-    private final Image VISITOR_IMAGE = new Image(getClass().getResource("../../../assets/imgs/visitor2.png").toExternalForm());
+    URI uri = null;
+    private Image MANAGER_IMAGE = null;
+    private Image VISITOR_IMAGE = null;
 
-    public StringAndButtonList(String clientType) {
+    public StringAndButtonList(String clientType) throws URISyntaxException, MalformedURLException {
         super();
         this.clientType = clientType;
         this.imageView = new ImageView();
+
+        this.uri = StringAndButtonList.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        String managerIconPath = new URL("jar:" + uri.toString()+ "!/assets/imgs/manager2.png").toString();
+        String visitorIconPath = new URL("jar:" + uri.toString()+ "!/assets/imgs/visitor2.png").toString();
+        this.MANAGER_IMAGE = new Image(managerIconPath);
+        this.VISITOR_IMAGE = new Image(visitorIconPath);
+
         if(!clientType.equals("manager")){
             button.setVisible(false);
         }

@@ -10,7 +10,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientWelcome.fxml";
+            return "!/clientPre/clientViews/clientWelcome.fxml";
         }
     }, LOGIN {
         @Override
@@ -20,7 +20,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientLogin.fxml";
+            return "!/clientPre/clientViews/clientLogin.fxml";
         }
     }, SIGNUP {
         @Override
@@ -30,7 +30,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientSignup.fxml";
+            return "!/clientPre/clientViews/clientSignup.fxml";
         }
     }, IDENTITY {
         @Override
@@ -40,7 +40,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientIdentity.fxml";
+            return "!/clientPre/clientViews/clientIdentity.fxml";
         }
     }, CONFIG {
         @Override
@@ -50,7 +50,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientConfig.fxml";
+            return "!/clientPre/clientViews/clientConfig.fxml";
         }
     }, CANVAS {
         @Override
@@ -60,7 +60,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/WhiteBoard.fxml";
+            return "!/clientPre/clientViews/WhiteBoard.fxml";
         }
     }, MQTT {
         @Override
@@ -70,7 +70,7 @@ public enum FxmlView {
 
         @Override
         String getFxmlFile() {
-            return "../clientViews/clientMqttConfig.fxml";
+            return "!/clientPre/clientViews/clientMqttConfig.fxml";
         }
     }, WB_LIST {
         @Override
@@ -79,7 +79,7 @@ public enum FxmlView {
         }
 
         @Override
-        String getFxmlFile() { return "../clientViews/currentWhiteboards.fxml"; }
+        String getFxmlFile() { return "!/clientPre/clientViews/currentWhiteboards.fxml"; }
     }, CREATE_WB {
         @Override
         String getTitle() {
@@ -87,7 +87,7 @@ public enum FxmlView {
         }
 
         @Override
-        String getFxmlFile() { return "../clientViews/createWhiteboard.fxml"; }
+        String getFxmlFile() { return "!/clientPre/clientViews/createWhiteboard.fxml"; }
     };
 
     abstract String getTitle();

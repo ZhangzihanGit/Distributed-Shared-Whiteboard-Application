@@ -11,6 +11,7 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Client call back implementation
@@ -35,7 +36,7 @@ public class ClientMqttCallBack implements MqttCallback {
     }
 
     @Override
-    public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(String s, MqttMessage mqttMessage) {
         String msg = new String(mqttMessage.getPayload());
         logger.info("Message received: " + s + ", " + msg);
 
@@ -94,7 +95,7 @@ public class ClientMqttCallBack implements MqttCallback {
      * join request results notification handling
      * @param msg Server respond message, JSON String
      */
-    private void joinPanelHandle(String s, String msg) throws IOException {
+    private void joinPanelHandle(String s, String msg) {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
 
@@ -112,7 +113,7 @@ public class ClientMqttCallBack implements MqttCallback {
                 Platform.runLater(()-> {
                     try {
                         ClientGUIController.getInstance().showWhiteBoardView();
-                    } catch (IOException e) {
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage());
                         logger.error("Show whiteboard view failed");
                     }
@@ -125,7 +126,7 @@ public class ClientMqttCallBack implements MqttCallback {
                 Platform.runLater(()-> {
                     try {
                         ClientGUIController.getInstance().showJoinDeniedView(jsonStrategy.getMsg(msg));
-                    } catch (IOException e) {
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage());
                         logger.error("Show join denied view failed");
                     }
@@ -138,7 +139,7 @@ public class ClientMqttCallBack implements MqttCallback {
      * General notification handling, including new user join (only for manager), manager kick out users or quit the whiteboard
      * @param msg Server respond message, JSON String
      */
-    private void generalPanelHandle(String msg) throws IOException {
+    private void generalPanelHandle(String msg) {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
         ClientDataStrategy jsonStrategy = ClientDataStrategyFactory.getInstance().getJsonStrategy();
 
@@ -161,7 +162,7 @@ public class ClientMqttCallBack implements MqttCallback {
                 Platform.runLater(()-> {
                     try {
                         ClientGUIController.getInstance().showCloseView(message);
-                    } catch (IOException e) {
+                    } catch (IOException | URISyntaxException e) {
                         logger.error(e.getMessage());
                         logger.error("Show close view failed");
                     }

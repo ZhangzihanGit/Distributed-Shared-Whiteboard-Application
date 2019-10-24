@@ -16,6 +16,10 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Optional;
 
 public class ClientGUIController extends Application {
@@ -29,6 +33,7 @@ public class ClientGUIController extends Application {
     private final String REMOVECSS = "-fx-border-color: none;";
     private final String LABELCSS = "-fx-font-family: NunitoSans;-fx-text-fill: red;visibility: true;";
     private final String LABELREMOVECSS = "visibility: false;";
+    private URL entryURL = null;
     private static Stage primaryStage;
     @FXML
     private Parent root;
@@ -107,57 +112,73 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void showWelcomeView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.WELCOME.getFxmlFile()));
+    private void showWelcomeView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.WELCOME.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.WELCOME.getTitle());
         baseView();
     }
 
     @FXML
-    private void showLoginView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.LOGIN.getFxmlFile()));
+    private void showLoginView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.LOGIN.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.LOGIN.getTitle());
         baseView();
     }
 
     @FXML
-    private void showSignupView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.SIGNUP.getFxmlFile()));
+    private void showSignupView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.SIGNUP.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.SIGNUP.getTitle());
         baseView();
     }
 
     @FXML
-    public void showChooseIdentityView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.IDENTITY.getFxmlFile()));
+    public void showChooseIdentityView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.IDENTITY.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.IDENTITY.getTitle());
         baseView();
     }
 
     @FXML
-    private void showConfigView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.CONFIG.getFxmlFile()));
+    private void showConfigView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.CONFIG.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.CONFIG.getTitle());
         baseView();
     }
 
     @FXML
-    private void showMqttConfigView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.MQTT.getFxmlFile()));
+    private void showMqttConfigView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.MQTT.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.MQTT.getTitle());
         baseView();
     }
 
     @FXML
-    private void showCurrentWbView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.WB_LIST.getFxmlFile()));
+    private void showCurrentWbView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.WB_LIST.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.WB_LIST.getTitle());
         baseView();
     }
 
     @FXML
-    private void showCreateWbView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.CREATE_WB.getFxmlFile()));
+    private void showCreateWbView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.CREATE_WB.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.CREATE_WB.getTitle());
         baseView();
     }
@@ -235,7 +256,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    public void showJoinDeniedView(String msg) throws IOException {
+    public void showJoinDeniedView(String msg) throws IOException, URISyntaxException {
         String selectedWb = ClientAppFacade.getInstance().getWbName();
 
         this.showErrorView("joinDenied", msg, selectedWb);
@@ -273,7 +294,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    public void showCloseView(String msg) throws IOException {
+    public void showCloseView(String msg) throws IOException, URISyntaxException {
         this.showErrorView("closed", msg, ClientAppFacade.getInstance().getWbName());
         ClientAppFacade.getInstance().setWbName("");
 
@@ -283,8 +304,10 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    public void showWhiteBoardView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(FxmlView.CANVAS.getFxmlFile()));
+    public void showWhiteBoardView() throws IOException, URISyntaxException {
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ FxmlView.CANVAS.getFxmlFile());
+        this.root = FXMLLoader.load(this.entryURL);
         this.primaryStage.setTitle(FxmlView.CANVAS.getTitle());
         baseView();
     }
@@ -293,7 +316,7 @@ public class ClientGUIController extends Application {
      * control login
      */
     @FXML
-    private void controlLogin() throws IOException {
+    private void controlLogin() throws IOException, URISyntaxException {
         String loginUsername = this.loginUsernameField.getText();
         String loginPassword = this.loginPasswordField.getText();
 
@@ -318,7 +341,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlSignup() throws IOException {
+    private void controlSignup() throws IOException, URISyntaxException {
 
         String signupUsername = this.signupUsernameField.getText();
         String signupPassword1 = this.signupPasswordField1.getText();
@@ -352,7 +375,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlConfig() throws IOException {
+    private void controlConfig() throws IOException, URISyntaxException {
 
         String ip = this.IPField.getText();
         String port = this.portField.getText();
@@ -377,7 +400,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlMqttConfig() throws IOException {
+    private void controlMqttConfig() throws IOException, URISyntaxException {
         ClientAppFacade clientApp = ClientAppFacade.getInstance();
 
         String broker = this.brokerField.getText();
@@ -400,7 +423,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlCheckBox() throws IOException {
+    private void controlCheckBox() throws IOException, URISyntaxException {
 
         if (!this.checkIsEmpty()) {
             if (visitorCheckBox.isSelected()) {
@@ -414,7 +437,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlCreateWb() throws IOException {
+    private void controlCreateWb() throws IOException, URISyntaxException {
         String wbName = this.wbNameField.getText();
 
         if (!this.checkIsEmpty(wbNameField)) {
@@ -439,7 +462,7 @@ public class ClientGUIController extends Application {
     }
 
     @FXML
-    private void controlGoBack() throws IOException {
+    private void controlGoBack() throws IOException, URISyntaxException {
         this.showLoginView();
     }
 
@@ -511,10 +534,15 @@ public class ClientGUIController extends Application {
         return true;
     }
 
-    private void baseView() {
+    private void baseView() throws URISyntaxException, MalformedURLException {
         this.scene = new Scene(this.root);
-        this.scene.getStylesheets().add(getClass().getResource("../../assets/css/clientGUI.css").toExternalForm());
-        this.primaryStage.getIcons().add(new Image(ClientGUIController.class.getResourceAsStream("../../assets/imgs/whiteboard.png")));
+
+        URI uri = ClientGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        this.entryURL = new URL("jar:" + uri.toString()+ "!/assets/css/clientGUI.css");
+        this.scene.getStylesheets().add(this.entryURL.toExternalForm());
+
+        String iconPath = new URL("jar:" + uri.toString()+ "!/assets/imgs/whiteboard.png").toString();
+        this.primaryStage.getIcons().add(new Image(iconPath));
         this.primaryStage.setScene(scene);
         this.primaryStage.setResizable(false);
         this.primaryStage.show();

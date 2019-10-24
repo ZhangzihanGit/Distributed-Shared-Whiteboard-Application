@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import wbServerApp.WbServerFacade;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 public class CurrentWbListController {
@@ -36,7 +37,7 @@ public class CurrentWbListController {
     }
 
     @FXML
-    private void controlSelectWb() throws IOException {
+    private void controlSelectWb() throws IOException, URISyntaxException {
         String selectedWbName = listView.getSelectionModel().getSelectedItem();
         boolean isEmpty = selectedWbName == null || selectedWbName.isEmpty();
 
