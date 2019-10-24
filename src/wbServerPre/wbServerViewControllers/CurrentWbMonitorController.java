@@ -5,7 +5,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 
 public class CurrentWbMonitorController {
-
+    public static boolean flag = false;
     public static CurrentWbMonitorController instance = null;
     @FXML private ScrollPane scrollPane;
     private static TextArea loggerArea;
@@ -27,11 +27,8 @@ public class CurrentWbMonitorController {
 
     // TODO: in WbServerApplication runlater call this function
     public void updateLogger(String logger) {
-        loggerArea.appendText(logger + "\n");
+        if(flag == true){
+            loggerArea.appendText(logger + "\n");
+        }
     }
-
-//    @FXML
-//    private void controlGoBack() throws IOException {
-//        WbServerGUIController.getInstance().showCurrentWbView();
-//    }
 }

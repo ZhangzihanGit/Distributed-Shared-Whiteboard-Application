@@ -152,11 +152,10 @@ public class WbServerGUIController extends Application {
 
     @FXML
     public void showMonitorView() throws IOException {
+        CurrentWbMonitorController.flag = true;
         this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.MONITOR.getFxmlFile()));
         this.primaryStage.setTitle(WbServerFxmlView.MONITOR.getTitle());
         baseView();
-//
-//        CurrentWbListController.getInstance().initialize();
     }
 
 
