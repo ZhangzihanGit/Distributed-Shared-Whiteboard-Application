@@ -11,6 +11,7 @@ import wbServerData.WbServerDataStrategyFactory;
 import wbServerPre.wbServerViewControllers.CurrentWbListController;
 import wbServerPre.wbServerViewControllers.CurrentWbMonitorController;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
@@ -339,6 +340,11 @@ public class WbServerApplication {
 
                     factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond, false);
                     factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", "", true);
+                    try {
+                        remoteDb.userExit(username);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
                 // visitor close the whiteboard, update the user list
                 else {
@@ -351,6 +357,11 @@ public class WbServerApplication {
                     wb.removeUser(username);
                     String users = wb.getAllUsers();
                     factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users, true);
+                    try {
+                        remoteDb.userExit(username);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }

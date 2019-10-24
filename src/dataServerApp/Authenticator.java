@@ -133,4 +133,7 @@ class Authenticator {
             logger.info(pair.getKey().toString()+pair.getValue().toString());
         }
     }
+    public void userExit(String username){
+        loggedInUser.remove(username);
+    }
 }
