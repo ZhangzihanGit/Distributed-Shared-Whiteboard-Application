@@ -27,13 +27,7 @@ public interface IRemoteDb extends Remote {
      */
     public String checkUser(String username, String password) throws RemoteException;
 
-    /**
-     * save the whiteboard into server
-     * @param username
-     * @param wbContent content of whiteboard
-     * @return saving feedback
-     * @throws RemoteException
-     */
+    public void userExit(String usernmae) throws RemoteException;
 //    public String saveWb(String username, String wbContent) throws RemoteException;
 
     /**

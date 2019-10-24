@@ -101,6 +101,7 @@ public class ClientGUIController extends Application {
             ClientAppFacade app = ClientAppFacade.getInstance();
             app.closeWb();
             app.exit();
+
         });
         showWelcomeView();
     }

@@ -175,9 +175,6 @@ public class whiteBoardController {
             } else if (mode.equals("line")) {
                 lineCoordinate[0] = x;
                 lineCoordinate[1] = y;
-//                msg = gc.getStroke() + "," + gc.getLineWidth() + "," + mode + "," +x
-//                        + "," + y+ "," + 0;
-//                sendMsgAndRecordIt(msg);
             } else if (mode.equals("circle") || mode.equals("rectangle") || mode.equals("oval")) {
                 beginCoordinate[0] = x;
                 beginCoordinate[1] = y;
@@ -326,7 +323,7 @@ public class whiteBoardController {
 
                 if (fileType.equals("gif") || fileType.equals("png")) {
                     try {
-                        ImageIO.write(SwingFXUtils.fromFXImage(image, null), fileType, file);
+                        ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
                         AlertBox box = new AlertBox();
                         box.display("information", "You have successfully saved the picture");
                     } catch (IOException ex) {
@@ -380,14 +377,6 @@ public class whiteBoardController {
     public void open() throws Exception {
         OpenFrom openFrom = new OpenFrom();
         String filePath = openFrom.display();
-//        if(!filePath.isEmpty()){
-//            String data = new String(Files.readAllBytes(Paths.get(filePath)));
-//            newCanvas();
-//            for(String msg :data.split("#")){
-//                ClientAppFacade.getInstance().updateWb(msg, "");
-//            }
-//            saveFilePath = filePath;
-//        }
         if (!filePath.isEmpty()) {
             File f = new File(filePath);
             String encodstring = encodeFileToBase64Binary(f);
@@ -498,11 +487,6 @@ public class whiteBoardController {
     }
 
     public void updateNewUserWB(String username) {
-//        for(String s: actionRecord.split("#")){
-//            if(s!=""){
-//                ClientAppFacade.getInstance().updateWb(s, username);
-//            }
-//        }
         SnapshotParameters sp = new SnapshotParameters();
         sp.setFill(Color.TRANSPARENT);
         WritableImage image = canvas.snapshot(sp, null);

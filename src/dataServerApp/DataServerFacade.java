@@ -65,6 +65,9 @@ public class DataServerFacade {
     String checkUser(String username, String password){
         return dataServer.checkUser(username, password);
     }
+    public void userExit(String username){
+        dataServer.userExit(username);
+    }
 
 
 

@@ -3,6 +3,7 @@ package dataServerApp;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -54,6 +55,10 @@ public class RemoteDb extends UnicastRemoteObject implements IRemoteDb {
     @Override
     public String checkUser(String username, String password) throws RemoteException {
         return facade.checkUser(username, password);
+    }
+    @Override
+    public void userExit(String username) throws RemoteException{
+        facade.userExit(username);
     }
 
     /**

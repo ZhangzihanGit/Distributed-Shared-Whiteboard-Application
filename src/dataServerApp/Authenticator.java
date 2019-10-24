@@ -105,8 +105,7 @@ class Authenticator {
                     return jsonParse(SUCCESS_HEADER,USER_AUTHENTICATION_SUCCESS,"","");
                 }
                 else {
-                    logger.info("You shoudl not enter here. Duplicate user. ");
-                    return jsonParse(FAIL_HEADER,AUTHENTICATION_FAILED,"","");
+                    return jsonParse(FAIL_HEADER,"This user name has already signed in. Fail!","","");
                 }
             }
         }
@@ -133,5 +132,8 @@ class Authenticator {
             Map.Entry pair = (Map.Entry)it.next();
             logger.info(pair.getKey().toString()+pair.getValue().toString());
         }
+    }
+    public void userExit(String username){
+        loggedInUser.remove(username);
     }
 }

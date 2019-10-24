@@ -107,6 +107,9 @@ public class DataServerApplication {
         iteratePassBook();
         return authenticator.authenticate(username, password).toJSONString();
     }
+    public void userExit(String username){
+        authenticator.userExit(username);
+    }
 
 
     void iteratePassBook(){
