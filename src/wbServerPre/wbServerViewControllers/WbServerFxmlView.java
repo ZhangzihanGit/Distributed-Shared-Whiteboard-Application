@@ -1,11 +1,6 @@
 package wbServerPre.wbServerViewControllers;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public enum WbServerFxmlView {
-
-//    private Path absolutePath = null;
 
     WELCOME {
         @Override

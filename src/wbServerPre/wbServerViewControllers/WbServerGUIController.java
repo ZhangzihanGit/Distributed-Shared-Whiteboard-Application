@@ -13,6 +13,9 @@ import wbServerData.WbServerDataStrategy;
 import wbServerData.WbServerDataStrategyFactory;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -23,6 +26,8 @@ public class WbServerGUIController extends Application {
     private final String REMOVECSS = "-fx-border-color: none;";
     private final String LABELCSS = "-fx-font-family: NunitoSans;-fx-text-fill: red;visibility: true;";
     private final String LABELREMOVECSS = "visibility: false;";
+    private Path absolutePath = null;
+    private Path currentPath = null;
     private static Stage primaryStage;
     @FXML
     private Parent root;
@@ -70,6 +75,7 @@ public class WbServerGUIController extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         this.primaryStage = stage;
+        this.absolutePath = Paths.get(".").toAbsolutePath().normalize();
         primaryStage.setOnCloseRequest(event -> {
             WbServerFacade.getInstance().exit();
         });
@@ -118,8 +124,14 @@ public class WbServerGUIController extends Application {
     }
 
     @FXML
-    private void showWelcomeView() throws IOException {
-        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.WELCOME.getFxmlFile()));
+    private void showWelcomeView() throws IOException, URISyntaxException {
+
+//        this.currentPath = Paths.get(this.absolutePath.toString()+"/resources/wbServerViews/wbServerWelcome.fxml");
+//        this.root = FXMLLoader.load(this.currentPath.toUri().toURL());
+//        this.root = FXMLLoader.load(getClass().getResource(WbServerFxmlView.WELCOME.getFxmlFile()));
+        URI uri = WbServerGUIController.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+        URL entryUrl = new URL("jar:" + uri.toString()+ "!/wbServerPre/wbServerViews/wbServerWelcome.fxml");
+        this.root = FXMLLoader.load(entryUrl);
         this.primaryStage.setTitle(WbServerFxmlView.WELCOME.getTitle());
         baseView();
     }
