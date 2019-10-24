@@ -1,6 +1,12 @@
 package wbServerPre.wbServerViewControllers;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public enum WbServerFxmlView {
+
+//    private Path absolutePath = null;
+
     WELCOME {
         @Override
         String getTitle() {
@@ -8,7 +14,9 @@ public enum WbServerFxmlView {
         }
 
         @Override
-        String getFxmlFile() { return "../wbServerViews/wbServerWelcome.fxml"; }
+        String getFxmlFile() {
+            return "../wbServerViews/wbServerWelcome.fxml";
+        }
     }, CONFIG {
         @Override
         String getTitle() {
