@@ -341,6 +341,7 @@ public class WbServerApplication {
                     factory.getMqttPublish().publish(this.mqttPublisher, wb.getName() + "/general", respond, false);
                     factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", "", true);
                     try {
+                        logger.info("Manager has exited!!!"+username);
                         remoteDb.userExit(username);
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -358,6 +359,7 @@ public class WbServerApplication {
                     String users = wb.getAllUsers();
                     factory.getMqttPublish().publish(this.mqttPublisher, wbName + "/users", users, true);
                     try {
+                        logger.info("Visitor exit!!!"+username);
                         remoteDb.userExit(username);
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -365,6 +367,14 @@ public class WbServerApplication {
                 }
                 break;
             }
+            else {
+                try {
+                    remoteDb.userExit(username);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
         if (deleteWb != null) {
