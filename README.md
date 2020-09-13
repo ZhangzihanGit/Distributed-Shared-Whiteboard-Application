@@ -1,25 +1,53 @@
-## COMP90015 Distributed Systems Project2
+# Distrubuted Shared WhiteBoard
 
-### Distributed Shared Whiteboard
+## Introduction
+Java based desktop application that 
 
-### 1 Introduction
+## Features
 
-### 2 Instructions and Usages
+## Usage
 
-### 3 Group Information
+> Prerequisite: JDK 8 installed.
 
-#### 3.1 Group Name
+### Step 1
+`git clone https://github.com/ZhangzihanGit/Distributed-Shared-Whiteboard-Application.git`
 
-​	A Team
+### Step 2
+`cd Distributed-Shared-Whiteboard-Application/runnable-jar`
 
-#### 3.2 Group Member
+### Step 3
+Run the data server:
 
-- Zihan Zhang
+`java -jar dataServer.jar -ip <network_ipv4_address> -p <port_number>`
 
-- Guang Yang
+Example:
 
-- Chengeng Liu
+`java -jar dataServer.jar -ip localhost -p 1111`
 
-- Xiuge Chen
+### Step 4:
+Run the whiteboard server:
 
-  
+`java -jar wbServer.jar -ip <network_ipv4_address>`
+
+Example:
+
+`java -jar wbServer.jar -ip localhost`
+
+### Step 5:
+Run the client application:
+
+`java -jar client.jar`
+
+## Demo
+
+### Whiteboard Server GUI
+
+[My image](images/wb-server/../../imgs/client/welcome.png)
+
+
+## Contributors
+Very thankful to my brilliant teammates:
+
+- [Xiuge Chen](https://github.com/XiugeChen)
+- [Chengeng Liu](https://github.com/chengengliu)
+- [Guang Yang](https://github.com/yourDanmise)
