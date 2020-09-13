@@ -1,9 +1,18 @@
 # Distrubuted Shared WhiteBoard
 
 ## Introduction
-Java based desktop application that 
+A Java based desktop application that allows multiple users to draw shapes and chat at the same time.
 
 ## Features
+
+* Front-end: JavaFX
+* Back-end: Java
+* Communication protocol: 
+  * Java RMI: all communication between whiteboard server and data server, clients send request to whiteboard server.
+  * MQTT: whiteboard server publish updates to all subscribed clients.
+* Access control: manager has all the rights to create/delete/close a whiteboard session, as well as save shaps and import files. Manager also has the right to manage the access of visitors.
+* User need to log in/sign up to join a whiteboard session, all passwords are encrypted using SHA512 algorithm.
+* Multiple whiteboards coule be created, and user is able to choose whatever whiteboard to join.
 
 ## Usage
 
@@ -54,17 +63,12 @@ Run the client application:
 
 <img src="imgs/wb-server/wb-server-monitor.png" alt="wb monitor" width="400"/>
 
-<br />
-<br />
-
 ### Client GUI
 <img src="imgs/client/welcome.png" alt="welcome page" width="400"/>
 
 <img src="imgs/client/login.png" alt="login" width="400"/>
 
 <img src="imgs/client/signup.png" alt="signup" width="400"/>
-
-<br />
 
 User can choose a role.
 
