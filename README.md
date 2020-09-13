@@ -42,7 +42,13 @@ Run the client application:
 
 ### Whiteboard Server GUI
 
-[My image](images/wb-server/../../imgs/client/welcome.png)
+![Alt text](imgs/wb-server/welcome.png?raw=true "welcome page")
+
+<img src="imgs/wb-server/welcome.png" alt="welcome page" width="200"/>
+
+<br />
+
+<img src="imgs/wb-server/welcome.png" alt="welcome page" width="250"/>
 
 
 ## Contributors
